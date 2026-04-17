@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ars de Oracle — 적립 시뮬레이션</title>
+  <title>Ars de Oracle · 적립 시뮬</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -388,62 +388,62 @@
 <body>
   <div class="wrap">
     <header>
-      <h1>Ars de Oracle · 적립 성장 시뮬레이션</h1>
-      <p>월 수익률 30% 고정 가정 · 원 단위 계산 · 축은 만원</p>
+      <h1>Ars de Oracle · 적립 시뮬</h1>
+      <p>월 30% 복리 가정 · 원 단위 · 세로축은 만원</p>
     </header>
 
-    <section class="control-card" aria-label="납입 설정">
+    <section class="control-card" aria-label="입력">
       <div class="control-grid">
         <div class="field">
-          <label for="paySlider">매달 납입액 (슬라이더: 5만~50만원, 5만원 단위)</label>
+          <label for="paySlider">월 납입액 · 슬라이더 5~50만(5만 단위)</label>
           <div class="slider-row">
             <input type="range" id="paySlider" min="5" max="50" step="5" value="30" />
             <span class="pill" id="paySliderLabel">30만원</span>
           </div>
-          <label for="payInput" class="hint">직접 입력 · 원/만/억 허용 (예: 300000, 30만, 1억, 3억 2000만)</label>
-          <input class="num-input" type="text" id="payInput" inputmode="decimal" autocomplete="off" placeholder="예: 300000 · 30만 · 1억" />
+          <label for="payInput" class="hint">직접 입력: 원·만·억 (예: 30만, 1억, 3억2000만)</label>
+          <input class="num-input" type="text" id="payInput" inputmode="decimal" autocomplete="off" placeholder="30만 · 1억 …" />
         </div>
         <div class="field">
-          <label for="monthSlider">적립 개월 수</label>
+          <label for="monthSlider">기간(개월)</label>
           <div class="slider-row">
             <input type="range" id="monthSlider" min="0" max="48" step="1" value="24" />
             <span class="pill" id="monthLabel">24개월</span>
           </div>
-          <label for="monthInput" class="hint">직접 입력 0~60개월 (슬라이더는 최대 48개월)</label>
+          <label for="monthInput" class="hint">직접 0~60 · 슬라이더 최대 48</label>
           <input class="num-input" type="text" id="monthInput" inputmode="numeric" autocomplete="off" placeholder="0~60" value="24" />
         </div>
       </div>
       <div class="summary" id="summary" aria-live="polite"></div>
       <div class="disclaimer">
-        * 본 그래프는 월 수익률 30%를 <strong>가정</strong>한 복리 시뮬레이션이며, 실제 수익을 보장하지 않습니다.
+        * 월 30% 복리 <strong>가정</strong> 시뮬. 수익·원금 보장 없음.
       </div>
     </section>
 
     <section class="chart-card" aria-label="그래프">
       <div class="chart-head">
-        <h2>누적 잔액</h2>
-        <span class="legend">각 점: (개월, 만원)</span>
+        <h2>월말 잔액</h2>
+        <span class="legend">점 (개월, 금액)</span>
       </div>
       <div class="chart-wrap">
         <canvas id="chart"></canvas>
       </div>
       <div class="chart-footer">
-        <button type="button" class="btn-table" id="btnGenerateTable">표 생성</button>
+        <button type="button" class="btn-table" id="btnGenerateTable">표 보기</button>
       </div>
     </section>
 
     <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
-      <h3 id="tableHeading">데이터 표</h3>
+      <h3 id="tableHeading">월별 잔액</h3>
       <p class="table-hint">
-        셀을 드래그해 범위를 선택한 뒤 <kbd>Ctrl</kbd>+<kbd>C</kbd>로 복사하면 Excel·스프레드시트에 붙여 넣을 수 있습니다. (탭으로 구분)
+        셀 선택 → <kbd>Ctrl</kbd>+<kbd>C</kbd> → Excel 등 붙여넣기(탭 구분).
       </p>
       <div class="table-scroll">
         <table class="data-table" id="dataTable">
           <thead>
             <tr>
               <th scope="col">개월</th>
-              <th scope="col">누적 잔액 (원)</th>
-              <th scope="col">누적 잔액 (표시)</th>
+              <th scope="col">원(숫자)</th>
+              <th scope="col">표시</th>
             </tr>
           </thead>
           <tbody id="dataTableBody"></tbody>
@@ -657,11 +657,11 @@
     function updateSummary(months, monthlyWon, finalWon) {
       summaryEl.textContent = "";
       const f = document.createDocumentFragment();
-      f.appendChild(document.createTextNode("가정: 매월 말 "));
+      f.appendChild(document.createTextNode("가정: 월말 "));
       appendStrong(f, formatWon(monthlyWon));
-      f.appendChild(document.createTextNode(" 납입, 월 "));
+      f.appendChild(document.createTextNode(" 납입 · 월 "));
       appendStrong(f, "30%");
-      f.appendChild(document.createTextNode(" 복리. "));
+      f.appendChild(document.createTextNode(" 복리 → "));
       appendStrong(f, months + "개월");
       f.appendChild(document.createTextNode(" 후 잔액 "));
       appendStrong(f, formatWon(finalWon));
@@ -736,7 +736,7 @@
           labels: [],
           datasets: [
             {
-              label: "누적 잔액",
+              label: "월말 잔액",
               data: [],
               borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
               backgroundColor: "rgba(255, 255, 255, 0.04)",
