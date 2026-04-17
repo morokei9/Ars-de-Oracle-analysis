@@ -7,7 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+    onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/chart.js@4.4.1/dist/chart.umd.min.js';document.head.appendChild(s);"
+  ></script>
   <style>
     :root {
       --void: #060608;
@@ -235,6 +238,29 @@
       }
     }
 
+    .disclaimer {
+      margin-top: 0.85rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 10px;
+      background: rgba(255, 61, 0, 0.06);
+      border: 1px dashed rgba(255, 107, 53, 0.35);
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.55;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .control-card,
+      .chart-card,
+      header h1 {
+        animation: none !important;
+      }
+      * {
+        transition-duration: 0.001ms !important;
+        animation-duration: 0.001ms !important;
+      }
+    }
+
     .chart-card::before {
       content: "";
       position: absolute;
@@ -296,8 +322,8 @@
             <input type="range" id="paySlider" min="5" max="50" step="5" value="30" />
             <span class="pill" id="paySliderLabel">30만원</span>
           </div>
-          <label for="payInput" class="hint">직접 입력 (원). 50만원 초과 가능</label>
-          <input class="num-input" type="text" id="payInput" inputmode="numeric" autocomplete="off" placeholder="예: 300000 또는 30만" />
+          <label for="payInput" class="hint">직접 입력 · 원/만/억 허용 (예: 300000, 30만, 1억, 3억 2000만)</label>
+          <input class="num-input" type="text" id="payInput" inputmode="decimal" autocomplete="off" placeholder="예: 300000 · 30만 · 1억" />
         </div>
         <div class="field">
           <label for="monthSlider">적립 개월 수</label>
@@ -309,7 +335,10 @@
           <input class="num-input" type="number" id="monthInput" min="0" max="48" step="1" value="24" />
         </div>
       </div>
-      <div class="summary" id="summary"></div>
+      <div class="summary" id="summary" aria-live="polite"></div>
+      <div class="disclaimer">
+        * 본 그래프는 월 수익률 30%를 <strong>가정</strong>한 복리 시뮬레이션이며, 실제 수익을 보장하지 않습니다.
+      </div>
     </section>
 
     <section class="chart-card" aria-label="그래프">
@@ -337,25 +366,87 @@
 
     function parsePayWon(raw) {
       if (raw == null) return NaN;
-      const s = String(raw).trim().replace(/,/g, "");
+      let s = String(raw).trim().replace(/,/g, "").replace(/\s+/g, "");
       if (!s) return NaN;
-      const manMatch = s.match(/^(\d+(?:\.\d+)?)\s*만/);
-      if (manMatch) return Math.round(parseFloat(manMatch[1]) * 10000);
-      const n = parseInt(s, 10);
-      return Number.isFinite(n) ? n : NaN;
+      s = s.replace(/원$/, "");
+
+      let rest = s;
+      let won = 0;
+      let matched = false;
+
+      const joMatch = rest.match(/^(\d+(?:\.\d+)?)조/);
+      if (joMatch) {
+        won += parseFloat(joMatch[1]) * 1e12;
+        rest = rest.slice(joMatch[0].length);
+        matched = true;
+      }
+      const eokMatch = rest.match(/^(\d+(?:\.\d+)?)억/);
+      if (eokMatch) {
+        won += parseFloat(eokMatch[1]) * 1e8;
+        rest = rest.slice(eokMatch[0].length);
+        matched = true;
+      }
+      const manMatch = rest.match(/^(\d+(?:\.\d+)?)만/);
+      if (manMatch) {
+        won += parseFloat(manMatch[1]) * 1e4;
+        rest = rest.slice(manMatch[0].length);
+        matched = true;
+      }
+      if (rest.length > 0) {
+        const n = parseFloat(rest);
+        if (Number.isFinite(n)) {
+          won += n;
+          matched = true;
+        } else if (!matched) {
+          return NaN;
+        }
+      }
+      return matched ? Math.round(won) : NaN;
     }
 
     function formatWon(won) {
-      return won.toLocaleString("ko-KR") + "원";
+      if (!Number.isFinite(won)) return "—";
+      const r = Math.round(won);
+      if (r === 0) return "0원";
+      const sign = r < 0 ? "-" : "";
+      let abs = Math.abs(r);
+      const jo = Math.floor(abs / 1e12);
+      const eok = Math.floor((abs % 1e12) / 1e8);
+      const man = Math.floor((abs % 1e8) / 1e4);
+      const rest = abs % 1e4;
+      const parts = [];
+      if (jo > 0) parts.push(jo.toLocaleString("ko-KR") + "조");
+      if (eok > 0) parts.push(eok.toLocaleString("ko-KR") + "억");
+      if (man > 0) parts.push(man.toLocaleString("ko-KR") + "만");
+      if (rest > 0) parts.push(rest.toLocaleString("ko-KR"));
+      return sign + parts.join(" ") + "원";
     }
 
-    function formatManLabel(man) {
-      if (!Number.isFinite(man)) return "—";
-      const rounded = Math.round(man * 10) / 10;
-      if (Math.abs(rounded - Math.round(rounded)) < 1e-9) {
-        return Math.round(rounded).toLocaleString("ko-KR") + "만원";
+    function formatCompact(won) {
+      if (!Number.isFinite(won)) return "—";
+      const r = Math.round(won);
+      if (r === 0) return "0";
+      const sign = r < 0 ? "-" : "";
+      const abs = Math.abs(r);
+      if (abs >= 1e12) {
+        const jo = abs / 1e12;
+        const num = jo >= 100
+          ? Math.round(jo).toLocaleString("ko-KR")
+          : jo.toLocaleString("ko-KR", { maximumFractionDigits: 1 });
+        return sign + num + "조";
       }
-      return rounded.toLocaleString("ko-KR", { maximumFractionDigits: 1 }) + "만원";
+      if (abs >= 1e8) {
+        const eok = Math.floor(abs / 1e8);
+        const man = Math.floor((abs % 1e8) / 1e4);
+        if (eok >= 1000 || man === 0) {
+          return sign + eok.toLocaleString("ko-KR") + "억";
+        }
+        return sign + eok.toLocaleString("ko-KR") + "억 " + man.toLocaleString("ko-KR") + "만";
+      }
+      if (abs >= 1e4) {
+        return sign + Math.floor(abs / 1e4).toLocaleString("ko-KR") + "만";
+      }
+      return sign + abs.toLocaleString("ko-KR") + "원";
     }
 
     function getMonthlyPaymentWon() {
@@ -378,13 +469,7 @@
         paySliderLabel.textContent = "—";
         return;
       }
-      const man = won / 10000;
-      const rounded = Math.round(man);
-      if (man >= 5 && man <= 50 && Math.abs(man - rounded) < 1e-6 && rounded % 5 === 0) {
-        paySliderLabel.textContent = rounded + "만원";
-      } else {
-        paySliderLabel.textContent = formatWon(Math.round(won));
-      }
+      paySliderLabel.textContent = formatCompact(won);
     }
 
     function buildSeries(months, monthlyWon) {
@@ -414,11 +499,27 @@
       return g;
     }
 
+    function appendStrong(parent, text) {
+      const el = document.createElement("strong");
+      el.textContent = text;
+      parent.appendChild(el);
+    }
+
     function updateSummary(months, monthlyWon, finalWon) {
-      summaryEl.innerHTML =
-        "가정: 매월 말 <strong>" + formatWon(monthlyWon) + "</strong> 납입 후 월 <strong>30%</strong> 복리. " +
-        "<strong>" + months + "개월</strong> 후 잔액 <strong>" + formatWon(finalWon) + "</strong> " +
-        "(<strong>" + formatManLabel(finalWon / WON_PER_MAN) + "</strong>)";
+      summaryEl.textContent = "";
+      const f = document.createDocumentFragment();
+      f.appendChild(document.createTextNode("가정: 매월 말 "));
+      appendStrong(f, formatWon(monthlyWon));
+      f.appendChild(document.createTextNode(" 납입, 월 "));
+      appendStrong(f, "30%");
+      f.appendChild(document.createTextNode(" 복리. "));
+      appendStrong(f, months + "개월");
+      f.appendChild(document.createTextNode(" 후 잔액 "));
+      appendStrong(f, formatWon(finalWon));
+      f.appendChild(document.createTextNode(" (≈ "));
+      appendStrong(f, formatCompact(finalWon));
+      f.appendChild(document.createTextNode(")"));
+      summaryEl.appendChild(f);
     }
 
     const gradientFillPlugin = {
@@ -438,26 +539,43 @@
         const meta = chart.getDatasetMeta(0);
         const { ctx } = chart;
         const n = meta.data.length;
-        const fs = n > 36 ? 8 : n > 24 ? 9 : 10;
+        const totalMonths = Math.max(0, n - 1);
+
+        let step;
+        if (totalMonths <= 18) step = 1;
+        else if (totalMonths <= 30) step = 2;
+        else if (totalMonths <= 40) step = 3;
+        else step = 4;
+
+        const fs = totalMonths > 30 ? 10 : totalMonths > 18 ? 10.5 : 11;
+
         ctx.save();
         ctx.font = fs + "px 'IBM Plex Sans KR', sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
+
         meta.data.forEach((el, i) => {
-          const m = i;
+          const isFirst = i === 0;
+          const isLast = i === n - 1;
+          if (!isFirst && !isLast && i % step !== 0) return;
+
           const yMan = ds.data[i];
-          const txt = "(" + m + "개월, " + formatManLabel(yMan) + ")";
+          const won = Math.round(yMan * WON_PER_MAN);
+          const txt = "(" + i + "개월, " + formatCompact(won) + ")";
           const { x, y } = el.getProps(["x", "y"], true);
-          const stagger = (i % 2) * (n > 28 ? 11 : 0);
-          ctx.shadowColor = "rgba(0, 229, 255, 0.85)";
-          ctx.shadowBlur = n > 36 ? 5 : 8;
-          ctx.fillStyle = "rgba(248, 250, 252, 0.96)";
-          ctx.fillText(txt, x, y - 10 - stagger);
+          const stagger = step === 1 ? 0 : (i % 2) * 12;
+
+          ctx.shadowColor = "rgba(0, 229, 255, 0.9)";
+          ctx.shadowBlur = 10;
+          ctx.fillStyle = "rgba(248, 250, 252, 0.97)";
+          ctx.fillText(txt, x, y - 12 - stagger);
           ctx.shadowBlur = 0;
         });
         ctx.restore();
       },
     };
+
+    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function initChart() {
       chart = new Chart(ctx, {
@@ -492,7 +610,7 @@
           layout: {
             padding: { top: 42, left: 4, right: 8, bottom: 4 },
           },
-          animation: {
+          animation: reduceMotion ? false : {
             duration: 650,
             easing: "easeOutQuart",
           },
@@ -509,7 +627,8 @@
               callbacks: {
                 title(items) {
                   const i = items[0].dataIndex;
-                  return "(" + i + "개월, " + formatManLabel(items[0].parsed.y) + ")";
+                  const w = items[0].parsed.y * WON_PER_MAN;
+                  return "(" + i + "개월, " + formatCompact(w) + ")";
                 },
                 label(item) {
                   const w = item.parsed.y * WON_PER_MAN;
@@ -538,12 +657,12 @@
                 callback(value) {
                   const v = Number(value);
                   if (!Number.isFinite(v)) return "";
-                  return v.toLocaleString("ko-KR") + "만원";
+                  return formatCompact(v * WON_PER_MAN);
                 },
               },
               title: {
                 display: true,
-                text: "만원",
+                text: "단위: 만 / 억 / 조",
                 color: "#00e5ff",
                 font: { size: 11 },
               },
@@ -571,23 +690,36 @@
       updateSummary(months, monthlyWon, finalWon);
     }
 
+    function debounce(fn, ms) {
+      let t;
+      return function () {
+        const args = arguments;
+        const ctx = this;
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(ctx, args), ms);
+      };
+    }
+
+    const redrawSoon = debounce(redraw, 120);
+
     paySlider.addEventListener("input", () => {
       const man = parseInt(paySlider.value, 10);
-      paySliderLabel.textContent = man + "만원";
       payInput.value = String(man * 10000);
+      updatePayPill(man * 10000);
       redraw();
     });
 
-    payInput.addEventListener("change", () => {
+    function onPayInputLive() {
       const w = parsePayWon(payInput.value);
       if (Number.isFinite(w) && w >= 0) {
         syncPaySliderFromWon(w);
         updatePayPill(w);
       }
-      redraw();
-    });
+      redrawSoon();
+    }
 
-    payInput.addEventListener("input", () => {
+    payInput.addEventListener("input", onPayInputLive);
+    payInput.addEventListener("change", () => {
       const w = parsePayWon(payInput.value);
       if (Number.isFinite(w) && w >= 0) {
         syncPaySliderFromWon(w);
@@ -619,7 +751,7 @@
     monthSlider.value = "24";
     monthLabel.textContent = "24개월";
     paySlider.value = "30";
-    paySliderLabel.textContent = "30만원";
+    paySliderLabel.textContent = formatCompact(300000);
 
     redraw();
   </script>
