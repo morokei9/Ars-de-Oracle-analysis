@@ -287,6 +287,102 @@
         height: 380px;
       }
     }
+
+    .chart-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0.4rem 0.75rem 0.65rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-table {
+      padding: 0.45rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--accent-border);
+      background: hsla(var(--hue), 85%, 42%, 0.35);
+      color: hsl(var(--hue), 95%, 92%);
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: var(--glow);
+      transition: transform 0.12s ease, filter 0.15s ease;
+    }
+
+    .btn-table:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-table:active {
+      transform: scale(0.98);
+    }
+
+    .table-section {
+      margin-top: 1.25rem;
+      padding: 1rem 1.1rem 1.15rem;
+      border-radius: 14px;
+      border: 1px solid var(--accent-border);
+      background: rgba(10, 10, 14, 0.88);
+      box-shadow: var(--glow);
+    }
+
+    .table-section h3 {
+      margin: 0 0 0.45rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .table-hint {
+      margin: 0 0 0.65rem;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .table-scroll {
+      overflow: auto;
+      max-height: min(55vh, 420px);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 0.4rem 0.55rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .data-table th:first-child,
+    .data-table td:first-child {
+      text-align: center;
+    }
+
+    .data-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: rgba(18, 18, 24, 0.97);
+      color: hsl(var(--hue), 95%, 78%);
+      font-weight: 600;
+    }
+
+    .data-table tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.03);
+    }
   </style>
 </head>
 <body>
@@ -313,8 +409,8 @@
             <input type="range" id="monthSlider" min="0" max="48" step="1" value="24" />
             <span class="pill" id="monthLabel">24개월</span>
           </div>
-          <label for="monthInput" class="hint">직접 입력 (0~48)</label>
-          <input class="num-input" type="number" id="monthInput" min="0" max="48" step="1" value="24" />
+          <label for="monthInput" class="hint">직접 입력 0~60개월 (슬라이더는 최대 48개월)</label>
+          <input class="num-input" type="text" id="monthInput" inputmode="numeric" autocomplete="off" placeholder="0~60" value="24" />
         </div>
       </div>
       <div class="summary" id="summary" aria-live="polite"></div>
@@ -331,12 +427,36 @@
       <div class="chart-wrap">
         <canvas id="chart"></canvas>
       </div>
+      <div class="chart-footer">
+        <button type="button" class="btn-table" id="btnGenerateTable">표 생성</button>
+      </div>
+    </section>
+
+    <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
+      <h3 id="tableHeading">데이터 표</h3>
+      <p class="table-hint">
+        셀을 드래그해 범위를 선택한 뒤 <kbd>Ctrl</kbd>+<kbd>C</kbd>로 복사하면 Excel·스프레드시트에 붙여 넣을 수 있습니다. (탭으로 구분)
+      </p>
+      <div class="table-scroll">
+        <table class="data-table" id="dataTable">
+          <thead>
+            <tr>
+              <th scope="col">개월</th>
+              <th scope="col">누적 잔액 (원)</th>
+              <th scope="col">누적 잔액 (표시)</th>
+            </tr>
+          </thead>
+          <tbody id="dataTableBody"></tbody>
+        </table>
+      </div>
     </section>
   </div>
 
   <script>
     const MONTHLY_RATE = 0.3;
     const WON_PER_MAN = 10000;
+    const MONTH_MAX_SLIDER = 48;
+    const MONTH_MAX_INPUT = 60;
 
     const paySlider = document.getElementById("paySlider");
     const payInput = document.getElementById("payInput");
@@ -345,6 +465,9 @@
     const monthInput = document.getElementById("monthInput");
     const monthLabel = document.getElementById("monthLabel");
     const summaryEl = document.getElementById("summary");
+    const btnGenerateTable = document.getElementById("btnGenerateTable");
+    const tableSection = document.getElementById("tableSection");
+    const dataTableBody = document.getElementById("dataTableBody");
 
     function parsePayWon(raw) {
       if (raw == null) return NaN;
@@ -468,6 +591,47 @@
       return { labels, valuesMan, finalWon: balance };
     }
 
+    function getCurrentMonths() {
+      const v = parseInt(String(monthInput.value).trim(), 10);
+      if (!Number.isFinite(v)) return 24;
+      return Math.max(0, Math.min(MONTH_MAX_INPUT, v));
+    }
+
+    function getMonthlyPaymentWonNormalized() {
+      let monthlyWon = getMonthlyPaymentWon();
+      if (!Number.isFinite(monthlyWon) || monthlyWon < 0) monthlyWon = 300000;
+      return monthlyWon;
+    }
+
+    function syncMonthSliderToMonths(months) {
+      const thumb = Math.min(months, MONTH_MAX_SLIDER);
+      monthSlider.value = String(thumb);
+    }
+
+    function renderDataTable() {
+      const months = getCurrentMonths();
+      const monthlyWon = getMonthlyPaymentWonNormalized();
+      const { valuesMan } = buildSeries(months, monthlyWon);
+
+      dataTableBody.textContent = "";
+      const frag = document.createDocumentFragment();
+      for (let m = 0; m <= months; m++) {
+        const won = Math.round(valuesMan[m] * WON_PER_MAN);
+        const tr = document.createElement("tr");
+        const td0 = document.createElement("td");
+        td0.textContent = String(m);
+        const td1 = document.createElement("td");
+        td1.textContent = String(won);
+        const td2 = document.createElement("td");
+        td2.textContent = formatWon(won);
+        tr.appendChild(td0);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        frag.appendChild(tr);
+      }
+      dataTableBody.appendChild(frag);
+    }
+
     const canvas = document.getElementById("chart");
     const ctx = canvas.getContext("2d");
 
@@ -530,9 +694,11 @@
         if (totalMonths <= 18) step = 1;
         else if (totalMonths <= 30) step = 2;
         else if (totalMonths <= 40) step = 3;
-        else step = 4;
+        else if (totalMonths <= 48) step = 4;
+        else if (totalMonths <= 55) step = 5;
+        else step = 6;
 
-        const fs = totalMonths > 30 ? 10 : totalMonths > 18 ? 10.5 : 11;
+        const fs = totalMonths > 48 ? 9 : totalMonths > 30 ? 10 : totalMonths > 18 ? 10.5 : 11;
 
         ctx.save();
         ctx.font = fs + "px 'IBM Plex Sans KR', sans-serif";
@@ -630,7 +796,7 @@
                 maxRotation: 45,
                 minRotation: 0,
                 autoSkip: true,
-                maxTicksLimit: 14,
+                maxTicksLimit: 18,
               },
             },
             y: {
@@ -658,12 +824,8 @@
     }
 
     function redraw() {
-      let months = parseInt(monthInput.value, 10);
-      if (!Number.isFinite(months)) months = 24;
-      months = Math.max(0, Math.min(48, months));
-
-      let monthlyWon = getMonthlyPaymentWon();
-      if (!Number.isFinite(monthlyWon) || monthlyWon < 0) monthlyWon = 300000;
+      const months = getCurrentMonths();
+      const monthlyWon = getMonthlyPaymentWonNormalized();
 
       const { labels, valuesMan, finalWon } = buildSeries(months, monthlyWon);
 
@@ -721,12 +883,33 @@
     });
 
     monthInput.addEventListener("input", () => {
-      let v = parseInt(monthInput.value, 10);
+      const raw = String(monthInput.value).trim();
+      if (raw === "") return;
+      let v = parseInt(raw, 10);
       if (!Number.isFinite(v)) return;
-      v = Math.max(0, Math.min(48, v));
-      monthSlider.value = String(v);
+      v = Math.max(0, Math.min(MONTH_MAX_INPUT, v));
+      if (String(v) !== raw) {
+        monthInput.value = String(v);
+      }
+      syncMonthSliderToMonths(v);
       monthLabel.textContent = v + "개월";
       redraw();
+    });
+
+    monthInput.addEventListener("blur", () => {
+      const raw = String(monthInput.value).trim();
+      if (raw === "") {
+        monthInput.value = "24";
+        syncMonthSliderToMonths(24);
+        monthLabel.textContent = "24개월";
+        redraw();
+      }
+    });
+
+    btnGenerateTable.addEventListener("click", () => {
+      renderDataTable();
+      tableSection.hidden = false;
+      tableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 
     initChart();
