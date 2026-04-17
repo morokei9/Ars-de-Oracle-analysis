@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ars de Oracle — 적립 시뮬레이션</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --void: #060608;
+      --rock: #0f0f12;
+      --ember: #ff6b35;
+      --lava-core: #fff3e0;
+      --magma: #ff3d00;
+      --bio-cyan: #00e5ff;
+      --bio-deep: #006064;
+      --neon-rose: #ff4081;
+      --text: #eceff4;
+      --muted: #94a3b8;
+      --panel: rgba(18, 18, 24, 0.85);
+      --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.45), 0 0 60px rgba(0, 229, 255, 0.2);
+      --glow-ember: 0 0 18px rgba(255, 107, 53, 0.5), 0 0 50px rgba(255, 61, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans KR", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(0, 96, 100, 0.35), transparent 55%),
+        radial-gradient(ellipse 90% 60% at 100% 100%, rgba(255, 61, 0, 0.12), transparent 50%),
+        radial-gradient(ellipse 70% 50% at 0% 80%, rgba(0, 229, 255, 0.08), transparent 45%),
+        linear-gradient(165deg, #030304 0%, var(--void) 40%, #0a0a0f 100%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.35rem;
+      text-shadow: 0 0 24px rgba(0, 229, 255, 0.35), 0 0 8px rgba(255, 64, 129, 0.25);
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .control-card {
+      background: var(--panel);
+      border: 1px solid rgba(0, 229, 255, 0.18);
+      border-radius: 16px;
+      padding: 1.35rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--glow-cyan), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      animation: cardPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes cardPulse {
+      0%, 100% { box-shadow: var(--glow-cyan), inset 0 1px 0 rgba(255, 255, 255, 0.04); }
+      50% { box-shadow: var(--glow-ember), inset 0 1px 0 rgba(255, 255, 255, 0.04); }
+    }
+
+    .control-grid {
+      display: grid;
+      gap: 1.35rem;
+    }
+
+    @media (min-width: 720px) {
+      .control-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem 2rem;
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .field label {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    }
+
+    .field .hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: -0.2rem;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      min-width: 140px;
+      height: 8px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.35) 0%, rgba(255, 64, 129, 0.15) 100%);
+      border-radius: 8px;
+      outline: none;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--lava-core), var(--ember) 55%, var(--magma));
+      cursor: grab;
+      box-shadow: var(--glow-ember);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--lava-core), var(--ember));
+      cursor: grab;
+      box-shadow: var(--glow-ember);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .pill {
+      font-variant-numeric: tabular-nums;
+      font-size: 0.85rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--bio-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      white-space: nowrap;
+    }
+
+    .num-input {
+      width: 100%;
+      max-width: 200px;
+      padding: 0.55rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(8, 8, 12, 0.9);
+      color: var(--text);
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.12);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .num-input:focus {
+      outline: none;
+      border-color: var(--bio-cyan);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+    }
+
+    .summary {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      background: rgba(255, 61, 0, 0.08);
+      border: 1px solid rgba(255, 107, 53, 0.25);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .summary strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .chart-card {
+      background: rgba(12, 12, 16, 0.92);
+      border: 1px solid rgba(255, 64, 129, 0.2);
+      border-radius: 16px;
+      padding: 1rem 0.75rem 1.25rem;
+      box-shadow: var(--glow-ember), inset 0 0 80px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+      animation: chartGlow 9s ease-in-out infinite;
+    }
+
+    @keyframes chartGlow {
+      0%, 100% {
+        box-shadow: var(--glow-ember), inset 0 0 80px rgba(0, 0, 0, 0.5);
+        border-color: rgba(255, 64, 129, 0.22);
+      }
+      50% {
+        box-shadow: 0 0 28px rgba(0, 229, 255, 0.35), 0 0 70px rgba(0, 229, 255, 0.12), inset 0 0 80px rgba(0, 0, 0, 0.5);
+        border-color: rgba(0, 229, 255, 0.35);
+      }
+    }
+
+    .chart-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      pointer-events: none;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0, 229, 255, 0.06), transparent 60%);
+    }
+
+    .chart-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0 0.75rem 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .chart-head h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .chart-head .legend {
+      font-size: 0.78rem;
+      color: var(--bio-cyan);
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: min(52vh, 420px);
+      z-index: 1;
+    }
+
+    @media (max-width: 600px) {
+      .chart-wrap {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Ars de Oracle · 적립 성장 시뮬레이션</h1>
+      <p>월 수익률 30% 고정 가정 · 원 단위 계산 · 축은 만원</p>
+    </header>
+
+    <section class="control-card" aria-label="납입 설정">
+      <div class="control-grid">
+        <div class="field">
+          <label for="paySlider">매달 납입액 (슬라이더: 5만~50만원, 5만원 단위)</label>
+          <div class="slider-row">
+            <input type="range" id="paySlider" min="5" max="50" step="5" value="30" />
+            <span class="pill" id="paySliderLabel">30만원</span>
+          </div>
+          <label for="payInput" class="hint">직접 입력 (원). 50만원 초과 가능</label>
+          <input class="num-input" type="text" id="payInput" inputmode="numeric" autocomplete="off" placeholder="예: 300000 또는 30만" />
+        </div>
+        <div class="field">
+          <label for="monthSlider">적립 개월 수</label>
+          <div class="slider-row">
+            <input type="range" id="monthSlider" min="0" max="48" step="1" value="24" />
+            <span class="pill" id="monthLabel">24개월</span>
+          </div>
+          <label for="monthInput" class="hint">직접 입력 (0~48)</label>
+          <input class="num-input" type="number" id="monthInput" min="0" max="48" step="1" value="24" />
+        </div>
+      </div>
+      <div class="summary" id="summary"></div>
+    </section>
+
+    <section class="chart-card" aria-label="그래프">
+      <div class="chart-head">
+        <h2>누적 잔액</h2>
+        <span class="legend">각 점: (개월, 만원)</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chart"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const MONTHLY_RATE = 0.3;
+    const WON_PER_MAN = 10000;
+
+    const paySlider = document.getElementById("paySlider");
+    const payInput = document.getElementById("payInput");
+    const paySliderLabel = document.getElementById("paySliderLabel");
+    const monthSlider = document.getElementById("monthSlider");
+    const monthInput = document.getElementById("monthInput");
+    const monthLabel = document.getElementById("monthLabel");
+    const summaryEl = document.getElementById("summary");
+
+    function parsePayWon(raw) {
+      if (raw == null) return NaN;
+      const s = String(raw).trim().replace(/,/g, "");
+      if (!s) return NaN;
+      const manMatch = s.match(/^(\d+(?:\.\d+)?)\s*만/);
+      if (manMatch) return Math.round(parseFloat(manMatch[1]) * 10000);
+      const n = parseInt(s, 10);
+      return Number.isFinite(n) ? n : NaN;
+    }
+
+    function formatWon(won) {
+      return won.toLocaleString("ko-KR") + "원";
+    }
+
+    function formatManLabel(man) {
+      if (!Number.isFinite(man)) return "—";
+      const rounded = Math.round(man * 10) / 10;
+      if (Math.abs(rounded - Math.round(rounded)) < 1e-9) {
+        return Math.round(rounded).toLocaleString("ko-KR") + "만원";
+      }
+      return rounded.toLocaleString("ko-KR", { maximumFractionDigits: 1 }) + "만원";
+    }
+
+    function getMonthlyPaymentWon() {
+      const fromInput = parsePayWon(payInput.value);
+      if (Number.isFinite(fromInput) && fromInput >= 0) return fromInput;
+      const v = parseInt(paySlider.value, 10) * 10000;
+      return v;
+    }
+
+    function syncPaySliderFromWon(won) {
+      if (!Number.isFinite(won) || won < 0) return;
+      const man = won / 10000;
+      if (man >= 5 && man <= 50 && Math.abs(man - Math.round(man)) < 1e-6 && Math.round(man) % 5 === 0) {
+        paySlider.value = String(Math.round(man));
+      }
+    }
+
+    function updatePayPill(won) {
+      if (!Number.isFinite(won) || won < 0) {
+        paySliderLabel.textContent = "—";
+        return;
+      }
+      const man = won / 10000;
+      const rounded = Math.round(man);
+      if (man >= 5 && man <= 50 && Math.abs(man - rounded) < 1e-6 && rounded % 5 === 0) {
+        paySliderLabel.textContent = rounded + "만원";
+      } else {
+        paySliderLabel.textContent = formatWon(Math.round(won));
+      }
+    }
+
+    function buildSeries(months, monthlyWon) {
+      const labels = [];
+      const valuesMan = [];
+      let balance = 0;
+      for (let m = 0; m <= months; m++) {
+        labels.push(m + "개월");
+        valuesMan.push(balance / WON_PER_MAN);
+        if (m < months) {
+          balance = balance * (1 + MONTHLY_RATE) + monthlyWon;
+        }
+      }
+      return { labels, valuesMan, finalWon: balance };
+    }
+
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
+
+    let chart;
+
+    function createGradient(chartArea) {
+      const g = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+      g.addColorStop(0, "rgba(0, 229, 255, 0.15)");
+      g.addColorStop(0.5, "rgba(255, 64, 129, 0.12)");
+      g.addColorStop(1, "rgba(255, 107, 53, 0.2)");
+      return g;
+    }
+
+    function updateSummary(months, monthlyWon, finalWon) {
+      summaryEl.innerHTML =
+        "가정: 매월 말 <strong>" + formatWon(monthlyWon) + "</strong> 납입 후 월 <strong>30%</strong> 복리. " +
+        "<strong>" + months + "개월</strong> 후 잔액 <strong>" + formatWon(finalWon) + "</strong> " +
+        "(<strong>" + formatManLabel(finalWon / WON_PER_MAN) + "</strong>)";
+    }
+
+    const gradientFillPlugin = {
+      id: "gradientFill",
+      beforeDraw(chart) {
+        const area = chart.chartArea;
+        if (!area || area.width <= 0) return;
+        const ds = chart.data.datasets[0];
+        ds.backgroundColor = createGradient(area);
+      },
+    };
+
+    const pointLabelPlugin = {
+      id: "pointLabels",
+      afterDatasetsDraw(chart) {
+        const ds = chart.data.datasets[0];
+        const meta = chart.getDatasetMeta(0);
+        const { ctx } = chart;
+        const n = meta.data.length;
+        const fs = n > 36 ? 8 : n > 24 ? 9 : 10;
+        ctx.save();
+        ctx.font = fs + "px 'IBM Plex Sans KR', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        meta.data.forEach((el, i) => {
+          const m = i;
+          const yMan = ds.data[i];
+          const txt = "(" + m + "개월, " + formatManLabel(yMan) + ")";
+          const { x, y } = el.getProps(["x", "y"], true);
+          const stagger = (i % 2) * (n > 28 ? 11 : 0);
+          ctx.shadowColor = "rgba(0, 229, 255, 0.85)";
+          ctx.shadowBlur = n > 36 ? 5 : 8;
+          ctx.fillStyle = "rgba(248, 250, 252, 0.96)";
+          ctx.fillText(txt, x, y - 10 - stagger);
+          ctx.shadowBlur = 0;
+        });
+        ctx.restore();
+      },
+    };
+
+    function initChart() {
+      chart = new Chart(ctx, {
+        type: "line",
+        plugins: [gradientFillPlugin, pointLabelPlugin],
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "누적 잔액 (만원)",
+              data: [],
+              borderColor: "#00e5ff",
+              backgroundColor: "rgba(0, 229, 255, 0.08)",
+              borderWidth: 3,
+              borderJoinStyle: "round",
+              tension: 0.25,
+              fill: true,
+              pointRadius: (ctx) => {
+                const c = ctx.chart.data.labels ? ctx.chart.data.labels.length : 0;
+                return c > 36 ? 3 : 4;
+              },
+              pointBackgroundColor: "#fff8e0",
+              pointBorderColor: "#ff6b35",
+              pointBorderWidth: 2,
+              pointHoverRadius: 7,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: { top: 42, left: 4, right: 8, bottom: 4 },
+          },
+          animation: {
+            duration: 650,
+            easing: "easeOutQuart",
+          },
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "rgba(12, 12, 18, 0.95)",
+              titleColor: "#eceff4",
+              bodyColor: "#94a3b8",
+              borderColor: "rgba(0, 229, 255, 0.4)",
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                title(items) {
+                  const i = items[0].dataIndex;
+                  return "(" + i + "개월, " + formatManLabel(items[0].parsed.y) + ")";
+                },
+                label(item) {
+                  const w = item.parsed.y * WON_PER_MAN;
+                  return " 잔액: " + formatWon(Math.round(w));
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { color: "rgba(255,255,255,0.06)" },
+              ticks: {
+                color: "#94a3b8",
+                maxRotation: 45,
+                minRotation: 0,
+                autoSkip: true,
+                maxTicksLimit: 14,
+              },
+            },
+            y: {
+              position: "right",
+              grid: { color: "rgba(255,255,255,0.06)" },
+              ticks: {
+                color: "#94a3b8",
+                maxTicksLimit: 8,
+                callback(value) {
+                  const v = Number(value);
+                  if (!Number.isFinite(v)) return "";
+                  return v.toLocaleString("ko-KR") + "만원";
+                },
+              },
+              title: {
+                display: true,
+                text: "만원",
+                color: "#00e5ff",
+                font: { size: 11 },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    function redraw() {
+      let months = parseInt(monthInput.value, 10);
+      if (!Number.isFinite(months)) months = 24;
+      months = Math.max(0, Math.min(48, months));
+
+      let monthlyWon = getMonthlyPaymentWon();
+      if (!Number.isFinite(monthlyWon) || monthlyWon < 0) monthlyWon = 300000;
+
+      const { labels, valuesMan, finalWon } = buildSeries(months, monthlyWon);
+
+      chart.data.labels = labels;
+      chart.data.datasets[0].data = valuesMan;
+
+      chart.update();
+      updatePayPill(monthlyWon);
+      updateSummary(months, monthlyWon, finalWon);
+    }
+
+    paySlider.addEventListener("input", () => {
+      const man = parseInt(paySlider.value, 10);
+      paySliderLabel.textContent = man + "만원";
+      payInput.value = String(man * 10000);
+      redraw();
+    });
+
+    payInput.addEventListener("change", () => {
+      const w = parsePayWon(payInput.value);
+      if (Number.isFinite(w) && w >= 0) {
+        syncPaySliderFromWon(w);
+        updatePayPill(w);
+      }
+      redraw();
+    });
+
+    payInput.addEventListener("input", () => {
+      const w = parsePayWon(payInput.value);
+      if (Number.isFinite(w) && w >= 0) {
+        syncPaySliderFromWon(w);
+        updatePayPill(w);
+      }
+      redraw();
+    });
+
+    monthSlider.addEventListener("input", () => {
+      const v = parseInt(monthSlider.value, 10);
+      monthInput.value = String(v);
+      monthLabel.textContent = v + "개월";
+      redraw();
+    });
+
+    monthInput.addEventListener("input", () => {
+      let v = parseInt(monthInput.value, 10);
+      if (!Number.isFinite(v)) return;
+      v = Math.max(0, Math.min(48, v));
+      monthSlider.value = String(v);
+      monthLabel.textContent = v + "개월";
+      redraw();
+    });
+
+    initChart();
+
+    payInput.value = "300000";
+    monthInput.value = "24";
+    monthSlider.value = "24";
+    monthLabel.textContent = "24개월";
+    paySlider.value = "30";
+    paySliderLabel.textContent = "30만원";
+
+    redraw();
+  </script>
+</body>
+</html>
