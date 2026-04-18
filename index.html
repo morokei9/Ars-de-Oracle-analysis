@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Oraculum · 얼마나 모일까</title>
+  <title>Cella Oraculi · 얼마나 모일까</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -195,7 +195,8 @@
     }
 
     .summary {
-      margin-top: 0.75rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
       padding: 0.75rem 1rem;
       border-radius: 12px;
       background: hsla(var(--hue), 85%, 45%, 0.08);
@@ -218,17 +219,6 @@
       box-shadow: var(--glow-strong), inset 0 0 80px rgba(0, 0, 0, 0.55);
       position: relative;
       overflow: hidden;
-    }
-
-    .disclaimer {
-      margin-top: 0.85rem;
-      padding: 0.6rem 0.85rem;
-      border-radius: 10px;
-      background: hsla(var(--hue), 85%, 45%, 0.06);
-      border: 1px dashed hsla(var(--hue), 90%, 55%, 0.35);
-      color: var(--muted);
-      font-size: 0.72rem;
-      line-height: 1.55;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -388,11 +378,12 @@
 <body>
   <div class="wrap">
     <header>
-      <h1>얼마나 모일까</h1>
-      <p>한 달에 30%씩 늘어난다고 치고 · 원으로 계산 · 세로 숫자는 만·억·조</p>
+      <h1 lang="la">Cella Oraculi</h1>
+      <p>얼마나 모일까</p>
     </header>
 
     <section class="control-card" aria-label="매달 넣는 돈과 기간">
+      <div class="summary" id="summary" aria-live="polite"></div>
       <div class="control-grid">
         <div class="field">
           <label for="paySlider">매달 넣는 돈 · 슬라이더 5~50만(5만씩)</label>
@@ -413,27 +404,23 @@
           <input class="num-input" type="text" id="monthInput" inputmode="numeric" autocomplete="off" placeholder="0~60" value="24" />
         </div>
       </div>
-      <div class="summary" id="summary" aria-live="polite"></div>
-      <div class="disclaimer">
-        * 한 달에 30%씩 늘어난다고 <strong>해 둔</strong> 계산이에요. 진짜랑 다를 수 있어요.
-      </div>
     </section>
 
-    <section class="chart-card" aria-label="달마다 모인 돈 그래프">
+    <section class="chart-card" aria-label="돈 그래프">
       <div class="chart-head">
-        <h2>달마다 모인 돈</h2>
+        <h2>돈</h2>
         <span class="legend">점 = (몇 달째, 그때까지 모인 돈)</span>
       </div>
       <div class="chart-wrap">
         <canvas id="chart"></canvas>
       </div>
       <div class="chart-footer">
-        <button type="button" class="btn-table" id="btnGenerateTable">숫자로 보기</button>
+        <button type="button" class="btn-table" id="btnGenerateTable">표 생성</button>
       </div>
     </section>
 
     <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
-      <h3 id="tableHeading">달마다 모인 돈</h3>
+      <h3 id="tableHeading">돈</h3>
       <p class="table-hint">
         칸을 드래그해 고른 뒤 <kbd>Ctrl</kbd>+<kbd>C</kbd>로 복사하면 Excel 등에 붙일 수 있습니다.
       </p>
@@ -442,8 +429,8 @@
           <thead>
             <tr>
               <th scope="col">몇 달째</th>
-              <th scope="col">모인 돈(숫자만)</th>
-              <th scope="col">한글로 보기</th>
+              <th scope="col">원</th>
+              <th scope="col">모인 돈</th>
             </tr>
           </thead>
           <tbody id="dataTableBody"></tbody>
@@ -659,9 +646,7 @@
       const f = document.createDocumentFragment();
       f.appendChild(document.createTextNode("매달 "));
       appendStrong(f, formatWon(monthlyWon));
-      f.appendChild(document.createTextNode(" 넣고, 한 달에 "));
-      appendStrong(f, "30%");
-      f.appendChild(document.createTextNode("씩 늘어난다고 치면 → "));
+      f.appendChild(document.createTextNode(" 넣고, 한 달에 30%씩 늘어난다고 치면 → "));
       appendStrong(f, months + "개월");
       f.appendChild(document.createTextNode(" 뒤 모인 돈 "));
       appendStrong(f, formatWon(finalWon));
@@ -736,7 +721,7 @@
           labels: [],
           datasets: [
             {
-              label: "달마다 모인 돈",
+              label: "돈",
               data: [],
               borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
               backgroundColor: "rgba(255, 255, 255, 0.04)",
@@ -783,7 +768,7 @@
                 },
                 label(item) {
                   const w = item.parsed.y * WON_PER_MAN;
-                  return " 모인 돈: " + formatWon(Math.round(w));
+                  return " " + formatWon(Math.round(w));
                 },
               },
             },
@@ -813,7 +798,7 @@
               },
               title: {
                 display: true,
-                text: "세로: 돈 크기(만·억·조)",
+                text: "만·억·조",
                 color: `hsl(${currentHueValue}, 95%, 72%)`,
                 font: { size: 11 },
               },
