@@ -612,13 +612,13 @@
     function buildSeries(months, monthlyWon) {
       const labels = [];
       const valuesMan = [];
-      let balance = 0;
-      for (let m = 0; m <= months; m++) {
+      let balance = monthlyWon;
+      labels.push("시작");
+      valuesMan.push(balance / WON_PER_MAN);
+      for (let m = 1; m <= months; m++) {
+        balance = balance * (1 + MONTHLY_RATE) + monthlyWon;
         labels.push(m + "개월");
         valuesMan.push(balance / WON_PER_MAN);
-        if (m < months) {
-          balance = balance * (1 + MONTHLY_RATE) + monthlyWon;
-        }
       }
       return { labels, valuesMan, finalWon: balance };
     }
@@ -651,7 +651,7 @@
         const won = Math.round(valuesMan[m] * WON_PER_MAN);
         const tr = document.createElement("tr");
         const td0 = document.createElement("td");
-        td0.textContent = String(m);
+        td0.textContent = m === 0 ? "시작" : String(m);
         const td1 = document.createElement("td");
         td1.textContent = String(won);
         const td2 = document.createElement("td");
@@ -746,7 +746,8 @@
 
           const yMan = ds.data[i];
           const won = Math.round(yMan * WON_PER_MAN);
-          const txt = "(" + i + "개월, " + formatCompact(won) + ")";
+          const timeLbl = chart.data.labels[i] || (i === 0 ? "시작" : i + "개월");
+          const txt = "(" + timeLbl + ", " + formatCompact(won) + ")";
           const { x, y } = el.getProps(["x", "y"], true);
           const stagger = step === 1 ? 0 : (i % 2) * 12;
 
@@ -818,9 +819,11 @@
               bodyFont: { size: 14, family: "'IBM Plex Sans KR', system-ui, sans-serif" },
               callbacks: {
                 title(items) {
+                  const ch = items[0].chart;
                   const i = items[0].dataIndex;
                   const w = items[0].parsed.y * WON_PER_MAN;
-                  return "(" + i + "개월, " + formatCompact(w) + ")";
+                  const timeLbl = ch.data.labels[i] || (i === 0 ? "시작" : i + "개월");
+                  return "(" + timeLbl + ", " + formatCompact(w) + ")";
                 },
                 label(item) {
                   const w = item.parsed.y * WON_PER_MAN;
