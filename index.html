@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cella Oraculum · 얼마나 모일까</title>
+  <title>Cella Oraculum</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -79,9 +79,79 @@
       text-shadow: 0 0 24px hsla(var(--hue), 95%, 55%, 0.45), 0 0 8px hsla(var(--hue), 95%, 60%, 0.25);
     }
 
-    header p {
+    header .doc-eyebrow {
+      margin: 0.45rem 0 0;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .chapter {
+      margin-bottom: 0;
+    }
+
+    .chapter-heading {
+      margin: 0 0 1.35rem;
+      padding-bottom: 0.95rem;
+      border-bottom: 1px solid var(--accent-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.45rem 1rem;
+    }
+
+    .chapter-num {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: hsl(var(--hue), 90%, 68%);
+    }
+
+    .chapter-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .explain-grid {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (min-width: 720px) {
+      .explain-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem 1.5rem;
+        align-items: stretch;
+      }
+    }
+
+    .explain-panel {
+      background: var(--panel);
+      border: 1px solid var(--accent-border);
+      border-radius: 16px;
+      padding: 1.25rem 1.4rem 1.35rem;
+      box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+    }
+
+    .explain-panel h3 {
+      margin: 0 0 0.55rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: hsl(var(--hue), 95%, 82%);
+      letter-spacing: 0.02em;
+    }
+
+    .explain-panel p {
       margin: 0;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
+      line-height: 1.65;
       color: var(--muted);
     }
 
@@ -419,8 +489,14 @@
   <div class="wrap">
     <header>
       <h1 lang="la">Cella Oraculum</h1>
-      <p>얼마나 모일까</p>
+      <p class="doc-eyebrow" lang="ko">오라클 기술 보고서</p>
     </header>
+
+    <section class="chapter" aria-labelledby="ch1-heading">
+      <h2 id="ch1-heading" class="chapter-heading">
+        <span class="chapter-num">제1장</span>
+        <span class="chapter-title">얼마나 모일까</span>
+      </h2>
 
     <section class="control-card" aria-label="매달 넣는 돈과 기간">
       <div class="summary" id="summary" aria-live="polite"></div>
@@ -481,6 +557,24 @@
           <tbody id="dataTableBody"></tbody>
         </table>
       </div>
+    </section>
+    </section>
+
+    <section class="explain-grid" aria-label="K value와 Imperfect Truth Index 설명">
+      <article class="explain-panel">
+        <h3>K value</h3>
+        <p>
+          모형·실험에서 쓰이는 조정 계수(또는 집중·분산을 나타내는 스칼라)로, 입력과 출력 사이의 민감도를 묶는 값입니다.
+          이 보고서 맥락에서는 가정을 바꿀 때 결과가 얼마나 흔들리는지를 같은 척도로 비교하기 위한 기준점으로 두면 됩니다.
+        </p>
+      </article>
+      <article class="explain-panel">
+        <h3>Imperfect Truth Index</h3>
+        <p>
+          관측·추정·서술이 완전한 진리에 닿지 못한다는 전제 위에서, 불확실성과 편향을 한데 묶어 보이게 만든 지표입니다.
+          0에 가까울수록 모델이 스스로의 한계를 드러내고, 높을수록 ‘너무 단정한’ 결론에 가깝다고 읽을 수 있습니다.
+        </p>
+      </article>
     </section>
   </div>
 
@@ -799,7 +893,7 @@
           responsive: true,
           maintainAspectRatio: false,
           layout: {
-            padding: { top: 48, left: 6, right: 10, bottom: 28 },
+            padding: { top: 48, left: 52, right: 14, bottom: 28 },
           },
           animation: reduceMotion ? false : {
             duration: 650,
@@ -834,6 +928,7 @@
           },
           scales: {
             x: {
+              offset: true,
               grid: { color: "rgba(255,255,255,0.06)" },
               ticks: {
                 color: "#94a3b8",
@@ -842,6 +937,7 @@
                 autoSkip: true,
                 maxTicksLimit: 18,
                 font: { size: 13 },
+                padding: 4,
               },
               title: {
                 display: true,
