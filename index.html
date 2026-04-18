@@ -483,6 +483,70 @@
     .data-table tbody tr:nth-child(even) {
       background: rgba(255, 255, 255, 0.03);
     }
+
+    .chapter-sep {
+      margin: 2.8rem 0 2.2rem;
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .metrics-row {
+      margin-bottom: 1.1rem;
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .metric-chip {
+      border: 1px solid var(--accent-border);
+      background: hsla(var(--hue), 85%, 45%, 0.1);
+      border-radius: 12px;
+      padding: 0.58rem 0.72rem;
+      min-height: 72px;
+    }
+
+    .metric-chip .k {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-chip .v {
+      display: block;
+      font-size: 0.94rem;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 12px hsla(var(--hue), 95%, 55%, 0.28);
+    }
+
+    .toggle-row {
+      margin-top: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .toggle-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: hsl(var(--hue), 95%, 62%);
+    }
+
+    .chart-stack {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .chart-wrap--mid {
+      height: min(40vh, 320px);
+    }
+
+    .chart-wrap--small {
+      height: min(34vh, 280px);
+    }
   </style>
 </head>
 <body>
@@ -560,6 +624,124 @@
     </section>
     </section>
 
+    <hr class="chapter-sep" aria-hidden="true" />
+
+    <section class="chapter" aria-labelledby="ch2-heading">
+      <h2 id="ch2-heading" class="chapter-heading">
+        <span class="chapter-num">제2장</span>
+        <span class="chapter-title">청산이 생기면 어떻게 되는가</span>
+      </h2>
+
+      <section class="control-card" aria-label="청산 리스크 입력">
+        <div class="metrics-row" id="ch2Metrics"></div>
+        <div class="control-grid">
+          <div class="field field-col field-col--left">
+            <label for="liqProbSlider">거래당 청산 확률</label>
+            <div class="slider-row">
+              <input type="range" id="liqProbSlider" min="0.1" max="10" step="0.1" value="1.0" />
+              <span class="pill" id="liqProbLabel">1.0%</span>
+            </div>
+            <label for="liqProbInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <div class="input-with-suffix">
+              <input class="num-input" type="number" id="liqProbInput" min="0.1" max="10" step="0.1" value="1.0" />
+              <span class="input-suffix">%</span>
+            </div>
+
+            <label for="seedSlider">시작금액</label>
+            <div class="slider-row">
+              <input type="range" id="seedSlider" min="100000" max="50000000" step="100000" value="1000000" />
+              <span class="pill" id="seedLabel">100만원</span>
+            </div>
+            <label for="seedInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <div class="input-with-suffix">
+              <input class="num-input" type="text" id="seedInput" inputmode="decimal" autocomplete="off" value="1000000" />
+              <span class="input-suffix">원</span>
+            </div>
+          </div>
+          <div class="field field-col field-col--right">
+            <label for="tradeDaysSlider">평균 몇 일에 한 번 매매하는지</label>
+            <div class="slider-row">
+              <input type="range" id="tradeDaysSlider" min="1" max="30" step="1" value="3" />
+              <span class="pill" id="tradeDaysLabel">3일</span>
+            </div>
+            <label for="tradeDaysInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <div class="input-with-suffix">
+              <input class="num-input" type="number" id="tradeDaysInput" min="1" max="30" step="1" value="3" />
+              <span class="input-suffix">일</span>
+            </div>
+
+            <label for="ch2MonthSlider">기간(개월)</label>
+            <div class="slider-row">
+              <input type="range" id="ch2MonthSlider" min="1" max="60" step="1" value="24" />
+              <span class="pill" id="ch2MonthLabel">24개월</span>
+            </div>
+            <label for="ch2MonthInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <div class="input-with-suffix">
+              <input class="num-input" type="number" id="ch2MonthInput" min="1" max="60" step="1" value="24" />
+              <span class="input-suffix">개월</span>
+            </div>
+
+            <label class="toggle-row" for="showNoLiqPath">
+              <input type="checkbox" id="showNoLiqPath" checked />
+              청산 없는 기대 경로도 같이 보기
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="chart-stack" aria-label="청산 리스크 차트">
+        <section class="chart-card">
+          <div class="chart-head"><h2>청산 포함 기대값</h2></div>
+          <div class="chart-wrap">
+            <canvas id="ch2MainChart"></canvas>
+          </div>
+        </section>
+
+        <section class="chart-card">
+          <div class="chart-head"><h2>누적 청산 확률</h2></div>
+          <div class="chart-wrap chart-wrap--mid">
+            <canvas id="ch2ProbChart"></canvas>
+          </div>
+        </section>
+
+        <section class="chart-card">
+          <div class="chart-head"><h2>처음 청산 시점별 종료금액</h2></div>
+          <div class="chart-wrap chart-wrap--small">
+            <canvas id="ch2FirstLiqChart"></canvas>
+          </div>
+        </section>
+      </section>
+
+      <section class="table-section" id="ch2TableSection" aria-labelledby="ch2TableHeading">
+        <h3 id="ch2TableHeading">청산 확률 시나리오 표</h3>
+        <p class="table-hint">각 칸: 예상 최종금액 / 누적 청산확률. 칸을 드래그 후 <kbd>Ctrl</kbd>+<kbd>C</kbd>로 복사할 수 있습니다.</p>
+        <div class="table-scroll">
+          <table class="data-table" id="ch2DataTable">
+            <thead>
+              <tr>
+                <th scope="col">거래당 청산확률</th>
+                <th scope="col">3개월</th>
+                <th scope="col">6개월</th>
+                <th scope="col">12개월</th>
+                <th scope="col">24개월</th>
+                <th scope="col">36개월</th>
+              </tr>
+            </thead>
+            <tbody id="ch2DataTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="explain-panel" aria-label="제2장 설명" style="margin-top:1.3rem;">
+        <h3>제2장 해설</h3>
+        <p>
+          지금까지 청산이 안 나왔다는 것은 실제 확률이 0%라는 뜻이 아니라, 지금까지의 결과가 그랬다는 뜻이다.
+          이 장은 거래당 청산 확률을 가정했을 때, 언젠가 처음 청산이 나타나면 프로젝트가 종료된다는 규칙 아래 기대값이 어떻게 바뀌는지 보여준다.
+          청산이 늦게 올수록 남는 돈이 커질 수 있지만, 시간이 지날수록 한 번이라도 청산을 맞을 누적확률도 커진다.
+        </p>
+      </section>
+    </section>
+
     <section class="explain-grid" aria-label="K value와 Imperfect Truth Index 설명">
       <article class="explain-panel">
         <h3>K value</h3>
@@ -583,6 +765,8 @@
     const WON_PER_MAN = 10000;
     const MONTH_MAX_SLIDER = 48;
     const MONTH_MAX_INPUT = 60;
+    const DAYS_PER_MONTH = 30.44;
+    const CH2_MONTE_CARLO_RUNS = 4000;
 
     const paySlider = document.getElementById("paySlider");
     const payInput = document.getElementById("payInput");
@@ -594,6 +778,21 @@
     const btnGenerateTable = document.getElementById("btnGenerateTable");
     const tableSection = document.getElementById("tableSection");
     const dataTableBody = document.getElementById("dataTableBody");
+    const liqProbSlider = document.getElementById("liqProbSlider");
+    const liqProbInput = document.getElementById("liqProbInput");
+    const liqProbLabel = document.getElementById("liqProbLabel");
+    const tradeDaysSlider = document.getElementById("tradeDaysSlider");
+    const tradeDaysInput = document.getElementById("tradeDaysInput");
+    const tradeDaysLabel = document.getElementById("tradeDaysLabel");
+    const seedSlider = document.getElementById("seedSlider");
+    const seedInput = document.getElementById("seedInput");
+    const seedLabel = document.getElementById("seedLabel");
+    const ch2MonthSlider = document.getElementById("ch2MonthSlider");
+    const ch2MonthInput = document.getElementById("ch2MonthInput");
+    const ch2MonthLabel = document.getElementById("ch2MonthLabel");
+    const showNoLiqPath = document.getElementById("showNoLiqPath");
+    const ch2Metrics = document.getElementById("ch2Metrics");
+    const ch2DataTableBody = document.getElementById("ch2DataTableBody");
 
     function parsePayWon(raw) {
       if (raw == null) return NaN;
@@ -727,6 +926,30 @@
       let monthlyWon = getMonthlyPaymentWon();
       if (!Number.isFinite(monthlyWon) || monthlyWon < 0) monthlyWon = 300000;
       return monthlyWon;
+    }
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function parsePercentInput(raw, fallback) {
+      const n = Number(String(raw).replace("%", "").trim());
+      if (!Number.isFinite(n)) return fallback;
+      return clamp(n, 0.1, 10);
+    }
+
+    function sortNumeric(arr) {
+      return arr.slice().sort((a, b) => a - b);
+    }
+
+    function percentile(sortedArr, q) {
+      if (!sortedArr.length) return 0;
+      const idx = (sortedArr.length - 1) * q;
+      const lo = Math.floor(idx);
+      const hi = Math.ceil(idx);
+      if (lo === hi) return sortedArr[lo];
+      const t = idx - lo;
+      return sortedArr[lo] * (1 - t) + sortedArr[hi] * t;
     }
 
     function syncMonthSliderToMonths(months) {
@@ -985,6 +1208,253 @@
       updateSummary(months, monthlyWon, finalWon);
     }
 
+    const ch2MainCtx = document.getElementById("ch2MainChart").getContext("2d");
+    const ch2ProbCtx = document.getElementById("ch2ProbChart").getContext("2d");
+    const ch2FirstLiqCtx = document.getElementById("ch2FirstLiqChart").getContext("2d");
+    let ch2MainChart;
+    let ch2ProbChart;
+    let ch2FirstLiqChart;
+
+    function getCh2State() {
+      const pPercent = parsePercentInput(liqProbInput.value, parseFloat(liqProbSlider.value));
+      const p = pPercent / 100;
+      const d = clamp(parseInt(tradeDaysInput.value, 10) || 3, 1, 30);
+      const seed = clamp(parsePayWon(seedInput.value), 100000, 50000000);
+      const months = clamp(parseInt(ch2MonthInput.value, 10) || 24, 1, 60);
+      const tradesPerMonth = DAYS_PER_MONTH / d;
+      const growthPerTrade = Math.pow(1 + MONTHLY_RATE, 1 / tradesPerMonth);
+      return { p, pPercent, d, seed, months, tradesPerMonth, growthPerTrade };
+    }
+
+    function simulateLiquidationPath(params) {
+      const { p, seed, months, tradesPerMonth, growthPerTrade } = params;
+      const expectedPath = Array(months + 1).fill(0);
+      const noLiqPath = Array(months + 1).fill(0);
+      const p10 = Array(months + 1).fill(0);
+      const p90 = Array(months + 1).fill(0);
+      const valuesByMonth = Array.from({ length: months + 1 }, () => []);
+
+      for (let m = 0; m <= months; m++) {
+        noLiqPath[m] = seed * Math.pow(1 + MONTHLY_RATE, m);
+      }
+
+      // Monte Carlo: 각 경로에서 거래 단위로 진행하며,
+      // 청산이 발생하면 총자본의 50%만 남기고 즉시 종료한다.
+      for (let sim = 0; sim < CH2_MONTE_CARLO_RUNS; sim++) {
+        let cap = seed;
+        let terminated = false;
+        let tradeIndex = 0;
+        valuesByMonth[0].push(cap);
+        for (let m = 1; m <= months; m++) {
+          const targetTradeCount = Math.round(m * tradesPerMonth);
+          while (tradeIndex < targetTradeCount && !terminated) {
+            tradeIndex += 1;
+            if (Math.random() < p) {
+              cap *= 0.5;
+              terminated = true;
+              break;
+            }
+            cap *= growthPerTrade;
+          }
+          valuesByMonth[m].push(cap);
+        }
+      }
+
+      for (let m = 0; m <= months; m++) {
+        const sorted = sortNumeric(valuesByMonth[m]);
+        const sum = sorted.reduce((acc, v) => acc + v, 0);
+        expectedPath[m] = sum / sorted.length;
+        p10[m] = percentile(sorted, 0.1);
+        p90[m] = percentile(sorted, 0.9);
+      }
+
+      return { expectedPath, noLiqPath, p10, p90 };
+    }
+
+    function cumulativeLiqByMonth(p, tradesPerMonth, month) {
+      const n = Math.round(month * tradesPerMonth);
+      return 1 - Math.pow(1 - p, n);
+    }
+
+    function firstLiqCurve(seed, tradesPerMonth, months) {
+      const xs = [];
+      const ys = [];
+      for (let m = 0; m <= months; m++) {
+        const capitalBefore = seed * Math.pow(1 + MONTHLY_RATE, m);
+        xs.push(m);
+        ys.push(capitalBefore * 0.5);
+      }
+      return { xs, ys };
+    }
+
+    function renderCh2Metrics(state) {
+      const expectedTrades = Math.round(state.months * state.tradesPerMonth);
+      const expectedFirstLiqTrade = 1 / state.p;
+      const expectedFirstLiqMonth = 1 / (state.p * state.tradesPerMonth);
+      ch2Metrics.innerHTML = `
+        <article class="metric-chip"><span class="k">선택 기간의 기대 거래 수</span><span class="v">${expectedTrades.toLocaleString("ko-KR")}회</span></article>
+        <article class="metric-chip"><span class="k">기대 첫 청산 시점(거래)</span><span class="v">${expectedFirstLiqTrade.toLocaleString("ko-KR", { maximumFractionDigits: 1 })}회</span></article>
+        <article class="metric-chip"><span class="k">기대 첫 청산 시점(개월)</span><span class="v">${expectedFirstLiqMonth.toLocaleString("ko-KR", { maximumFractionDigits: 2 })}개월</span></article>
+      `;
+    }
+
+    function initCh2Charts() {
+      ch2MainChart = new Chart(ch2MainCtx, {
+        type: "line",
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { labels: { color: "#cbd5e1" } },
+            tooltip: {
+              callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatWon(ctx.parsed.y)}` },
+            },
+          },
+          scales: {
+            x: { ticks: { color: "#94a3b8" }, title: { display: true, text: "개월", color: "#94a3b8" } },
+            y: {
+              ticks: { color: "#94a3b8", callback: (v) => formatCompact(Number(v)) },
+              title: { display: true, text: "돈(원)", color: "#94a3b8" },
+            },
+          },
+        },
+      });
+
+      ch2ProbChart = new Chart(ch2ProbCtx, {
+        type: "line",
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (ctx) => `누적 청산확률: ${ctx.parsed.y.toFixed(2)}%` } },
+          },
+          scales: {
+            x: { ticks: { color: "#94a3b8" }, title: { display: true, text: "개월", color: "#94a3b8" } },
+            y: { min: 0, max: 100, ticks: { color: "#94a3b8" }, title: { display: true, text: "확률(%)", color: "#94a3b8" } },
+          },
+        },
+      });
+
+      ch2FirstLiqChart = new Chart(ch2FirstLiqCtx, {
+        type: "line",
+        data: { labels: [], datasets: [] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (ctx) => `종료금액: ${formatWon(ctx.parsed.y)}` } },
+          },
+          scales: {
+            x: { ticks: { color: "#94a3b8" }, title: { display: true, text: "첫 청산 시점(개월)", color: "#94a3b8" } },
+            y: {
+              ticks: { color: "#94a3b8", callback: (v) => formatCompact(Number(v)) },
+              title: { display: true, text: "최종 출금액", color: "#94a3b8" },
+            },
+          },
+        },
+      });
+    }
+
+    function renderCh2Table(state) {
+      const scenarios = [1, 2, 3, 5, 7, 10];
+      const cols = [3, 6, 12, 24, 36];
+      ch2DataTableBody.textContent = "";
+      const frag = document.createDocumentFragment();
+      scenarios.forEach((pPct) => {
+        const tr = document.createElement("tr");
+        const th = document.createElement("td");
+        th.textContent = `${pPct}%`;
+        tr.appendChild(th);
+        cols.forEach((m) => {
+          const p = pPct / 100;
+          const liqProb = cumulativeLiqByMonth(p, state.tradesPerMonth, m);
+          const aliveProb = 1 - liqProb;
+          const freePath = state.seed * Math.pow(1 + MONTHLY_RATE, m);
+          const withdrawnOnLiq = freePath * 0.5;
+          const expected = aliveProb * freePath + liqProb * withdrawnOnLiq;
+          const td = document.createElement("td");
+          td.textContent = `${formatWon(expected)} / ${(liqProb * 100).toFixed(1)}%`;
+          tr.appendChild(td);
+        });
+        frag.appendChild(tr);
+      });
+      ch2DataTableBody.appendChild(frag);
+    }
+
+    function redrawCh2() {
+      const state = getCh2State();
+      liqProbSlider.value = state.pPercent.toFixed(1);
+      liqProbInput.value = state.pPercent.toFixed(1);
+      liqProbLabel.textContent = `${state.pPercent.toFixed(1)}%`;
+      tradeDaysSlider.value = String(state.d);
+      tradeDaysInput.value = String(state.d);
+      tradeDaysLabel.textContent = `${state.d}일`;
+      seedSlider.value = String(clamp(Math.round(state.seed / 100000) * 100000, 100000, 50000000));
+      seedInput.value = String(state.seed);
+      seedLabel.textContent = formatCompact(state.seed);
+      ch2MonthSlider.value = String(state.months);
+      ch2MonthInput.value = String(state.months);
+      ch2MonthLabel.textContent = `${state.months}개월`;
+
+      renderCh2Metrics(state);
+      const sim = simulateLiquidationPath(state);
+      const labels = Array.from({ length: state.months + 1 }, (_, i) => `${i}`);
+
+      ch2MainChart.data.labels = labels;
+      ch2MainChart.data.datasets = [
+        { label: "청산 포함 기대 경로", data: sim.expectedPath, borderColor: `hsl(${currentHueValue},95%,68%)`, pointRadius: 0, tension: 0.2, fill: false, borderWidth: 3 },
+        { label: "10~90% 구간 상단", data: sim.p90, borderColor: "rgba(148,163,184,0.45)", pointRadius: 0, borderDash: [6, 4], tension: 0.2, fill: false },
+        { label: "10~90% 구간 하단", data: sim.p10, borderColor: "rgba(148,163,184,0.45)", pointRadius: 0, borderDash: [6, 4], tension: 0.2, fill: "+1", backgroundColor: "rgba(148,163,184,0.10)" },
+      ];
+      if (showNoLiqPath.checked) {
+        ch2MainChart.data.datasets.push({
+          label: "청산 없는 기대 경로",
+          data: sim.noLiqPath,
+          borderColor: `hsla(${currentHueValue},95%,78%,0.75)`,
+          pointRadius: 0, borderDash: [8, 6], tension: 0.18, fill: false,
+        });
+      }
+      ch2MainChart.update();
+
+      const probs = labels.map((_, m) => cumulativeLiqByMonth(state.p, state.tradesPerMonth, m) * 100);
+      const expectedFirstLiqMonth = 1 / (state.p * state.tradesPerMonth);
+      ch2ProbChart.data.labels = labels;
+      ch2ProbChart.data.datasets = [
+        { label: "누적 청산확률", data: probs, borderColor: `hsl(${currentHueValue},95%,70%)`, backgroundColor: `hsla(${currentHueValue},95%,62%,0.16)`, tension: 0.2, fill: true, pointRadius: 0 },
+        { label: "기대 첫 청산개월", data: labels.map((x) => (Math.abs(Number(x) - expectedFirstLiqMonth) < 0.5 ? 100 : null)), borderColor: "rgba(244,114,182,0.65)", borderDash: [5, 5], pointRadius: 0, showLine: true },
+      ];
+      ch2ProbChart.update();
+
+      const firstLiq = firstLiqCurve(state.seed, state.tradesPerMonth, state.months);
+      ch2FirstLiqChart.data.labels = firstLiq.xs.map((x) => String(x));
+      ch2FirstLiqChart.data.datasets = [
+        { data: firstLiq.ys, borderColor: `hsl(${currentHueValue},95%,72%)`, pointRadius: 0, tension: 0.2, fill: false },
+      ];
+      ch2FirstLiqChart.update();
+
+      renderCh2Table(state);
+    }
+
+    function applyHueToCh2Charts(h) {
+      if (ch2MainChart && ch2MainChart.data.datasets.length) {
+        const ds = ch2MainChart.data.datasets;
+        if (ds[0]) ds[0].borderColor = `hsl(${h},95%,68%)`;
+        if (ds[3]) ds[3].borderColor = `hsla(${h},95%,78%,0.75)`;
+        ch2MainChart.update("none");
+      }
+      if (ch2ProbChart && ch2ProbChart.data.datasets[0]) {
+        ch2ProbChart.data.datasets[0].borderColor = `hsl(${h},95%,70%)`;
+        ch2ProbChart.data.datasets[0].backgroundColor = `hsla(${h},95%,62%,0.16)`;
+        ch2ProbChart.update("none");
+      }
+      if (ch2FirstLiqChart && ch2FirstLiqChart.data.datasets[0]) {
+        ch2FirstLiqChart.data.datasets[0].borderColor = `hsl(${h},95%,72%)`;
+        ch2FirstLiqChart.update("none");
+      }
+    }
+
     function debounce(fn, ms) {
       let t;
       return function () {
@@ -996,6 +1466,7 @@
     }
 
     const redrawSoon = debounce(redraw, 120);
+    const redrawCh2Soon = debounce(redrawCh2, 120);
 
     paySlider.addEventListener("input", () => {
       const man = parseInt(paySlider.value, 10);
@@ -1054,6 +1525,35 @@
       }
     });
 
+    liqProbSlider.addEventListener("input", () => {
+      liqProbInput.value = liqProbSlider.value;
+      redrawCh2();
+    });
+    liqProbInput.addEventListener("input", redrawCh2Soon);
+    liqProbInput.addEventListener("change", redrawCh2);
+
+    tradeDaysSlider.addEventListener("input", () => {
+      tradeDaysInput.value = tradeDaysSlider.value;
+      redrawCh2();
+    });
+    tradeDaysInput.addEventListener("input", redrawCh2Soon);
+    tradeDaysInput.addEventListener("change", redrawCh2);
+
+    seedSlider.addEventListener("input", () => {
+      seedInput.value = seedSlider.value;
+      redrawCh2();
+    });
+    seedInput.addEventListener("input", redrawCh2Soon);
+    seedInput.addEventListener("change", redrawCh2);
+
+    ch2MonthSlider.addEventListener("input", () => {
+      ch2MonthInput.value = ch2MonthSlider.value;
+      redrawCh2();
+    });
+    ch2MonthInput.addEventListener("input", redrawCh2Soon);
+    ch2MonthInput.addEventListener("change", redrawCh2);
+    showNoLiqPath.addEventListener("change", redrawCh2);
+
     btnGenerateTable.addEventListener("click", () => {
       renderDataTable();
       tableSection.hidden = false;
@@ -1061,6 +1561,7 @@
     });
 
     initChart();
+    initCh2Charts();
 
     payInput.value = "300000";
     monthInput.value = "24";
@@ -1070,6 +1571,7 @@
     paySliderLabel.textContent = formatCompact(300000);
 
     redraw();
+    redrawCh2();
 
     // --- LED-like slow hue cycle (single-family at a time) ---
     // 195 = cyan, 215 = azure, 260 = violet, 320 = rose, 10 = ember, back to 195
@@ -1109,6 +1611,7 @@
         }
         chart.update("none");
       }
+      applyHueToCh2Charts(h);
     }
 
     if (!reduceMotion) {
