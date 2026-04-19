@@ -547,6 +547,142 @@
     .chart-wrap--small {
       height: min(34vh, 280px);
     }
+
+    /* 배경음 오디오 독 (차트 스크립트와 분리, id는 bgm 접두) */
+    #bgmAudioDock.audio-dock {
+      position: fixed;
+      right: max(24px, env(safe-area-inset-right));
+      bottom: max(24px, env(safe-area-inset-bottom));
+      z-index: 99990;
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: flex-end;
+      gap: 12px;
+      opacity: 0.14;
+      transition: opacity 180ms ease;
+      outline: none;
+    }
+
+    #bgmAudioDock.audio-dock:hover,
+    #bgmAudioDock.audio-dock:focus-within,
+    #bgmAudioDock.audio-dock.expanded {
+      opacity: 1;
+    }
+
+    #bgmAudioDock .audio-panel {
+      width: 248px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(12, 15, 31, 0.96);
+      border: 1px solid rgba(120, 155, 255, 0.38);
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.42), 0 0 1px rgba(140, 170, 255, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition:
+        opacity 180ms ease,
+        transform 180ms ease;
+    }
+
+    #bgmAudioDock:hover .audio-panel,
+    #bgmAudioDock:focus-within .audio-panel,
+    #bgmAudioDock.expanded .audio-panel {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #bgmAudioDock .audio-panel__label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 0 0 10px;
+      font-size: 12px;
+      line-height: 1.2;
+      color: #dbe1ff;
+      letter-spacing: 0.02em;
+    }
+
+    #bgmAudioDock .audio-panel__label-row span:first-child {
+      font-weight: 500;
+    }
+
+    #bgmAudioDock .audio-panel__pct {
+      font-variant-numeric: tabular-nums;
+      opacity: 0.95;
+    }
+
+    #bgmAudioDock #bgmVolumeSlider {
+      width: 100%;
+      margin: 0;
+      accent-color: #7f8fff;
+      cursor: pointer;
+    }
+
+    #bgmAudioDock .audio-icon {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(153, 173, 255, 0.78);
+      background: linear-gradient(180deg, #9aa8ff 0%, #5c64b8 42%, #2a2d4a 100%);
+      color: #f5f1ff;
+      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.3);
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font: inherit;
+      transition:
+        transform 0.12s ease,
+        filter 0.15s ease;
+    }
+
+    #bgmAudioDock .audio-icon:hover {
+      filter: brightness(1.06);
+    }
+
+    #bgmAudioDock .audio-icon:active {
+      transform: scale(0.97);
+    }
+
+    #bgmAudioDock .audio-icon:focus-visible {
+      outline: none;
+      box-shadow:
+        0 14px 26px rgba(0, 0, 0, 0.3),
+        0 0 0 2px rgba(153, 173, 255, 0.65);
+    }
+
+    #bgmAudioDock .audio-icon__svg {
+      display: block;
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      pointer-events: none;
+      overflow: visible;
+      color: #ffffff;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+    }
+
+    #bgmMuteBtn .audio-icon__glyph[hidden] {
+      display: none !important;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body>
@@ -758,6 +894,84 @@
         </p>
       </article>
     </section>
+  </div>
+
+  <audio id="bgmAudio" preload="metadata" playsinline loop autoplay>
+    <source src="https://archive.org/download/main_20260419/main.mp3" type="audio/mpeg" />
+    <source src="main.mp3" type="audio/mpeg" />
+  </audio>
+  <div id="bgmAudioDock" class="audio-dock" role="region" aria-label="배경 음악">
+    <div class="audio-panel" role="group" aria-labelledby="bgmVolControlLabel">
+      <div class="audio-panel__label-row">
+        <span id="bgmVolControlLabel">Volume Control</span>
+        <span class="audio-panel__pct" id="bgmVolumePct">72%</span>
+      </div>
+      <label for="bgmVolumeSlider" class="visually-hidden">Volume</label>
+      <input
+        type="range"
+        id="bgmVolumeSlider"
+        min="0"
+        max="100"
+        step="1"
+        value="72"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="72"
+        aria-label="Volume"
+      />
+    </div>
+    <button type="button" class="audio-icon" id="bgmMuteBtn" aria-label="음소거 해제">
+      <svg
+        class="audio-icon__svg"
+        viewBox="0 0 24 24"
+        width="26"
+        height="26"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <!-- 재생 중: 스피커 + ))) 우측 파동 3개(굵은 선) -->
+        <g
+          class="audio-icon__glyph audio-icon__glyph--playing"
+          hidden
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.1"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path transform="translate(0.4,0)" d="M11 5 L6 9 H3 v6 h3 l5 4 V5 z" />
+          <path transform="translate(0.4,0)" d="M13.25 9.25a2.75 2.75 0 0 1 0 5.5" />
+          <path transform="translate(0.4,0)" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path transform="translate(0.4,0)" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </g>
+        <!-- 일시정지(재생만 멈춤): 스피커 + 작은 파동 1개 -->
+        <g
+          class="audio-icon__glyph audio-icon__glyph--paused"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.1"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path transform="translate(0.4,0)" d="M11 5 L6 9 H3 v6 h3 l5 4 V5 z" />
+          <path transform="translate(0.4,0)" d="M14.25 9a3.25 3.25 0 0 1 0 6" opacity="0.9" />
+        </g>
+        <!-- 음소거: 스피커 + 굵은 X -->
+        <g
+          class="audio-icon__glyph audio-icon__glyph--muted"
+          hidden
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path transform="translate(0.4,0)" d="M11 5 L6 9 H3 v6 h3 l5 4 V5 z" stroke-width="2.1" />
+          <path transform="translate(0.4,0)" d="M15.25 8.5 L21.75 15.5" stroke-width="2.55" />
+          <path transform="translate(0.4,0)" d="M21.75 8.5 L15.25 15.5" stroke-width="2.55" />
+        </g>
+      </svg>
+    </button>
   </div>
 
   <script>
@@ -982,13 +1196,14 @@
     }
 
     const canvas = document.getElementById("chart");
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas && typeof canvas.getContext === "function" ? canvas.getContext("2d") : null;
 
-    let chart;
+    let chart = null;
 
     let currentHueValue = 195;
 
     function createGradient(chartArea) {
+      if (!ctx) return "rgba(255, 255, 255, 0.04)";
       const h = currentHueValue;
       const g = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
       g.addColorStop(0, `hsla(${h}, 90%, 55%, 0.03)`);
@@ -1086,7 +1301,9 @@
     }
 
     function initChart() {
-      chart = new Chart(ctx, {
+      if (typeof Chart === "undefined" || !ctx) return;
+      try {
+        chart = new Chart(ctx, {
         type: "line",
         plugins: [gradientFillPlugin, pointLabelPlugin],
         data: {
@@ -1192,6 +1409,9 @@
           },
         },
       });
+      } catch (e) {
+        chart = null;
+      }
     }
 
     function redraw() {
@@ -1200,17 +1420,24 @@
 
       const { labels, valuesMan, finalWon } = buildSeries(months, monthlyWon);
 
-      chart.data.labels = labels;
-      chart.data.datasets[0].data = valuesMan;
-
-      chart.update();
+      if (chart) {
+        chart.data.labels = labels;
+        chart.data.datasets[0].data = valuesMan;
+        chart.update();
+      }
       updatePayPill(monthlyWon);
       updateSummary(months, monthlyWon, finalWon);
     }
 
-    const ch2MainCtx = document.getElementById("ch2MainChart").getContext("2d");
-    const ch2ProbCtx = document.getElementById("ch2ProbChart").getContext("2d");
-    const ch2FirstLiqCtx = document.getElementById("ch2FirstLiqChart").getContext("2d");
+    const ch2MainEl = document.getElementById("ch2MainChart");
+    const ch2ProbEl = document.getElementById("ch2ProbChart");
+    const ch2FirstLiqEl = document.getElementById("ch2FirstLiqChart");
+    const ch2MainCtx =
+      ch2MainEl && typeof ch2MainEl.getContext === "function" ? ch2MainEl.getContext("2d") : null;
+    const ch2ProbCtx =
+      ch2ProbEl && typeof ch2ProbEl.getContext === "function" ? ch2ProbEl.getContext("2d") : null;
+    const ch2FirstLiqCtx =
+      ch2FirstLiqEl && typeof ch2FirstLiqEl.getContext === "function" ? ch2FirstLiqEl.getContext("2d") : null;
     let ch2MainChart;
     let ch2ProbChart;
     let ch2FirstLiqChart;
@@ -1299,7 +1526,9 @@
     }
 
     function initCh2Charts() {
-      ch2MainChart = new Chart(ch2MainCtx, {
+      if (typeof Chart === "undefined" || !ch2MainCtx || !ch2ProbCtx || !ch2FirstLiqCtx) return;
+      try {
+        ch2MainChart = new Chart(ch2MainCtx, {
         type: "line",
         data: { labels: [], datasets: [] },
         options: {
@@ -1355,6 +1584,9 @@
           },
         },
       });
+      } catch (e) {
+        ch2MainChart = ch2ProbChart = ch2FirstLiqChart = undefined;
+      }
     }
 
     function renderCh2Table(state) {
@@ -1399,6 +1631,10 @@
       ch2MonthLabel.textContent = `${state.months}개월`;
 
       renderCh2Metrics(state);
+      if (!ch2MainChart || !ch2ProbChart || !ch2FirstLiqChart) {
+        renderCh2Table(state);
+        return;
+      }
       const sim = simulateLiquidationPath(state);
       const labels = Array.from({ length: state.months + 1 }, (_, i) => `${i}`);
 
@@ -1627,6 +1863,188 @@
     } else {
       applyHue(195);
     }
+  </script>
+  <script>
+    (function () {
+      const bgmAudio = document.getElementById("bgmAudio");
+      const bgmAudioDock = document.getElementById("bgmAudioDock");
+      const bgmMuteBtn = document.getElementById("bgmMuteBtn");
+      const bgmVolumeSlider = document.getElementById("bgmVolumeSlider");
+      const bgmVolumePct = document.getElementById("bgmVolumePct");
+      const bgmIconPlaying = document.querySelector("#bgmMuteBtn .audio-icon__glyph--playing");
+      const bgmIconPaused = document.querySelector("#bgmMuteBtn .audio-icon__glyph--paused");
+      const bgmIconMuted = document.querySelector("#bgmMuteBtn .audio-icon__glyph--muted");
+      if (!bgmAudio || !bgmAudioDock || !bgmMuteBtn || !bgmVolumeSlider || !bgmVolumePct) return;
+
+      const FADE_VOL_MS = 180;
+      const FADE_UNMUTE_MS = 260;
+      const FADE_FIRST_PLAY_MS = 1400;
+
+      let bgmUserMuted = false;
+      let bgmFirstLongFadePending = true;
+      let bgmFadeGen = 0;
+      let bgmGestureResumeBound = false;
+
+      function bgmSliderTo01() {
+        const raw = parseInt(bgmVolumeSlider.value, 10);
+        const n = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 72;
+        if (n <= 1) return 0;
+        return n / 100;
+      }
+
+      function bgmRunVolumeFade(from, to, ms, onDone) {
+        const id = ++bgmFadeGen;
+        const start = performance.now();
+        const v0 = Math.max(0, Math.min(1, from));
+        const v1 = Math.max(0, Math.min(1, to));
+        function tick(now) {
+          if (id !== bgmFadeGen) return;
+          const u = Math.min(1, (now - start) / ms);
+          const v = v0 + (v1 - v0) * u;
+          bgmAudio.volume = v;
+          if (u < 1) requestAnimationFrame(tick);
+          else if (onDone) onDone();
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function bgmSyncPctAndAria() {
+        const raw = parseInt(bgmVolumeSlider.value, 10);
+        const n = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 72;
+        bgmVolumeSlider.setAttribute("aria-valuenow", String(n));
+        if (bgmUserMuted || n <= 1) {
+          bgmVolumePct.textContent = "0%";
+        } else {
+          bgmVolumePct.textContent = `${Math.round(n)}%`;
+        }
+        const audibleIntent = !bgmAudio.paused && !bgmUserMuted && n > 1;
+        bgmMuteBtn.setAttribute("aria-label", audibleIntent ? "음소거" : "음소거 해제");
+      }
+
+      function bgmSyncIcon() {
+        const raw = parseInt(bgmVolumeSlider.value, 10);
+        const n = Number.isFinite(raw) ? raw : 72;
+        const volAudible = n > 1;
+        const mutedUi = bgmUserMuted || !volAudible;
+        let mode = "playing";
+        if (mutedUi) mode = "muted";
+        else if (bgmAudio.paused) mode = "paused";
+        if (bgmIconPlaying) bgmIconPlaying.hidden = mode !== "playing";
+        if (bgmIconPaused) bgmIconPaused.hidden = mode !== "paused";
+        if (bgmIconMuted) bgmIconMuted.hidden = mode !== "muted";
+      }
+
+      function bgmSyncAll() {
+        bgmSyncPctAndAria();
+        bgmSyncIcon();
+      }
+
+      function bgmDetachGestureResume() {
+        if (!bgmGestureResumeBound) return;
+        document.removeEventListener("pointerdown", bgmOnGestureResume, true);
+        document.removeEventListener("keydown", bgmOnGestureResume, true);
+        bgmGestureResumeBound = false;
+      }
+
+      function bgmOnGestureResume() {
+        if (!bgmAudio.paused) {
+          bgmDetachGestureResume();
+          return;
+        }
+        bgmUserMuted = false;
+        bgmEnsurePlayThenFade(0, bgmSliderTo01());
+      }
+
+      function bgmAttachGestureResume() {
+        if (bgmGestureResumeBound) return;
+        bgmGestureResumeBound = true;
+        document.addEventListener("pointerdown", bgmOnGestureResume, true);
+        document.addEventListener("keydown", bgmOnGestureResume, true);
+      }
+
+      function bgmEnsurePlayThenFade(from, to) {
+        const ms = bgmFirstLongFadePending ? FADE_FIRST_PLAY_MS : FADE_UNMUTE_MS;
+        if (bgmAudio.paused) {
+          bgmAudio.volume = from;
+          void bgmAudio
+            .play()
+            .then(function () {
+              bgmDetachGestureResume();
+              bgmRunVolumeFade(from, to, ms, function () {
+                if (ms === FADE_FIRST_PLAY_MS) bgmFirstLongFadePending = false;
+                bgmSyncAll();
+              });
+              bgmSyncAll();
+            })
+            .catch(function () {
+              bgmSyncAll();
+              bgmAttachGestureResume();
+            });
+        } else {
+          bgmRunVolumeFade(from, to, FADE_VOL_MS, bgmSyncAll);
+          bgmSyncAll();
+        }
+      }
+
+      bgmMuteBtn.addEventListener("click", function () {
+        if (bgmAudio.paused) {
+          bgmUserMuted = false;
+          const target = bgmSliderTo01();
+          bgmEnsurePlayThenFade(0, target);
+          return;
+        }
+        const raw = parseInt(bgmVolumeSlider.value, 10);
+        const n = Number.isFinite(raw) ? raw : 72;
+        if (!bgmUserMuted && n > 1) {
+          bgmUserMuted = true;
+          bgmRunVolumeFade(bgmAudio.volume, 0, FADE_VOL_MS, bgmSyncAll);
+        } else {
+          bgmUserMuted = false;
+          const target = bgmSliderTo01();
+          bgmRunVolumeFade(bgmAudio.volume, target, FADE_UNMUTE_MS, bgmSyncAll);
+        }
+        bgmSyncAll();
+      });
+
+      bgmVolumeSlider.addEventListener("input", function () {
+        bgmUserMuted = false;
+        const target = bgmSliderTo01();
+        if (bgmAudio.paused) {
+          bgmEnsurePlayThenFade(0, target);
+        } else {
+          bgmRunVolumeFade(bgmAudio.volume, target, FADE_VOL_MS, bgmSyncAll);
+        }
+        bgmSyncAll();
+      });
+
+      bgmAudio.addEventListener("play", bgmSyncAll);
+      bgmAudio.addEventListener("pause", bgmSyncAll);
+
+      bgmAudio.addEventListener("ended", function () {
+        bgmAudio.currentTime = 0;
+        void bgmAudio.play().catch(function () {});
+      });
+
+      bgmAudioDock.addEventListener(
+        "touchstart",
+        function () {
+          bgmAudioDock.classList.add("expanded");
+        },
+        { passive: true }
+      );
+      document.addEventListener(
+        "touchstart",
+        function (e) {
+          if (!bgmAudioDock.contains(e.target)) bgmAudioDock.classList.remove("expanded");
+        },
+        { passive: true }
+      );
+
+      bgmAudio.volume = 0;
+      bgmSyncAll();
+      bgmUserMuted = false;
+      bgmEnsurePlayThenFade(0, bgmSliderTo01());
+    })();
   </script>
 </body>
 </html>
