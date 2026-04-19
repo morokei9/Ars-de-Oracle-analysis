@@ -23,8 +23,8 @@
       --accent-soft: hsla(var(--hue), 90%, 55%, 0.22);
       --accent-border: hsla(var(--hue), 90%, 55%, 0.32);
       --accent-border-strong: hsla(var(--hue), 95%, 60%, 0.5);
-      --glow: 0 0 22px hsla(var(--hue), 95%, 55%, 0.42), 0 0 60px hsla(var(--hue), 95%, 55%, 0.18);
-      --glow-strong: 0 0 28px hsla(var(--hue), 95%, 58%, 0.5), 0 0 72px hsla(var(--hue), 95%, 55%, 0.22);
+      --glow: 0 0 10px hsla(var(--hue), 95%, 55%, 0.2), 0 0 24px hsla(var(--hue), 95%, 55%, 0.08);
+      --glow-strong: 0 0 14px hsla(var(--hue), 95%, 55%, 0.22), 0 0 32px hsla(var(--hue), 95%, 55%, 0.09);
     }
 
     * {
@@ -40,11 +40,13 @@
       min-height: 100vh;
       font-family: "IBM Plex Sans KR", system-ui, sans-serif;
       color: var(--text);
+      position: relative;
+      isolation: isolate;
       background:
         radial-gradient(ellipse 120% 80% at 50% -20%, hsla(var(--hue), 85%, 45%, 0.28), transparent 55%),
         radial-gradient(ellipse 90% 60% at 100% 100%, hsla(var(--hue), 85%, 55%, 0.14), transparent 50%),
         radial-gradient(ellipse 70% 50% at 0% 80%, hsla(var(--hue), 85%, 60%, 0.10), transparent 45%),
-        linear-gradient(165deg, #030304 0%, var(--void) 40%, #0a0a0f 100%);
+        linear-gradient(165deg, #020308 0%, var(--void) 42%, #070a12 100%);
       background-attachment: fixed;
     }
 
@@ -52,10 +54,25 @@
       content: "";
       position: fixed;
       inset: 0;
+      z-index: -1;
       pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.5;
+      opacity: 0.45;
       mix-blend-mode: overlay;
+    }
+
+    /* 정적: 은은한 청록 딥(애니메이션 없음, repaint 비용 최소) */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.4;
+      mix-blend-mode: soft-light;
+      background:
+        radial-gradient(ellipse 110% 55% at 50% 100%, hsla(188, 70%, 42%, 0.1), transparent 52%),
+        radial-gradient(ellipse 70% 45% at 15% 85%, hsla(200, 60%, 38%, 0.07), transparent 50%);
     }
 
     .wrap {
@@ -72,20 +89,11 @@
     }
 
     header h1 {
-      font-size: 1.35rem;
+      font-size: 1.65rem;
       font-weight: 600;
       letter-spacing: 0.02em;
-      margin: 0 0 0.35rem;
-      text-shadow: 0 0 24px hsla(var(--hue), 95%, 55%, 0.45), 0 0 8px hsla(var(--hue), 95%, 60%, 0.25);
-    }
-
-    header .doc-eyebrow {
-      margin: 0.45rem 0 0;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
+      margin: 0;
+      text-shadow: 0 0 14px hsla(var(--hue), 95%, 55%, 0.28), 0 0 6px hsla(var(--hue), 95%, 60%, 0.15);
     }
 
     .chapter {
@@ -132,12 +140,11 @@
     }
 
     .explain-panel {
-      background: var(--panel);
+      background: rgba(14, 14, 20, 0.94);
       border: 1px solid var(--accent-border);
       border-radius: 16px;
       padding: 1.25rem 1.4rem 1.35rem;
       box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(12px);
     }
 
     .explain-panel h3 {
@@ -156,13 +163,12 @@
     }
 
     .control-card {
-      background: var(--panel);
+      background: rgba(14, 14, 20, 0.94);
       border: 1px solid var(--accent-border);
       border-radius: 16px;
       padding: 1.5rem 1.65rem 1.65rem;
       margin-bottom: 2.25rem;
       box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(12px);
     }
 
     .control-grid {
@@ -194,6 +200,13 @@
       }
     }
 
+    /* 제2장: 몬테카를로 옵션은 그리드 아래 전체 너비 */
+    .ch2-mc-row {
+      grid-column: 1 / -1;
+      margin-top: 0.25rem;
+      padding-top: 0.4rem;
+    }
+
     .field {
       display: flex;
       flex-direction: column;
@@ -204,7 +217,6 @@
       font-size: 0.92rem;
       font-weight: 500;
       color: var(--text);
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
     }
 
     .field .hint {
@@ -262,7 +274,6 @@
       color: hsl(var(--hue), 95%, 78%);
       border: 1px solid var(--accent-border);
       white-space: nowrap;
-      text-shadow: 0 0 10px hsla(var(--hue), 95%, 60%, 0.35);
     }
 
     .input-with-suffix {
@@ -327,12 +338,12 @@
     }
 
     .chart-card {
-      background: rgba(12, 12, 16, 0.92);
+      background: rgba(12, 12, 16, 0.94);
       border: 1px solid var(--accent-border);
       border-radius: 16px;
       padding: 1.15rem 0.85rem 1.35rem;
       margin-top: 0.35rem;
-      box-shadow: var(--glow-strong), inset 0 0 80px rgba(0, 0, 0, 0.55);
+      box-shadow: var(--glow), inset 0 0 40px rgba(0, 0, 0, 0.45);
       position: relative;
       overflow: hidden;
     }
@@ -484,6 +495,284 @@
       background: rgba(255, 255, 255, 0.03);
     }
 
+    .ch2-baseline-note {
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: var(--muted);
+      margin: 0 0 1.1rem;
+      padding: 0.65rem 0.9rem;
+      border-left: 3px solid var(--accent-border-strong);
+      background: rgba(255, 255, 255, 0.035);
+      border-radius: 0 10px 10px 0;
+    }
+
+    .ch2-baseline-note strong {
+      color: hsl(var(--hue), 90%, 82%);
+      font-weight: 600;
+    }
+
+    .ch2-from-ch1-note {
+      margin: 0.85rem 0 0;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: #cbd5e1;
+      padding: 0.6rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid hsla(var(--hue), 85%, 55%, 0.25);
+      background: hsla(var(--hue), 40%, 18%, 0.35);
+    }
+
+    .ch2-from-ch1-note strong {
+      color: hsl(var(--hue), 95%, 82%);
+    }
+
+    .ch2-fixed-rhythm-note {
+      margin: 0 0 0.85rem;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--muted);
+      padding: 0.65rem 0.75rem;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .ch2-fixed-rhythm-note strong {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .ch2-hero {
+      text-align: center;
+      margin: 0 0 1.75rem;
+      padding: 1.75rem 1.25rem 1.85rem;
+      border-radius: 18px;
+      border: 1px solid var(--accent-border-strong);
+      background: linear-gradient(165deg, hsla(var(--hue), 45%, 12%, 0.55), rgba(8, 8, 12, 0.75));
+      box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .ch2-hero-kicker {
+      margin: 0 0 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: hsl(var(--hue), 95%, 78%);
+    }
+
+    .ch2-hero-body {
+      margin: 0;
+      font-size: 1.18rem;
+      font-weight: 600;
+      line-height: 1.75;
+      color: #f8fafc;
+      text-shadow: 0 0 28px hsla(var(--hue), 95%, 45%, 0.35);
+    }
+
+    .ch2-hero-body p {
+      margin: 0 0 1.1rem;
+    }
+
+    .ch2-hero-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ch2-intuition {
+      margin: 0 0 1.75rem;
+      padding: 1.1rem 1.2rem 1.2rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .ch2-intuition-title {
+      margin: 0 0 0.65rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: hsl(var(--hue), 95%, 82%);
+    }
+
+    .ch2-intuition-body {
+      margin: 0;
+      font-size: 0.86rem;
+      line-height: 1.75;
+      color: #cbd5e1;
+    }
+
+    .ch2-intuition-body p {
+      margin: 0 0 0.45rem;
+    }
+
+    .ch2-intuition-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ch2-metrics-wrap {
+      margin-bottom: 1.25rem;
+    }
+
+    .ch2-metrics-wrap > .ch2-key-context {
+      margin-bottom: 0.9rem;
+      padding: 0.85rem 1rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .ch2-key-context-group {
+      margin-bottom: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    /* 거래 수·누적 청산 확률 해설 (제2장 상단) */
+    .ch2-key-context-panel {
+      margin: 0;
+      padding: 0.85rem 1rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .ch2-trade-freq-note-controls {
+      margin: 0 0 0.65rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .ch2-trade-freq-note-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    .ch2-trade-freq-note-controls .slider-row {
+      margin-bottom: 0;
+    }
+
+    .ch2-trade-freq-note-controls .hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: -0.1rem;
+    }
+
+    .ch2-key-context {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .ch2-key-context strong {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .ch2-interpret-line {
+      margin: 0.85rem 0 0;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #e2e8f0;
+      border-radius: 12px;
+      border: 1px solid hsla(var(--hue), 90%, 55%, 0.28);
+      background: hsla(var(--hue), 50%, 18%, 0.35);
+    }
+
+    .ch2-key-summary {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      margin-bottom: 1rem;
+    }
+
+    .ch2-key-summary article {
+      border: 1px solid var(--accent-border);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      background: hsla(var(--hue), 55%, 22%, 0.45);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* 누적 청산 확률 요약 카드: 중립 회색 패널 */
+    .ch2-key-summary article.ch2-key-article-prob {
+      background: rgba(14, 14, 20, 0.94);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    .ch2-key-summary .ch2-key-label {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 0.4rem;
+    }
+
+    .ch2-key-summary .ch2-key-value {
+      display: block;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-chip .h {
+      display: block;
+      margin-top: 0.4rem;
+      font-size: 0.68rem;
+      line-height: 1.45;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .ch2-chart-blurb {
+      margin: 0;
+      padding: 0 0.75rem 0.45rem;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #cbd5e1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ch2-chart-head-main .ch2-chart-title {
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .chart-head .ch2-chart-plain {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* 누적 청산 확률 · 청산 후 수익금: 제목 아래 회색 구분선 */
+    .chart-head.ch2-chart-head-ruled {
+      padding-bottom: 0.65rem;
+      margin-bottom: 0.45rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .ch2-liq-profit-note {
+      margin: 0 0 0.55rem;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .ch2-liq-profit-note strong {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
     .chapter-sep {
       margin: 2.8rem 0 2.2rem;
       border: none;
@@ -502,7 +791,7 @@
       background: hsla(var(--hue), 85%, 45%, 0.1);
       border-radius: 12px;
       padding: 0.58rem 0.72rem;
-      min-height: 72px;
+      min-height: 92px;
     }
 
     .metric-chip .k {
@@ -548,7 +837,185 @@
       height: min(34vh, 280px);
     }
 
-    /* 배경음 오디오 독 (차트 스크립트와 분리, id는 bgm 접두) */
+    /* 제3·4장: 메트릭 리포트 */
+    .ch-intro {
+      margin: 0 0 1.35rem;
+      padding: 1.1rem 1.2rem 1.15rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: var(--glow);
+    }
+
+    .ch-intro p {
+      margin: 0 0 0.55rem;
+      font-size: 0.86rem;
+      line-height: 1.75;
+      color: #cbd5e1;
+    }
+
+    .ch-intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ch-intro .lead {
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+
+    .metrics-empty {
+      margin: 0 0 1.5rem;
+      padding: 1.25rem 1.3rem;
+      border-radius: 14px;
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      background: rgba(8, 8, 12, 0.55);
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.65;
+    }
+
+    .ch-band {
+      margin: 1.35rem 0 1.15rem;
+      padding: 1rem 1.05rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .ch-band h3 {
+      margin: 0 0 0.55rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: hsl(var(--hue), 95%, 82%);
+    }
+
+    .ch-band-grid {
+      display: grid;
+      gap: 0.55rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ch-band-grid li {
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--muted);
+      padding: 0.45rem 0.55rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ch-band-grid li strong {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    .ch-partial-hint {
+      margin: 0.5rem 0 0;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+
+    .chart-caption {
+      margin: 0;
+      padding: 0.35rem 0.75rem 0.75rem;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .report-preamble {
+      margin: 0 auto 1.75rem;
+      max-width: 42rem;
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .ch1-intro,
+    .ch2-chapter-lead {
+      margin: 0 0 1.1rem;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #b8c3d6;
+    }
+
+    .oracle-month-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem 1rem;
+      margin: 0 0 1.25rem;
+      padding: 0.75rem 1rem;
+      border-radius: 14px;
+      border: 1px solid var(--accent-border);
+      background: hsla(var(--hue), 45%, 18%, 0.42);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .oracle-month-toolbar-label {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    .oracle-month-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.45rem;
+      align-items: center;
+      flex: 1 1 12rem;
+      min-width: 0;
+    }
+
+    .oracle-month-btn {
+      padding: 0.38rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(8, 8, 12, 0.75);
+      color: #cbd5e1;
+      font-size: 0.82rem;
+      font-family: inherit;
+      font-weight: 500;
+      line-height: 1.2;
+      cursor: pointer;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .oracle-month-btn:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+      color: var(--text);
+      background: rgba(18, 20, 28, 0.9);
+    }
+
+    .oracle-month-btn:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px hsla(var(--hue), 95%, 60%, 0.35);
+    }
+
+    .oracle-month-btn[aria-pressed="true"] {
+      border-color: hsla(var(--hue), 85%, 58%, 0.65);
+      background: hsla(var(--hue), 45%, 22%, 0.85);
+      color: #f1f5f9;
+      box-shadow: 0 0 12px hsla(var(--hue), 90%, 55%, 0.22);
+    }
+
+    /* 오디오 독 (Cella Oraculum 인트로와 동일 계열; id는 bgm 접두 / 차트 스크립트와 분리) */
     #bgmAudioDock.audio-dock {
       position: fixed;
       right: max(24px, env(safe-area-inset-right));
@@ -659,17 +1126,7 @@
 
     #bgmAudioDock .audio-icon__svg {
       display: block;
-      width: 26px;
-      height: 26px;
-      flex-shrink: 0;
       pointer-events: none;
-      overflow: visible;
-      color: #ffffff;
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
-    }
-
-    #bgmMuteBtn .audio-icon__glyph[hidden] {
-      display: none !important;
     }
 
     .visually-hidden {
@@ -689,75 +1146,79 @@
   <div class="wrap">
     <header>
       <h1 lang="la">Cella Oraculum</h1>
-      <p class="doc-eyebrow" lang="ko">오라클 기술 보고서</p>
     </header>
+
+    <p class="report-preamble">
+      이 보고서는 네 단계로 당신의 전략을 진단합니다.<br />
+      제1장에서는 청산이 없는 <strong>이상적인 기준선</strong>을, 제2장에서는 청산 리스크가 현실화될 때의 <strong>생존 기대치</strong>를 보여줍니다. 이어지는 제3장에서는 과거 데이터를 바탕으로 한 <strong>최적의 자산 투입 비중</strong>을 역산하고, 마지막 제4장에서는 현재의 성과가 단순한 요행인지 검증하는 <strong>희귀도 테스트</strong>를 진행합니다.
+    </p>
 
     <section class="chapter" aria-labelledby="ch1-heading">
       <h2 id="ch1-heading" class="chapter-heading">
         <span class="chapter-num">제1장</span>
-        <span class="chapter-title">얼마나 모일까</span>
+        <span class="chapter-title">기준 경로</span>
       </h2>
-
-    <section class="control-card" aria-label="매달 넣는 돈과 기간">
-      <div class="summary" id="summary" aria-live="polite"></div>
-      <div class="control-grid">
-        <div class="field field-col field-col--left">
-          <label for="paySlider">매달 넣는 돈</label>
-          <div class="slider-row">
-            <input type="range" id="paySlider" min="5" max="50" step="5" value="30" />
-            <span class="pill" id="paySliderLabel">30만원</span>
-          </div>
-          <label for="payInput" class="hint">아래 칸에 직접 입력 가능</label>
-          <div class="input-with-suffix">
-            <input class="num-input" type="text" id="payInput" inputmode="decimal" autocomplete="off" placeholder="30만, 1억 …" />
-            <span class="input-suffix">원</span>
-          </div>
-        </div>
-        <div class="field field-col field-col--right">
-          <label for="monthSlider">몇 개월 홀딩</label>
-          <div class="slider-row">
-            <input type="range" id="monthSlider" min="0" max="48" step="1" value="24" />
-            <span class="pill" id="monthLabel">24개월</span>
-          </div>
-          <label for="monthInput" class="hint">아래 칸에 직접 입력 가능</label>
-          <div class="input-with-suffix">
-            <input class="num-input" type="text" id="monthInput" inputmode="numeric" autocomplete="off" placeholder="0~60" value="24" />
-            <span class="input-suffix">개월</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="chart-card" aria-label="돈 그래프">
-      <div class="chart-head">
-        <h2>돈</h2>
-      </div>
-      <div class="chart-wrap">
-        <canvas id="chart"></canvas>
-      </div>
-      <div class="chart-footer">
-        <button type="button" class="btn-table" id="btnGenerateTable">표 생성</button>
-      </div>
-    </section>
-
-    <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
-      <h3 id="tableHeading">돈</h3>
-      <p class="table-hint">
-        칸을 드래그해 고른 뒤 <kbd>Ctrl</kbd>+<kbd>C</kbd>로 복사하면 Excel 등에 붙일 수 있습니다.
+      <p class="ch1-intro">
+        <strong>청산이 없다고 가정했을 때의 이상적인 자산 성장 곡선입니다.</strong> 실제 투자에서는 청산, 수수료, 심리적 요인 등이 작용하므로, 이 수치는 단순히 '복리의 잠재력'을 확인하는 참고용 지표로만 활용하세요.
       </p>
-      <div class="table-scroll">
-        <table class="data-table" id="dataTable">
-          <thead>
-            <tr>
-              <th scope="col">몇 달째</th>
-              <th scope="col">원</th>
-              <th scope="col">모인 돈</th>
-            </tr>
-          </thead>
-          <tbody id="dataTableBody"></tbody>
-        </table>
-      </div>
-    </section>
+
+      <section class="control-card" aria-label="매달 넣는 돈과 기간(기준선)">
+        <div class="summary" id="summary" aria-live="polite"></div>
+        <div class="control-grid">
+          <div class="field field-col field-col--left">
+            <label for="paySlider">월별 투입 금액</label>
+            <div class="slider-row">
+              <input type="range" id="paySlider" min="5" max="50" step="5" value="30" />
+              <span class="pill" id="paySliderLabel">30만원</span>
+            </div>
+            <label for="payInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <div class="input-with-suffix">
+              <input class="num-input" type="text" id="payInput" inputmode="decimal" autocomplete="off" placeholder="30만, 1억 …" />
+              <span class="input-suffix">원</span>
+            </div>
+          </div>
+          <div class="field field-col field-col--right">
+            <label for="monthSlider">시뮬레이션 기간</label>
+            <div class="slider-row">
+              <input type="range" id="monthSlider" min="0" max="48" step="1" value="24" />
+              <span class="pill" id="monthLabel">24개월</span>
+            </div>
+            <label for="monthInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <div class="input-with-suffix">
+              <input class="num-input" type="text" id="monthInput" inputmode="numeric" autocomplete="off" placeholder="0~60" value="24" />
+              <span class="input-suffix">개월</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chart-card" aria-label="기준 경로 잔고">
+        <div class="chart-head">
+          <h2>청산 없을 때 잔고</h2>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chart"></canvas>
+        </div>
+        <div class="chart-footer">
+          <button type="button" class="btn-table" id="btnGenerateTable">표 생성</button>
+        </div>
+      </section>
+
+      <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
+        <h3 id="tableHeading">기준 경로 표</h3>
+        <div class="table-scroll">
+          <table class="data-table" id="dataTable">
+            <thead>
+              <tr>
+                <th scope="col">몇 달째</th>
+                <th scope="col">원</th>
+                <th scope="col">모인 돈</th>
+              </tr>
+            </thead>
+            <tbody id="dataTableBody"></tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
     <hr class="chapter-sep" aria-hidden="true" />
@@ -765,142 +1226,329 @@
     <section class="chapter" aria-labelledby="ch2-heading">
       <h2 id="ch2-heading" class="chapter-heading">
         <span class="chapter-num">제2장</span>
-        <span class="chapter-title">청산이 생기면 어떻게 되는가</span>
+        <span class="chapter-title">청산이 들어오면</span>
       </h2>
+      <p class="ch2-chapter-lead">
+        <strong>단 한 번의 청산이 모든 것을 바꿀 수 있습니다.</strong><br />이 장에서는 제1장의 조건(월 30% 수익)에 '거래당 청산 확률'을 추가하여 현실적인 생존 시나리오를 보여줍니다.
+      </p>
 
       <section class="control-card" aria-label="청산 리스크 입력">
-        <div class="metrics-row" id="ch2Metrics"></div>
         <div class="control-grid">
           <div class="field field-col field-col--left">
-            <label for="liqProbSlider">거래당 청산 확률</label>
+            <label for="liqProbSlider">거래당 청산 확률 (0~100%)</label>
             <div class="slider-row">
-              <input type="range" id="liqProbSlider" min="0.1" max="10" step="0.1" value="1.0" />
-              <span class="pill" id="liqProbLabel">1.0%</span>
+              <input type="range" id="liqProbSlider" min="0" max="100" step="0.1" value="1" />
+              <span class="pill" id="liqProbLabel">1%</span>
             </div>
-            <label for="liqProbInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <label for="liqProbInput" class="hint">100% 까지 입력 가능</label>
             <div class="input-with-suffix">
-              <input class="num-input" type="number" id="liqProbInput" min="0.1" max="10" step="0.1" value="1.0" />
+              <input class="num-input" type="number" id="liqProbInput" min="0" max="100" step="0.1" value="1" />
               <span class="input-suffix">%</span>
-            </div>
-
-            <label for="seedSlider">시작금액</label>
-            <div class="slider-row">
-              <input type="range" id="seedSlider" min="100000" max="50000000" step="100000" value="1000000" />
-              <span class="pill" id="seedLabel">100만원</span>
-            </div>
-            <label for="seedInput" class="hint">아래 칸에 직접 입력 가능</label>
-            <div class="input-with-suffix">
-              <input class="num-input" type="text" id="seedInput" inputmode="decimal" autocomplete="off" value="1000000" />
-              <span class="input-suffix">원</span>
             </div>
           </div>
           <div class="field field-col field-col--right">
-            <label for="tradeDaysSlider">평균 몇 일에 한 번 매매하는지</label>
+            <label for="ch2MonthSlider">분석 기간 설정</label>
             <div class="slider-row">
-              <input type="range" id="tradeDaysSlider" min="1" max="30" step="1" value="3" />
-              <span class="pill" id="tradeDaysLabel">3일</span>
+              <input type="range" id="ch2MonthSlider" min="1" max="60" step="1" value="12" />
+              <span class="pill" id="ch2MonthLabel">12개월</span>
             </div>
-            <label for="tradeDaysInput" class="hint">아래 칸에 직접 입력 가능</label>
+            <label for="ch2MonthInput" class="hint">60개월 까지 입력 가능</label>
             <div class="input-with-suffix">
-              <input class="num-input" type="number" id="tradeDaysInput" min="1" max="30" step="1" value="3" />
-              <span class="input-suffix">일</span>
-            </div>
-
-            <label for="ch2MonthSlider">기간(개월)</label>
-            <div class="slider-row">
-              <input type="range" id="ch2MonthSlider" min="1" max="60" step="1" value="24" />
-              <span class="pill" id="ch2MonthLabel">24개월</span>
-            </div>
-            <label for="ch2MonthInput" class="hint">아래 칸에 직접 입력 가능</label>
-            <div class="input-with-suffix">
-              <input class="num-input" type="number" id="ch2MonthInput" min="1" max="60" step="1" value="24" />
+              <input class="num-input" type="number" id="ch2MonthInput" min="1" max="60" step="1" value="12" />
               <span class="input-suffix">개월</span>
             </div>
-
-            <label class="toggle-row" for="showNoLiqPath">
-              <input type="checkbox" id="showNoLiqPath" checked />
-              청산 없는 기대 경로도 같이 보기
+          </div>
+          <div class="ch2-mc-row">
+            <label class="toggle-row" for="showCh2McBand">
+              <input type="checkbox" id="showCh2McBand" />
+              무작위 시뮬레이션(Monte Carlo) 예측 밴드 보기
             </label>
           </div>
         </div>
       </section>
 
+      <div class="ch2-metrics-wrap">
+        <p class="ch2-key-context" id="ch2KeyContext" aria-live="polite"></p>
+        <div class="ch2-key-summary" id="ch2KeySummary" aria-label="선택 기간 요약"></div>
+      </div>
+
       <section class="chart-stack" aria-label="청산 리스크 차트">
         <section class="chart-card">
-          <div class="chart-head"><h2>청산 포함 기대값</h2></div>
+          <div class="chart-head ch2-chart-head-ruled">
+            <h2 class="ch2-chart-plain">월별 누적 청산 확률 추이</h2>
+          </div>
+          <div class="chart-wrap chart-wrap--mid">
+            <canvas id="ch2ProbChart"></canvas>
+          </div>
+          <div class="chart-footer">
+            <button type="button" class="btn-table" id="btnGenerateCh2ProbTable">표 생성</button>
+          </div>
+        </section>
+
+        <section class="chart-card">
+          <div class="chart-head ch2-chart-head-main">
+            <div>
+              <h2 class="ch2-chart-title">리스크 반영 기대 잔고 추이</h2>
+            </div>
+          </div>
           <div class="chart-wrap">
             <canvas id="ch2MainChart"></canvas>
           </div>
         </section>
 
         <section class="chart-card">
-          <div class="chart-head"><h2>누적 청산 확률</h2></div>
-          <div class="chart-wrap chart-wrap--mid">
-            <canvas id="ch2ProbChart"></canvas>
+          <div class="chart-head ch2-chart-head-ruled">
+            <h2 class="ch2-chart-plain">첫 청산 발생 시점별 최종 수익금</h2>
           </div>
-        </section>
-
-        <section class="chart-card">
-          <div class="chart-head"><h2>처음 청산 시점별 종료금액</h2></div>
+          <p class="ch2-liq-profit-note">
+            청산이 발생하면 시뮬레이션은 종료되며, <strong>그 시점의 잔고가 최종 수익으로 확정됩니다.</strong> 이 차트는 '해당 월에 처음으로 청산이 발생했을 때' 남게 되는 수익금의 변화를 보여줍니다. (손실은 원금 이하로 제한됨)
+          </p>
           <div class="chart-wrap chart-wrap--small">
             <canvas id="ch2FirstLiqChart"></canvas>
           </div>
         </section>
       </section>
 
-      <section class="table-section" id="ch2TableSection" aria-labelledby="ch2TableHeading">
-        <h3 id="ch2TableHeading">청산 확률 시나리오 표</h3>
-        <p class="table-hint">각 칸: 예상 최종금액 / 누적 청산확률. 칸을 드래그 후 <kbd>Ctrl</kbd>+<kbd>C</kbd>로 복사할 수 있습니다.</p>
+      <section class="table-section" id="ch2ProbTableSection" hidden aria-labelledby="ch2ProbTableHeading">
+        <h3 id="ch2ProbTableHeading">청산 확률 표</h3>
         <div class="table-scroll">
-          <table class="data-table" id="ch2DataTable">
+          <table class="data-table" id="ch2ProbDataTable">
             <thead>
               <tr>
-                <th scope="col">거래당 청산확률</th>
-                <th scope="col">3개월</th>
-                <th scope="col">6개월</th>
-                <th scope="col">12개월</th>
-                <th scope="col">24개월</th>
-                <th scope="col">36개월</th>
+                <th scope="col">개월</th>
+                <th scope="col">누적 청산 확률</th>
               </tr>
             </thead>
-            <tbody id="ch2DataTableBody"></tbody>
+            <tbody id="ch2ProbDataTableBody"></tbody>
           </table>
         </div>
       </section>
+    </section>
 
-      <section class="explain-panel" aria-label="제2장 설명" style="margin-top:1.3rem;">
-        <h3>제2장 해설</h3>
-        <p>
-          지금까지 청산이 안 나왔다는 것은 실제 확률이 0%라는 뜻이 아니라, 지금까지의 결과가 그랬다는 뜻이다.
-          이 장은 거래당 청산 확률을 가정했을 때, 언젠가 처음 청산이 나타나면 프로젝트가 종료된다는 규칙 아래 기대값이 어떻게 바뀌는지 보여준다.
-          청산이 늦게 올수록 남는 돈이 커질 수 있지만, 시간이 지날수록 한 번이라도 청산을 맞을 누적확률도 커진다.
-        </p>
+    <hr class="chapter-sep" aria-hidden="true" />
+
+    <div id="oracleMetricsRoot">
+      <p id="oracleMetricsEmpty" class="metrics-empty" hidden>
+        아직 숫자 파일이 없습니다. 같은 폴더에 <code>btcusdt_12h.csv</code>를 둔 뒤
+        <code>python emit_metrics_data_js.py</code>로 <code>metrics_data.js</code>를 만든 다음 페이지를 다시 열어 주세요.
+      </p>
+
+      <section class="chapter" aria-labelledby="ch3-heading">
+        <h2 id="ch3-heading" class="chapter-heading">
+          <span class="chapter-num">제3장</span>
+          <span class="chapter-title">K-value</span>
+        </h2>
+
+        <div class="ch-intro" aria-label="K-value 서문">
+          <p class="lead" style="margin: 0">
+            “과거의 거래들을 돌아봤을 때, 가속 페달을 얼마나 세게 밟았어야 수익이 가장 컸을까?”
+          </p>
+          <p style="margin: 0.65rem 0 0">
+            K-value는 지나간 거래 내역을 바탕으로 최적의 투자 비중을 역산해 본 지표입니다. 현재 기본 설정은 총자산의 절반(<strong
+              style="color: #e2e8f0; font-weight: 600">k=0.5</strong>)을 투입하는 것입니다.
+          </p>
+          <p style="margin: 0.65rem 0 0">
+            만약 K값이 높게 나왔다면 “과거 장에서는 더 과감하게 배팅했어도 좋았다”는 뜻이고, 반대로 낮게 나왔다면 “지금의 절반 투입 전략도 당시 기준으로는 꽤
+            공격적이었다”는 뜻이 됩니다.
+          </p>
+          <p style="margin: 0.65rem 0 0">
+            다만 이 값이 앞으로의 수익을 보장하거나 AI가 방향성을 잘 맞춘다는 증거는 아닙니다. 단순히 ‘결과론적으로 봤을 때 가장 완벽했던 배팅 규모’를 보여주는
+            거울일 뿐입니다.
+          </p>
+        </div>
       </section>
-    </section>
 
-    <section class="explain-grid" aria-label="K value와 Imperfect Truth Index 설명">
-      <article class="explain-panel">
-        <h3>K value</h3>
-        <p>
-          모형·실험에서 쓰이는 조정 계수(또는 집중·분산을 나타내는 스칼라)로, 입력과 출력 사이의 민감도를 묶는 값입니다.
-          이 보고서 맥락에서는 가정을 바꿀 때 결과가 얼마나 흔들리는지를 같은 척도로 비교하기 위한 기준점으로 두면 됩니다.
-        </p>
-      </article>
-      <article class="explain-panel">
-        <h3>Imperfect Truth Index</h3>
-        <p>
-          관측·추정·서술이 완전한 진리에 닿지 못한다는 전제 위에서, 불확실성과 편향을 한데 묶어 보이게 만든 지표입니다.
-          0에 가까울수록 모델이 스스로의 한계를 드러내고, 높을수록 ‘너무 단정한’ 결론에 가깝다고 읽을 수 있습니다.
-        </p>
-      </article>
-    </section>
+      <div id="oracleMetricsFilled" hidden>
+        <div class="oracle-month-toolbar" aria-label="제3장 개월차 선택">
+          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh3">보고 싶은 개월차</span>
+          <div
+            id="oracleMonthButtonsCh3"
+            class="oracle-month-buttons"
+            role="group"
+            aria-labelledby="oracleMonthToolbarLabelCh3"></div>
+        </div>
+
+        <div id="ch3Dynamic">
+            <section class="chart-card" aria-label="월별 K-value">
+              <div class="chart-head ch2-chart-head-ruled">
+                <h2 class="ch2-chart-plain">월별 K-value 추이</h2>
+              </div>
+              <p class="ch2-chart-blurb">
+                지나간 거래들을 누적해 가며, 각 시점마다 ‘가장 완벽했던 배팅 규모(K)’가 어떻게 변했는지 보여줍니다. 그래프의 점을 누르면 해당 월의 상세 데이터를 볼 수
+                있습니다.
+              </p>
+              <div class="chart-wrap chart-wrap--mid">
+                <canvas id="ch3KHistoryChart"></canvas>
+              </div>
+            </section>
+
+            <div class="ch2-key-summary" id="ch3DetailCards" aria-label="기준월 K-value 상세"></div>
+            <p id="ch3PartialHint" class="ch-partial-hint" hidden></p>
+
+            <section class="chart-card" aria-label="K-곡선">
+              <div class="chart-head ch2-chart-head-ruled">
+                <h2 class="ch2-chart-plain">고른 달: 세기에 따른 복리 결과</h2>
+              </div>
+              <p class="ch2-chart-blurb">
+                세로축은 k를 바꿨을 때 나오는 복리 결과(%)입니다. 지금 기준(k=0.5), 실제로 쓴 K, (있으면) 한도 안에서 더 좋았을 K를 점으로 찍습니다.
+                <strong>곡선이 높다고 안전해지는 것은 아닙니다.</strong>
+              </p>
+              <div class="chart-wrap">
+                <canvas id="ch3KCurveChart"></canvas>
+              </div>
+            </section>
+
+            <div class="ch-band" aria-label="K-value 구간 해석">
+              <h3>이 수치를 어떻게 읽어야 할까요?</h3>
+              <ul class="ch-band-grid">
+                <li><strong>0.25 미만</strong> — 데이터가 조금만 틀어져도 위험할 수 있었던 아주 보수적인 장.</li>
+                <li><strong>0.25 ~ 0.50</strong> — 현재 기준(50% 투입)보다 비중을 줄이는 게 안전했던 구간.</li>
+                <li><strong>0.50 ~ 0.75</strong> — 현재보다 조금 더 공격적으로 배팅했어도 좋았던 구간.</li>
+                <li><strong>0.75 ~ 1.00</strong> — 가속 페달을 꽉 밟아도 좋았던 강력한 상승/하락 추세 구간.</li>
+                <li><strong>1.00 초과</strong> — 시스템 최대 한도(1.0)를 초과한 수치로, 한도 내에서 잘라서 적용합니다.</li>
+              </ul>
+              <p class="ch-partial-hint" style="margin-top: 0.65rem">
+                ⚠️ 주의: K값이 높게 나왔다는 건 ‘결과적으로 그때 돈을 더 넣었어도 안 터졌다’는 뜻이지, ‘AI의 예측 타율이 높았다’는 뜻은 아닙니다. 생존 여부나 시장
+                분위기는 별도로 판단해야 합니다.
+              </p>
+            </div>
+
+            <section class="table-section" aria-labelledby="ch3TableHeading">
+              <h3 id="ch3TableHeading">K-value 요약 표</h3>
+              <p class="table-hint">
+                K는 줄마다 <strong>위에서 모은 거래</strong> 기준입니다. ‘해당 월 거래’는 그 달에만 청산된 건수(참고)입니다.
+              </p>
+              <div class="table-scroll">
+                <table class="data-table" id="ch3SummaryTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">월</th>
+                      <th scope="col">그 달만 청산</th>
+                      <th scope="col">모은 거래 수</th>
+                      <th scope="col">쓰는 K</th>
+                      <th scope="col">한도 안 최적</th>
+                      <th scope="col">한도로 자른 K</th>
+                      <th scope="col">지금 기준 복리 %</th>
+                      <th scope="col">쓰는 K 복리 %</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ch3SummaryTableBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+        <hr class="chapter-sep" aria-hidden="true" />
+
+        <section class="chapter" aria-labelledby="ch4-heading">
+          <h2 id="ch4-heading" class="chapter-heading">
+            <span class="chapter-num">제4장</span>
+            <span class="chapter-title">Imperfect Truth Index</span>
+          </h2>
+
+          <div class="ch-intro" aria-label="ITI 서문">
+            <p class="lead" style="margin: 0">“지금의 이 성과가 단순히 운이 좋아서 만들어진 걸까?”</p>
+            <p style="margin: 0.65rem 0 0">
+              ITI는 내 실제 성과가 무작위의 시장에서 얼마나 희귀한 결과인지를 보여주는 지표입니다.
+            </p>
+            <p style="margin: 0.65rem 0 0">
+              쉽게 말해, 컴퓨터에게 나와 똑같은 제약 조건(거래 횟수, 평균 보유 시간, 레버리지 등)을 주고 수만 번 무작위로 거래하게 했을 때,
+              <strong>‘나보다 수익이 좋게 나온 경우가 상위 몇 %나 되는가?’</strong>를 묻는 것입니다.
+            </p>
+            <p style="margin: 0.65rem 0 0">
+              ITI 값이 낮을수록 내 성과가 단순한 요행이 아닐 가능성이 큽니다. 하지만 이 역시 절대적인 ‘실력 증명서’는 아니며, 무작위 실험의 조건(12시간봉, 수수료
+              세팅 등)을 어떻게 두느냐에 따라 숫자는 달라질 수 있습니다.
+            </p>
+          </div>
+
+        <div class="oracle-month-toolbar" aria-label="제4장 개월차 선택">
+          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh4">보고 싶은 개월차</span>
+          <div
+            id="oracleMonthButtonsCh4"
+            class="oracle-month-buttons"
+            role="group"
+            aria-labelledby="oracleMonthToolbarLabelCh4"></div>
+        </div>
+
+          <div id="ch4Dynamic">
+            <section class="chart-card" aria-label="월별 ITI">
+              <div class="chart-head ch2-chart-head-ruled">
+                <h2 class="ch2-chart-plain">월별 ITI 추이 (희귀성 지표)</h2>
+              </div>
+              <p class="ch2-chart-blurb">
+                첫 거래부터 해당 월까지 누적된 내 성과가, 무작위의 시장에서 얼마나 나오기 힘든 결과인지(%)를 보여줍니다.
+              </p>
+              <div class="chart-wrap chart-wrap--mid">
+                <canvas id="ch4ItiHistoryChart"></canvas>
+              </div>
+            </section>
+
+            <div class="ch2-key-summary" id="ch4DetailCards" aria-label="기준월 ITI 상세"></div>
+            <p id="ch4PartialHint" class="ch-partial-hint" hidden></p>
+
+            <section class="chart-card" aria-label="Monte Carlo 수렴">
+              <div class="chart-head ch2-chart-head-ruled">
+                <h2 class="ch2-chart-plain">신뢰도 검증 (Monte Carlo 수렴)</h2>
+              </div>
+              <p class="ch2-chart-blurb">
+                무작위 실험 횟수가 늘어날수록 ITI 값이 어떻게 안정화(수렴)되는지 보여주는 차트입니다.
+              </p>
+              <div class="chart-wrap chart-wrap--mid">
+                <canvas id="ch4ConvergenceChart"></canvas>
+              </div>
+            </section>
+
+            <div class="ch-band" aria-label="ITI 구간 해석">
+              <h3>ITI 값, 어떻게 해석할까요?</h3>
+              <ul class="ch-band-grid">
+                <li>
+                  <strong>1% 미만 (상위 1%)</strong> — 단순히 운으로 치부하기엔 매우 희귀한, 압도적인 퍼포먼스입니다.
+                </li>
+                <li>
+                  <strong>1% ~ 5%</strong> — 요행보다는 전략의 우위가 작용했을 확률이 높습니다. (현재 2개월차 3.14% 해당)
+                </li>
+                <li><strong>5% ~ 15%</strong> — 다소 애매한 구간입니다. 무작위 비교 조건을 조금만 바꿔도 수치가 크게 흔들릴 수 있습니다.</li>
+                <li><strong>15% 이상</strong> — 평범한 결과입니다. 이 수치만으로 전략의 우수성을 증명하기는 어렵습니다.</li>
+              </ul>
+            </div>
+
+            <section class="table-section" aria-labelledby="ch4TableHeading">
+              <h3 id="ch4TableHeading">ITI 요약 표</h3>
+              <p class="table-hint">
+                실제 복리·ITI·비교 요약은 <strong>첫 달부터 그 달까지 모은 거래</strong> 기준입니다. ‘해당 월 거래’는 그 달에만 청산된 건수(참고)입니다. 제3장 K와
+                같은 줄을 씁니다.
+              </p>
+              <div class="table-scroll">
+                <table class="data-table" id="ch4SummaryTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">월</th>
+                      <th scope="col">그 달만 청산</th>
+                      <th scope="col">모은 거래 수</th>
+                      <th scope="col">실제 복리 %</th>
+                      <th scope="col">ITI %</th>
+                      <th scope="col">무작위 횟수</th>
+                      <th scope="col">평균 들고 있던 시간</th>
+                      <th scope="col">평균 쉰 시간</th>
+                      <th scope="col">레버리지</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ch4SummaryTableBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
   </div>
 
+  <!-- 배경음 오디오 독: 마크업·로직은 차트 스크립트와 분리 (class audio-dock / id bgm 접두) -->
   <audio id="bgmAudio" preload="metadata" playsinline loop autoplay>
     <source src="https://archive.org/download/main_20260419/main.mp3" type="audio/mpeg" />
     <source src="main.mp3" type="audio/mpeg" />
   </audio>
-  <div id="bgmAudioDock" class="audio-dock" role="region" aria-label="배경 음악">
+  <div id="bgmAudioDock" class="audio-dock" role="region" aria-label="Background music">
     <div class="audio-panel" role="group" aria-labelledby="bgmVolControlLabel">
       <div class="audio-panel__label-row">
         <span id="bgmVolControlLabel">Volume Control</span>
@@ -921,59 +1569,22 @@
       />
     </div>
     <button type="button" class="audio-icon" id="bgmMuteBtn" aria-label="음소거 해제">
-      <svg
-        class="audio-icon__svg"
-        viewBox="0 0 24 24"
-        width="26"
-        height="26"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <!-- 재생 중: 스피커 + ))) 우측 파동 3개(굵은 선) -->
-        <g
-          class="audio-icon__glyph audio-icon__glyph--playing"
-          hidden
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path transform="translate(0.4,0)" d="M11 5 L6 9 H3 v6 h3 l5 4 V5 z" />
-          <path transform="translate(0.4,0)" d="M13.25 9.25a2.75 2.75 0 0 1 0 5.5" />
-          <path transform="translate(0.4,0)" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-          <path transform="translate(0.4,0)" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+      <svg class="audio-icon__svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="audio-icon__glyph audio-icon__glyph--on" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 5 6 9 H4 v6 h2 l5 4 V5 z" />
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
         </g>
-        <!-- 일시정지(재생만 멈춤): 스피커 + 작은 파동 1개 -->
-        <g
-          class="audio-icon__glyph audio-icon__glyph--paused"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.1"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path transform="translate(0.4,0)" d="M11 5 L6 9 H3 v6 h3 l5 4 V5 z" />
-          <path transform="translate(0.4,0)" d="M14.25 9a3.25 3.25 0 0 1 0 6" opacity="0.9" />
-        </g>
-        <!-- 음소거: 스피커 + 굵은 X -->
-        <g
-          class="audio-icon__glyph audio-icon__glyph--muted"
-          hidden
-          fill="none"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path transform="translate(0.4,0)" d="M11 5 L6 9 H3 v6 h3 l5 4 V5 z" stroke-width="2.1" />
-          <path transform="translate(0.4,0)" d="M15.25 8.5 L21.75 15.5" stroke-width="2.55" />
-          <path transform="translate(0.4,0)" d="M21.75 8.5 L15.25 15.5" stroke-width="2.55" />
+        <g class="audio-icon__glyph audio-icon__glyph--off" hidden fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 5 6 9 H4 v6 h2 l5 4 V5 z" />
+          <path d="M17 9l6 6" />
+          <path d="M23 9l-6 6" />
         </g>
       </svg>
     </button>
   </div>
 
+  <script src="metrics_data.js"></script>
   <script>
     const MONTHLY_RATE = 0.3;
     const WON_PER_MAN = 10000;
@@ -981,6 +1592,19 @@
     const MONTH_MAX_INPUT = 60;
     const DAYS_PER_MONTH = 30.44;
     const CH2_MONTE_CARLO_RUNS = 4000;
+    /**
+     * 평균 거래 리듬(실거래 통계에서 뽑은 상수만 사용). 외부 파일·CSV/JSON 로드는 하지 않는다.
+     * CH2_DEFAULT_DAYS_PER_TRADE 를 바꾸면 기대 거래 수·L(m)·정확 기대·몬테카를로가 같은 빈도를 쓴다.
+     */
+    const CH2_ACTUAL_TRADE_HISTORY_BASELINE = Object.freeze({
+      source: "10x 실거래 기록(임베드)",
+      tradeCount: 16,
+      avgHoldingHours: 51.7704,
+      avgFlatHours: 5.8356,
+    });
+    const CH2_DEFAULT_CYCLE_HOURS =
+      CH2_ACTUAL_TRADE_HISTORY_BASELINE.avgHoldingHours + CH2_ACTUAL_TRADE_HISTORY_BASELINE.avgFlatHours;
+    const CH2_DEFAULT_DAYS_PER_TRADE = CH2_DEFAULT_CYCLE_HOURS / 24;
 
     const paySlider = document.getElementById("paySlider");
     const payInput = document.getElementById("payInput");
@@ -995,18 +1619,754 @@
     const liqProbSlider = document.getElementById("liqProbSlider");
     const liqProbInput = document.getElementById("liqProbInput");
     const liqProbLabel = document.getElementById("liqProbLabel");
-    const tradeDaysSlider = document.getElementById("tradeDaysSlider");
-    const tradeDaysInput = document.getElementById("tradeDaysInput");
-    const tradeDaysLabel = document.getElementById("tradeDaysLabel");
-    const seedSlider = document.getElementById("seedSlider");
-    const seedInput = document.getElementById("seedInput");
-    const seedLabel = document.getElementById("seedLabel");
     const ch2MonthSlider = document.getElementById("ch2MonthSlider");
     const ch2MonthInput = document.getElementById("ch2MonthInput");
     const ch2MonthLabel = document.getElementById("ch2MonthLabel");
-    const showNoLiqPath = document.getElementById("showNoLiqPath");
-    const ch2Metrics = document.getElementById("ch2Metrics");
-    const ch2DataTableBody = document.getElementById("ch2DataTableBody");
+    const showCh2McBand = document.getElementById("showCh2McBand");
+    const ch2KeySummary = document.getElementById("ch2KeySummary");
+    const ch2KeyContext = document.getElementById("ch2KeyContext");
+    const btnGenerateCh2ProbTable = document.getElementById("btnGenerateCh2ProbTable");
+    const ch2ProbTableSection = document.getElementById("ch2ProbTableSection");
+    const ch2ProbDataTableBody = document.getElementById("ch2ProbDataTableBody");
+
+    /** 제3·4장: emit_metrics_data_js.py → metrics_data.js */
+    const oracleMetricsEmptyEl = document.getElementById("oracleMetricsEmpty");
+    const oracleMetricsFilledEl = document.getElementById("oracleMetricsFilled");
+    const ch3DetailCardsEl = document.getElementById("ch3DetailCards");
+    const ch4DetailCardsEl = document.getElementById("ch4DetailCards");
+    const ch3PartialHintEl = document.getElementById("ch3PartialHint");
+    const ch4PartialHintEl = document.getElementById("ch4PartialHint");
+    const ch3SummaryTableBody = document.getElementById("ch3SummaryTableBody");
+    const ch4SummaryTableBody = document.getElementById("ch4SummaryTableBody");
+
+    let oracleCharts = {
+      kHist: null,
+      kCurve: null,
+      itiHist: null,
+      conv: null,
+    };
+    let oracleState = {
+      months: [],
+      selectedIdx: 0,
+      source: null,
+    };
+
+    function getOracleMetricsRaw() {
+      if (typeof window === "undefined") return null;
+      const d = window.ORACLE_METRICS_DATA;
+      return d && typeof d === "object" ? d : null;
+    }
+
+    function normalizeOracleMonth(m) {
+      if (!m || typeof m !== "object") return null;
+      return {
+        key: m.key || "",
+        label: m.label || "—",
+        periodStart: m.periodStart,
+        periodEnd: m.periodEnd,
+        tradeCount: Number.isFinite(Number(m.tradeCount)) ? Number(m.tradeCount) : 0,
+        kValue: m.kValue && typeof m.kValue === "object" ? m.kValue : {},
+        imperfectTruthIndex:
+          m.imperfectTruthIndex && typeof m.imperfectTruthIndex === "object" ? m.imperfectTruthIndex : {},
+      };
+    }
+
+    function fmtOrDash(n, digits) {
+      if (n === null || n === undefined) return "—";
+      const x = typeof n === "number" ? n : Number(n);
+      if (!Number.isFinite(x)) return "—";
+      return digits != null ? x.toFixed(digits) : String(x);
+    }
+
+    function fmtPctFlexible(n) {
+      if (n === null || n === undefined) return "—";
+      const x = Number(n);
+      if (!Number.isFinite(x)) return "—";
+      const a = Math.abs(x);
+      const d = a >= 100 ? 2 : a >= 10 ? 3 : 4;
+      return `${x.toFixed(d)}%`;
+    }
+
+    function yAtKFromCurve(curve, k) {
+      if (!Array.isArray(curve) || !Number.isFinite(k)) return null;
+      const pts = curve.filter((p) => p && Number.isFinite(p.k) && p.yPercent != null && Number.isFinite(p.yPercent));
+      if (!pts.length) return null;
+      const kk = Math.max(0, Math.min(1, k));
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i];
+        const b = pts[i + 1];
+        if (kk >= a.k - 1e-9 && kk <= b.k + 1e-9) {
+          const t = (kk - a.k) / (b.k - a.k || 1e-12);
+          return a.yPercent * (1 - t) + b.yPercent * t;
+        }
+      }
+      return Math.abs(kk - pts[0].k) < 1e-6 ? pts[0].yPercent : pts[pts.length - 1].yPercent;
+    }
+
+    function destroyOracleChart(key) {
+      if (oracleCharts[key]) {
+        try {
+          oracleCharts[key].destroy();
+        } catch (e) {}
+        oracleCharts[key] = null;
+      }
+    }
+
+    function renderCh3DetailCards() {
+      if (!ch3DetailCardsEl) return;
+      const months = oracleState.months;
+      const i = oracleState.selectedIdx;
+      const row = months[i];
+      if (!row) {
+        ch3DetailCardsEl.innerHTML = "";
+        return;
+      }
+      const kv = row.kValue || {};
+      const ku = kv.valueUncapped;
+      const capped = kv.valueCapped;
+      const used = kv.valueUsed;
+      const alloc = used != null && Number.isFinite(Number(used)) ? Number(used) * 100 : null;
+      const feas = kv.feasibleUpper;
+      const hint = [];
+      if (!Array.isArray(kv.curve) || kv.curve.length === 0) hint.push("아래 곡선을 그릴 샘플이 없습니다.");
+      if (used == null) hint.push("K 숫자가 비어 있습니다.");
+      if (ch3PartialHintEl) {
+        ch3PartialHintEl.hidden = hint.length === 0;
+        ch3PartialHintEl.textContent = hint.join(" ");
+      }
+
+      const feasStr =
+        feas == null || !Number.isFinite(Number(feas)) ? "—" : Number(feas) > 1e6 ? "∞에 가깝게" : fmtOrDash(feas, 4);
+
+      ch3DetailCardsEl.innerHTML = `
+        <article class="ch2-key-article-prob">
+          <span class="ch2-key-label">기준월</span>
+          <span class="ch2-key-value">${row.label || "—"}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">최종 적용 K값</span>
+          <span class="ch2-key-value">${fmtOrDash(used, 4)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">가장 이상적이었을 K값</span>
+          <span class="ch2-key-value">${ku == null || !Number.isFinite(Number(ku)) ? "—" : fmtOrDash(ku, 4)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">최대 한도(1.0) 적용 값</span>
+          <span class="ch2-key-value">${capped == null || !Number.isFinite(Number(capped)) ? "—" : fmtOrDash(capped, 4)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">현재 기본 설정 (k=${fmtOrDash(kv.baselineK != null ? kv.baselineK : 0.5, 2)})</span>
+          <span class="ch2-key-value">넣는 비중 약 ${kv.baselineAllocationPercent != null ? kv.baselineAllocationPercent : 50}%</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">해당 K값의 자산 투입 비중</span>
+          <span class="ch2-key-value">${alloc == null ? "—" : fmtOrDash(alloc, 2) + "%"}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">청산을 피할 수 있었던 아슬아슬한 한계치</span>
+          <span class="ch2-key-value">${feasStr}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">지금 기준(k=0.5) 복리 %</span>
+          <span class="ch2-key-value">${fmtPctFlexible(kv.baselineResultPercent)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">쓰는 K로 난 복리 %</span>
+          <span class="ch2-key-value">${fmtPctFlexible(kv.resultAtUsedPercent)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">모은 거래 수</span>
+          <span class="ch2-key-value">${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">그 달만 청산된 거래 수</span>
+          <span class="ch2-key-value">${kv.monthBucketTradeCount != null ? kv.monthBucketTradeCount : row.tradeCount != null ? row.tradeCount : "—"}</span>
+        </article>
+        <article style="grid-column: 1 / -1">
+          <span class="ch2-key-label">짧은 해석</span>
+          <span class="ch2-key-value" style="font-size: 0.92rem; font-weight: 500">${kv.interpretation || "—"}</span>
+        </article>
+      `;
+    }
+
+    function renderCh4DetailCards() {
+      if (!ch4DetailCardsEl) return;
+      const months = oracleState.months;
+      const i = oracleState.selectedIdx;
+      const row = months[i];
+      if (!row) {
+        ch4DetailCardsEl.innerHTML = "";
+        return;
+      }
+      const iti = row.imperfectTruthIndex || {};
+      const nm = iti.nullModelSummary || {};
+      const simDisplay =
+        iti.simulationCount != null ? `${Number(iti.simulationCount).toLocaleString("ko-KR")}번` : "—";
+      const ctrlLine = [
+        `레버리지 ${nm.leverage != null ? nm.leverage : "—"}배`,
+        `수수료 ${nm.feePerTrade != null ? nm.feePerTrade : "—"}`,
+        `평균 보유 ${nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 1) + "시간" : "—"}`,
+        `평균 휴식 ${nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 1) + "시간" : "—"}`,
+        "(롱/숏 포지션 순서 동일)",
+      ].join(", ");
+      const hint = [];
+      if (iti.probability == null) hint.push("ITI 숫자가 비어 있습니다.");
+      if (!Array.isArray(iti.convergence) || !iti.convergence.length) hint.push("아래 추정 곡선을 그릴 데이터가 없습니다.");
+      if (ch4PartialHintEl) {
+        ch4PartialHintEl.hidden = hint.length === 0;
+        ch4PartialHintEl.textContent = hint.join(" ");
+      }
+
+      ch4DetailCardsEl.innerHTML = `
+        <article class="ch2-key-article-prob">
+          <span class="ch2-key-label">기준월</span>
+          <span class="ch2-key-value">${row.label || "—"}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">ITI (%)</span>
+          <span class="ch2-key-value">${fmtPctFlexible(iti.percent)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">실제 복리 %(모은 거래)</span>
+          <span class="ch2-key-value">${fmtPctFlexible(iti.actualReturnPercent)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">시뮬레이션 횟수</span>
+          <span class="ch2-key-value">${simDisplay}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">그 달만 청산된 거래 수</span>
+          <span class="ch2-key-value">${row.tradeCount != null ? row.tradeCount : "—"}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">모은 거래 수(ITI)</span>
+          <span class="ch2-key-value">${
+            iti.cumulativeTradeCount != null
+              ? iti.cumulativeTradeCount
+              : iti.nullModelSummary && iti.nullModelSummary.tradeCount != null
+                ? iti.nullModelSummary.tradeCount
+                : "—"
+          }</span>
+        </article>
+        <article style="grid-column: 1 / -1">
+          <span class="ch2-key-label">무작위 실험 통제 조건</span>
+          <span class="ch2-key-value" style="font-size: 0.88rem; font-weight: 500">${ctrlLine}</span>
+        </article>
+        <article style="grid-column: 1 / -1">
+          <span class="ch2-key-label">구간 짧은 말</span>
+          <span class="ch2-key-value" style="font-size: 0.92rem; font-weight: 500">${iti.interpretation || "—"}</span>
+        </article>
+      `;
+    }
+
+    function renderCh3Table() {
+      if (!ch3SummaryTableBody) return;
+      const months = oracleState.months;
+      ch3SummaryTableBody.textContent = "";
+      const frag = document.createDocumentFragment();
+      function fmtKCell(v) {
+        return v == null || !Number.isFinite(Number(v)) ? "—" : fmtOrDash(v, 4);
+      }
+      for (const row of months) {
+        const kv = row.kValue || {};
+        const tr = document.createElement("tr");
+        [
+          row.label || "—",
+          row.tradeCount != null ? String(row.tradeCount) : "—",
+          kv.cumulativeTradeCount != null ? String(kv.cumulativeTradeCount) : "—",
+          fmtKCell(kv.valueUsed),
+          fmtKCell(kv.valueUncapped),
+          fmtKCell(kv.valueCapped),
+          fmtPctFlexible(kv.baselineResultPercent),
+          fmtPctFlexible(kv.resultAtUsedPercent),
+        ].forEach((txt) => {
+          const td = document.createElement("td");
+          td.textContent = txt;
+          tr.appendChild(td);
+        });
+        frag.appendChild(tr);
+      }
+      ch3SummaryTableBody.appendChild(frag);
+    }
+
+    function renderCh4Table() {
+      if (!ch4SummaryTableBody) return;
+      const months = oracleState.months;
+      ch4SummaryTableBody.textContent = "";
+      const frag = document.createDocumentFragment();
+      for (const row of months) {
+        const iti = row.imperfectTruthIndex || {};
+        const nm = iti.nullModelSummary || {};
+        const cumN =
+          iti.cumulativeTradeCount != null ? iti.cumulativeTradeCount : nm.tradeCount != null ? nm.tradeCount : "—";
+        const tr = document.createElement("tr");
+        const cells = [
+          row.label || "—",
+          row.tradeCount != null ? String(row.tradeCount) : "—",
+          cumN !== "—" ? String(cumN) : "—",
+          fmtPctFlexible(iti.actualReturnPercent),
+          fmtPctFlexible(iti.percent),
+          iti.simulationCount != null ? String(iti.simulationCount) : "—",
+          nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 2) : "—",
+          nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 2) : "—",
+          nm.leverage != null ? String(nm.leverage) : "—",
+        ];
+        cells.forEach((txt) => {
+          const td = document.createElement("td");
+          td.textContent = txt;
+          tr.appendChild(td);
+        });
+        frag.appendChild(tr);
+      }
+      ch4SummaryTableBody.appendChild(frag);
+    }
+
+    function buildKCurveDatasets(monthRow) {
+      const kv = monthRow.kValue || {};
+      const curve = Array.isArray(kv.curve) ? kv.curve : [];
+      const lineData = curve
+        .filter((p) => p && p.yPercent != null && Number.isFinite(p.yPercent))
+        .map((p) => ({ x: p.k, y: p.yPercent }));
+      const h = currentHueValue;
+      const mkScatter = (label, kVal, color) => {
+        if (kVal == null || !Number.isFinite(Number(kVal))) return null;
+        const y = yAtKFromCurve(curve, Number(kVal));
+        if (y == null) return null;
+        return {
+          type: "scatter",
+          label,
+          data: [{ x: Number(kVal), y }],
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          showLine: false,
+          backgroundColor: color,
+          borderColor: color,
+        };
+      };
+      const ds = [
+        {
+          type: "line",
+          label: "복리 결과 %",
+          data: lineData,
+          parsing: false,
+          borderColor: `hsl(${h}, 95%, 68%)`,
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.2,
+          fill: false,
+        },
+      ];
+      const mk = mkScatter("지금 기준 k=0.5", 0.5, "rgba(148, 163, 184, 0.95)");
+      const u = mkScatter("쓰는 K", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
+      const ku = kv.valueUncapped;
+      const kc = kv.valueCapped;
+      const unc = mkScatter("한도 안 최적(계산)", ku, "rgba(251, 191, 36, 0.95)");
+      const cap = mkScatter("한도(k≤1)", kc, "rgba(167, 139, 250, 0.95)");
+      [mk, u].forEach((x) => {
+        if (x) ds.push(x);
+      });
+      if (
+        ku != null &&
+        kc != null &&
+        Number.isFinite(Number(ku)) &&
+        Number.isFinite(Number(kc)) &&
+        Math.abs(Number(ku) - Number(kc)) < 1e-6
+      ) {
+        if (cap) ds.push(cap);
+      } else {
+        if (unc) ds.push(unc);
+        if (cap) ds.push(cap);
+      }
+      return ds;
+    }
+
+    function syncOracleMonthButtons() {
+      const idx = oracleState.selectedIdx;
+      ["oracleMonthButtonsCh3", "oracleMonthButtonsCh4"].forEach((id) => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        container.querySelectorAll(".oracle-month-btn").forEach((btn, i) => {
+          btn.setAttribute("aria-pressed", i === idx ? "true" : "false");
+        });
+      });
+    }
+
+    function populateOracleMonthButtons() {
+      const months = oracleState.months;
+      ["oracleMonthButtonsCh3", "oracleMonthButtonsCh4"].forEach((id) => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        container.innerHTML = "";
+        months.forEach((m, i) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "oracle-month-btn";
+          btn.dataset.monthIndex = String(i);
+          btn.textContent = m.label || `월 ${i + 1}`;
+          btn.setAttribute("aria-pressed", i === oracleState.selectedIdx ? "true" : "false");
+          container.appendChild(btn);
+        });
+      });
+      syncOracleMonthButtons();
+    }
+
+    function setOracleMonthByIndex(idx) {
+      const months = oracleState.months;
+      if (!months.length) return;
+      const raw = Number(idx);
+      if (!Number.isFinite(raw)) return;
+      const n = Math.max(0, Math.min(months.length - 1, Math.floor(raw)));
+      oracleState.selectedIdx = n;
+      syncOracleMonthButtons();
+      renderCh3DetailCards();
+      renderCh4DetailCards();
+      updateOracleSelectionStyles();
+      const m = months[n];
+      if (m) redrawOracleKCurve(m);
+      refreshOracleConvergenceChart();
+    }
+
+    function oracleClickHandler(elements) {
+      if (!elements || !elements.length) return;
+      const idx = elements[0].index;
+      if (idx === undefined || idx === null) return;
+      setOracleMonthByIndex(idx);
+    }
+
+    function updateOracleSelectionStyles() {
+      if (oracleCharts.kHist) {
+        oracleCharts.kHist.update("none");
+      }
+      if (oracleCharts.itiHist) {
+        oracleCharts.itiHist.update("none");
+      }
+    }
+
+    function redrawOracleKCurve(monthRow) {
+      if (!oracleCharts.kCurve || !monthRow) return;
+      oracleCharts.kCurve.data.datasets = buildKCurveDatasets(monthRow);
+      oracleCharts.kCurve.update("none");
+    }
+
+    function initOracleCharts() {
+      if (typeof Chart === "undefined") return;
+      const months = oracleState.months;
+      if (!months.length) return;
+
+      const labels = months.map((m) => m.label || "—");
+      const kVals = months.map((m) => {
+        const u = m.kValue && m.kValue.valueUsed;
+        return u != null && Number.isFinite(Number(u)) ? Number(u) : null;
+      });
+      const itiPcts = months.map((m) => {
+        const p = m.imperfectTruthIndex && m.imperfectTruthIndex.percent;
+        return p != null && Number.isFinite(Number(p)) ? Number(p) : null;
+      });
+
+      const ch3El = document.getElementById("ch3KHistoryChart");
+      const ch3cEl = document.getElementById("ch3KCurveChart");
+      const ch4El = document.getElementById("ch4ItiHistoryChart");
+      const ch4cEl = document.getElementById("ch4ConvergenceChart");
+
+      destroyOracleChart("kHist");
+      destroyOracleChart("kCurve");
+      destroyOracleChart("itiHist");
+      destroyOracleChart("conv");
+
+      if (ch3El) {
+        const h = currentHueValue;
+        oracleCharts.kHist = new Chart(ch3El.getContext("2d"), {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "쓰는 K",
+                data: kVals.map((k) => (k == null ? null : k)),
+                borderColor: `hsl(${h}, 95%, 68%)`,
+                backgroundColor: `hsla(${h}, 90%, 52%, 0.1)`,
+                borderWidth: 2.5,
+                tension: 0.28,
+                fill: true,
+                spanGaps: false,
+                pointHoverRadius: 9,
+                pointBorderWidth: 2,
+                pointRadius: (ctx) => (ctx.dataIndex === oracleState.selectedIdx ? 7 : 4.5),
+                pointBackgroundColor: (ctx) =>
+                  ctx.dataIndex === oracleState.selectedIdx
+                    ? `hsl(${h}, 100%, 92%)`
+                    : `hsla(${h}, 85%, 48%, 0.55)`,
+                pointBorderColor: (ctx) =>
+                  ctx.dataIndex === oracleState.selectedIdx
+                    ? `hsl(${h}, 95%, 62%)`
+                    : `hsla(${h}, 95%, 58%, 0.45)`,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            interaction: { mode: "nearest", intersect: false },
+            onClick: (e, el) => oracleClickHandler(el),
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: (items) => items[0]?.label || "",
+                  label: (ctx) => {
+                    const i = ctx.dataIndex;
+                    const row = months[i];
+                    const kv = row.kValue || {};
+                    return [
+                      `쓰는 K: ${fmtOrDash(kv.valueUsed, 4)}`,
+                      `한도 안 최적: ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
+                      `한도로 자른 K: ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
+                      `넣는 비중(대략): ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
+                      `지금 기준 복리: ${fmtPctFlexible(kv.baselineResultPercent)}`,
+                      `모은 거래 수: ${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}`,
+                      `그 달만 청산: ${row.tradeCount != null ? row.tradeCount : "—"}`,
+                    ];
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                offset: true,
+                ticks: { color: "#94a3b8", maxRotation: 45 },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+              y: {
+                min: 0,
+                max: 1,
+                ticks: { color: "#94a3b8" },
+                title: { display: true, text: "K", color: "#94a3b8" },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+            },
+          },
+        });
+      }
+
+      if (ch3cEl) {
+        const sel = months[oracleState.selectedIdx] || months[0];
+        oracleCharts.kCurve = new Chart(ch3cEl.getContext("2d"), {
+          type: "line",
+          data: { datasets: buildKCurveDatasets(sel) },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              legend: { display: true, position: "bottom", labels: { color: "#94a3b8", boxWidth: 12 } },
+              tooltip: {
+                callbacks: {
+                  label: (ctx) => {
+                    const ds = ctx.dataset;
+                    if (ds.type === "scatter") {
+                      return `${ds.label}: k=${fmtOrDash(ctx.parsed.x, 3)}, 복리 ${fmtOrDash(ctx.parsed.y, 4)}%`;
+                    }
+                    const k = ctx.parsed.x;
+                    const ap = k != null && Number.isFinite(k) ? k * 100 : null;
+                    const y = ctx.parsed.y;
+                    return [`k: ${fmtOrDash(k, 3)}`, `넣는 비중(대략): ${ap == null ? "—" : fmtOrDash(ap, 2)}%`, `복리 결과: ${fmtOrDash(y, 4)}%`];
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                type: "linear",
+                min: 0,
+                max: 1,
+                ticks: { color: "#94a3b8" },
+                title: { display: true, text: "k", color: "#94a3b8" },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+              y: {
+                ticks: { color: "#94a3b8" },
+                title: { display: true, text: "복리 결과 %", color: "#94a3b8" },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+            },
+          },
+        });
+      }
+
+      if (ch4El) {
+        const h = currentHueValue;
+        oracleCharts.itiHist = new Chart(ch4El.getContext("2d"), {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "ITI (%)",
+                data: itiPcts.map((p) => (p == null ? null : p)),
+                borderColor: `hsl(${h}, 95%, 68%)`,
+                backgroundColor: `hsla(${h}, 90%, 52%, 0.12)`,
+                borderWidth: 2.5,
+                tension: 0.28,
+                fill: true,
+                spanGaps: false,
+                pointHoverRadius: 9,
+                pointBorderWidth: 2,
+                pointRadius: (ctx) => (ctx.dataIndex === oracleState.selectedIdx ? 7 : 4.5),
+                pointBackgroundColor: (ctx) =>
+                  ctx.dataIndex === oracleState.selectedIdx
+                    ? `hsl(${h}, 100%, 92%)`
+                    : `hsla(${h}, 85%, 48%, 0.55)`,
+                pointBorderColor: (ctx) =>
+                  ctx.dataIndex === oracleState.selectedIdx
+                    ? `hsl(${h}, 95%, 62%)`
+                    : `hsla(${h}, 95%, 58%, 0.45)`,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            interaction: { mode: "nearest", intersect: false },
+            onClick: (e, el) => oracleClickHandler(el),
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: (items) => items[0]?.label || "",
+                  label: (ctx) => {
+                    const i = ctx.dataIndex;
+                    const row = months[i];
+                    const iti = row.imperfectTruthIndex || {};
+                    const nCum =
+                      iti.cumulativeTradeCount != null
+                        ? iti.cumulativeTradeCount
+                        : iti.nullModelSummary && iti.nullModelSummary.tradeCount;
+                    return [
+                      `ITI: ${fmtPctFlexible(iti.percent)}`,
+                      `실제 복리(모은 거래): ${fmtPctFlexible(iti.actualReturnPercent)}`,
+                      `정해 둔 무작위 횟수: ${iti.simulationCount != null ? iti.simulationCount : "—"}`,
+                      `모은 거래 수: ${nCum != null ? nCum : "—"}`,
+                      `그 달만 청산: ${row.tradeCount != null ? row.tradeCount : "—"}`,
+                    ];
+                  },
+                },
+              },
+            },
+            scales: {
+              x: {
+                offset: true,
+                ticks: { color: "#94a3b8", maxRotation: 45 },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+              y: {
+                min: 0,
+                ticks: { color: "#94a3b8" },
+                title: { display: true, text: "ITI (%)", color: "#94a3b8" },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+            },
+          },
+        });
+      }
+
+      if (ch4cEl) {
+        const sel = months[oracleState.selectedIdx] || months[0];
+        const iti = sel.imperfectTruthIndex || {};
+        const conv = Array.isArray(iti.convergence) ? iti.convergence : [];
+        const convData = conv
+          .filter((c) => c && Number.isFinite(Number(c.simulationCount)) && c.estimatePercent != null)
+          .map((c) => ({ x: Number(c.simulationCount), y: Number(c.estimatePercent) }));
+
+        oracleCharts.conv = new Chart(ch4cEl.getContext("2d"), {
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: "ITI 추정(%)",
+                data: convData,
+                parsing: false,
+                borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
+                pointRadius: 3,
+                tension: 0.2,
+                fill: false,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  title: (items) => `무작위 ${items[0]?.parsed.x}번까지`,
+                  label: (ctx) => `ITI 추정: ${fmtOrDash(ctx.parsed.y, 4)}%`,
+                },
+              },
+            },
+            scales: {
+              x: {
+                type: "linear",
+                ticks: { color: "#94a3b8" },
+                title: { display: true, text: "무작위 돌린 횟수(누적)", color: "#94a3b8" },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+              y: {
+                min: 0,
+                ticks: { color: "#94a3b8" },
+                title: { display: true, text: "ITI (%)", color: "#94a3b8" },
+                grid: { color: "rgba(255,255,255,0.06)" },
+              },
+            },
+          },
+        });
+      }
+
+      updateOracleSelectionStyles();
+    }
+
+    function refreshOracleConvergenceChart() {
+      const months = oracleState.months;
+      const sel = months[oracleState.selectedIdx];
+      if (!oracleCharts.conv || !sel) return;
+      const iti = sel.imperfectTruthIndex || {};
+      const conv = Array.isArray(iti.convergence) ? iti.convergence : [];
+      const convData = conv
+        .filter((c) => c && Number.isFinite(Number(c.simulationCount)) && c.estimatePercent != null)
+        .map((c) => ({ x: Number(c.simulationCount), y: Number(c.estimatePercent) }));
+      oracleCharts.conv.data.datasets[0].data = convData;
+      oracleCharts.conv.update("none");
+    }
+
+    function initOracleMetrics() {
+      const raw = getOracleMetricsRaw();
+      const months = raw && Array.isArray(raw.months) ? raw.months.map(normalizeOracleMonth).filter(Boolean) : [];
+
+      if (!raw || !months.length) {
+        if (oracleMetricsEmptyEl) oracleMetricsEmptyEl.hidden = false;
+        if (oracleMetricsFilledEl) oracleMetricsFilledEl.hidden = true;
+        ["kHist", "kCurve", "itiHist", "conv"].forEach(destroyOracleChart);
+        return;
+      }
+
+      if (oracleMetricsEmptyEl) oracleMetricsEmptyEl.hidden = true;
+      if (oracleMetricsFilledEl) oracleMetricsFilledEl.hidden = false;
+
+      oracleState.months = months;
+      oracleState.source = raw.source || null;
+      oracleState.selectedIdx = 0;
+
+      populateOracleMonthButtons();
+      renderCh3DetailCards();
+      renderCh4DetailCards();
+      renderCh3Table();
+      renderCh4Table();
+      initOracleCharts();
+    }
 
     function parsePayWon(raw) {
       if (raw == null) return NaN;
@@ -1146,10 +2506,19 @@
       return Math.max(min, Math.min(max, v));
     }
 
-    function parsePercentInput(raw, fallback) {
-      const n = Number(String(raw).replace("%", "").trim());
-      if (!Number.isFinite(n)) return fallback;
-      return clamp(n, 0.1, 10);
+    function parseLiqPercent0to100(raw, fallbackSlider) {
+      const n = Number(String(raw).replace("%", "").replace(",", ".").trim());
+      if (!Number.isFinite(n)) {
+        const f = parseFloat(String(fallbackSlider));
+        return clamp(Number.isFinite(f) ? f : 0, 0, 100);
+      }
+      return clamp(n, 0, 100);
+    }
+
+    function formatLiqPercentLabel(pct) {
+      if (!Number.isFinite(pct)) return "—%";
+      const x = Math.round(pct * 10) / 10;
+      return (x % 1 === 0 ? String(x) : x.toFixed(1)) + "%";
     }
 
     function sortNumeric(arr) {
@@ -1196,21 +2565,11 @@
     }
 
     const canvas = document.getElementById("chart");
-    const ctx = canvas && typeof canvas.getContext === "function" ? canvas.getContext("2d") : null;
+    const ctx = canvas.getContext("2d");
 
-    let chart = null;
+    let chart;
 
     let currentHueValue = 195;
-
-    function createGradient(chartArea) {
-      if (!ctx) return "rgba(255, 255, 255, 0.04)";
-      const h = currentHueValue;
-      const g = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-      g.addColorStop(0, `hsla(${h}, 90%, 55%, 0.03)`);
-      g.addColorStop(0.55, `hsla(${h}, 90%, 55%, 0.14)`);
-      g.addColorStop(1, `hsla(${h}, 95%, 62%, 0.32)`);
-      return g;
-    }
 
     function appendStrong(parent, text) {
       const el = document.createElement("strong");
@@ -1223,17 +2582,17 @@
       const f = document.createDocumentFragment();
       f.appendChild(document.createTextNode("매달 "));
       appendStrong(f, formatWon(monthlyWon));
-      f.appendChild(document.createTextNode(" 넣고, 한 달에 30%씩 늘어난다고 치면 → "));
+      f.appendChild(document.createTextNode("을 투자하고 월 30%의 수익이 꾸준히 발생한다면, 청산이 한 번도 일어나지 않았을 때 "));
       appendStrong(f, months + "개월");
-      f.appendChild(document.createTextNode(" 뒤 모인 돈은 :"));
+      f.appendChild(document.createTextNode(" 뒤의 예상 잔고는 "));
       const gap = document.createElement("span");
       gap.className = "summary-amount-gap";
       gap.setAttribute("aria-hidden", "true");
       f.appendChild(gap);
       appendStrong(f, formatWon(finalWon));
-      f.appendChild(document.createTextNode(" (≈ "));
+      f.appendChild(document.createTextNode(" (대략 "));
       appendStrong(f, formatCompact(finalWon));
-      f.appendChild(document.createTextNode(")"));
+      f.appendChild(document.createTextNode(")입니다. (현실적인 리스크가 배제된 참고선입니다.)"));
       summaryEl.appendChild(f);
     }
 
@@ -1243,69 +2602,25 @@
         const area = chart.chartArea;
         if (!area || area.width <= 0) return;
         const ds = chart.data.datasets[0];
-        ds.backgroundColor = createGradient(area);
+        const h = currentHueValue;
+        const g = chart.ctx.createLinearGradient(0, area.bottom, 0, area.top);
+        g.addColorStop(0, `hsla(${h}, 90%, 55%, 0.03)`);
+        g.addColorStop(0.55, `hsla(${h}, 90%, 55%, 0.14)`);
+        g.addColorStop(1, `hsla(${h}, 95%, 62%, 0.32)`);
+        ds.backgroundColor = g;
       },
     };
-
-    const pointLabelPlugin = {
-      id: "pointLabels",
-      afterDatasetsDraw(chart) {
-        const ds = chart.data.datasets[0];
-        const meta = chart.getDatasetMeta(0);
-        const { ctx } = chart;
-        const n = meta.data.length;
-        const totalMonths = Math.max(0, n - 1);
-
-        let step;
-        if (totalMonths <= 18) step = 1;
-        else if (totalMonths <= 30) step = 2;
-        else if (totalMonths <= 40) step = 3;
-        else if (totalMonths <= 48) step = 4;
-        else if (totalMonths <= 55) step = 5;
-        else step = 6;
-
-        const fs = totalMonths > 48 ? 12 : totalMonths > 30 ? 13 : totalMonths > 18 ? 13.5 : 14;
-
-        ctx.save();
-        ctx.font = fs + "px 'IBM Plex Sans KR', sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "bottom";
-
-        meta.data.forEach((el, i) => {
-          const isFirst = i === 0;
-          const isLast = i === n - 1;
-          if (!isFirst && !isLast && i % step !== 0) return;
-
-          const yMan = ds.data[i];
-          const won = Math.round(yMan * WON_PER_MAN);
-          const timeLbl = chart.data.labels[i] || (i === 0 ? "시작" : i + "개월");
-          const txt = "(" + timeLbl + ", " + formatCompact(won) + ")";
-          const { x, y } = el.getProps(["x", "y"], true);
-          const stagger = step === 1 ? 0 : (i % 2) * 12;
-
-          ctx.shadowColor = `hsla(${currentHueValue}, 95%, 60%, 0.9)`;
-          ctx.shadowBlur = 10;
-          ctx.fillStyle = "rgba(248, 250, 252, 0.97)";
-          ctx.fillText(txt, x, y - 12 - stagger);
-          ctx.shadowBlur = 0;
-        });
-        ctx.restore();
-      },
-    };
-
-    const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (typeof Chart !== "undefined") {
       Chart.defaults.font.family = "'IBM Plex Sans KR', system-ui, sans-serif";
       Chart.defaults.font.size = 14;
+      Chart.defaults.animation = false;
     }
 
     function initChart() {
-      if (typeof Chart === "undefined" || !ctx) return;
-      try {
-        chart = new Chart(ctx, {
+      chart = new Chart(ctx, {
         type: "line",
-        plugins: [gradientFillPlugin, pointLabelPlugin],
+        plugins: [gradientFillPlugin],
         data: {
           labels: [],
           datasets: [
@@ -1333,12 +2648,9 @@
           responsive: true,
           maintainAspectRatio: false,
           layout: {
-            padding: { top: 48, left: 52, right: 14, bottom: 28 },
+            padding: { top: 12, left: 12, right: 14, bottom: 28 },
           },
-          animation: reduceMotion ? false : {
-            duration: 650,
-            easing: "easeOutQuart",
-          },
+          animation: false,
           interaction: { mode: "index", intersect: false },
           plugins: {
             legend: { display: false },
@@ -1409,9 +2721,6 @@
           },
         },
       });
-      } catch (e) {
-        chart = null;
-      }
     }
 
     function redraw() {
@@ -1420,68 +2729,221 @@
 
       const { labels, valuesMan, finalWon } = buildSeries(months, monthlyWon);
 
-      if (chart) {
-        chart.data.labels = labels;
-        chart.data.datasets[0].data = valuesMan;
-        chart.update();
-      }
+      chart.data.labels = labels;
+      chart.data.datasets[0].data = valuesMan;
+
+      chart.update("none");
       updatePayPill(monthlyWon);
       updateSummary(months, monthlyWon, finalWon);
     }
 
-    const ch2MainEl = document.getElementById("ch2MainChart");
-    const ch2ProbEl = document.getElementById("ch2ProbChart");
-    const ch2FirstLiqEl = document.getElementById("ch2FirstLiqChart");
-    const ch2MainCtx =
-      ch2MainEl && typeof ch2MainEl.getContext === "function" ? ch2MainEl.getContext("2d") : null;
-    const ch2ProbCtx =
-      ch2ProbEl && typeof ch2ProbEl.getContext === "function" ? ch2ProbEl.getContext("2d") : null;
-    const ch2FirstLiqCtx =
-      ch2FirstLiqEl && typeof ch2FirstLiqEl.getContext === "function" ? ch2FirstLiqEl.getContext("2d") : null;
+    const ch2MainCtx = document.getElementById("ch2MainChart").getContext("2d");
+    const ch2ProbCtx = document.getElementById("ch2ProbChart").getContext("2d");
+    const ch2FirstLiqCtx = document.getElementById("ch2FirstLiqChart").getContext("2d");
     let ch2MainChart;
     let ch2ProbChart;
     let ch2FirstLiqChart;
 
-    function getCh2State() {
-      const pPercent = parsePercentInput(liqProbInput.value, parseFloat(liqProbSlider.value));
-      const p = pPercent / 100;
-      const d = clamp(parseInt(tradeDaysInput.value, 10) || 3, 1, 30);
-      const seed = clamp(parsePayWon(seedInput.value), 100000, 50000000);
-      const months = clamp(parseInt(ch2MonthInput.value, 10) || 24, 1, 60);
-      const tradesPerMonth = DAYS_PER_MONTH / d;
-      const growthPerTrade = Math.pow(1 + MONTHLY_RATE, 1 / tradesPerMonth);
-      return { p, pPercent, d, seed, months, tradesPerMonth, growthPerTrade };
+    /**
+     * 제2장: 자본 경로 모델(합성 월복리→거래당 인자)과 확률 모델(거래당 베르누이)을 분리.
+     * 나중에 growthPerTrade·샘플링만 바꿔 실거래 분포/부트스트랩으로 교체 가능하도록 렌더링과 분리.
+     */
+
+    /**
+     * N(m): m개월 말까지의 누적 거래 수(정수). 한 달을 동일 tradesPerMonth로 쪼갤 때 floor로 통일(L(m)·시뮬·표 일치).
+     */
+    function countTradesThroughMonth(m, tradesPerMonth) {
+      if (m <= 0) return 0;
+      return Math.floor(m * tradesPerMonth);
     }
 
-    function simulateLiquidationPath(params) {
-      const { p, seed, months, tradesPerMonth, growthPerTrade } = params;
-      const expectedPath = Array(months + 1).fill(0);
-      const noLiqPath = Array(months + 1).fill(0);
-      const p10 = Array(months + 1).fill(0);
-      const p90 = Array(months + 1).fill(0);
+    function getTradesPerMonth(daysPerTrade) {
+      return DAYS_PER_MONTH / daysPerTrade;
+    }
+
+    /** 합성 기준: 월복리를 거래 빈도로 나눈 per-trade 인자. 실거래면 이 함수 대신 경험적 분포/샘플에서 g_t를 얻도록 교체. */
+    function getGrowthPerTrade(monthlyRate, tradesPerMonth) {
+      return Math.pow(1 + monthlyRate, 1 / tradesPerMonth);
+    }
+
+    /** 매달 납입은 제1장 값; 월 30% 복리 누적(무청산). */
+    function buildCh2NoLiquidationPath(months, monthlyWon, monthlyRate) {
+      const path = new Array(months + 1);
+      let balance = monthlyWon;
+      path[0] = balance;
+      for (let m = 1; m <= months; m++) {
+        balance = balance * (1 + monthlyRate) + monthlyWon;
+        path[m] = balance;
+      }
+      return path;
+    }
+
+    /**
+     * 거래 k번까지 모두 무청산으로 성공했을 때 자본. 거래마다 g, 누적 1/tpm 마다 월 납입 추가.
+     */
+    function capitalAfterSuccessfulTrades(monthlyWon, g, tpm, k) {
+      if (k <= 0) return monthlyWon;
+      let S = monthlyWon;
+      let acc = 0;
+      for (let j = 1; j <= k; j++) {
+        S *= g;
+        acc += 1 / tpm;
+        while (acc >= 1 - 1e-14) {
+          S += monthlyWon;
+          acc -= 1;
+        }
+      }
+      return S;
+    }
+
+    /**
+     * k번 성공 거래까지 진행했을 때의 누적 납입(원금). capitalAfterSuccessfulTrades 와 같은 납입 시점.
+     */
+    function cumulativeContributionsAfterSuccessfulTrades(monthlyWon, tpm, kSuccess) {
+      if (!Number.isFinite(kSuccess) || kSuccess <= 0) return monthlyWon;
+      let deposited = monthlyWon;
+      let acc = 0;
+      for (let j = 1; j <= kSuccess; j++) {
+        acc += 1 / tpm;
+        while (acc >= 1 - 1e-14) {
+          deposited += monthlyWon;
+          acc -= 1;
+        }
+      }
+      return deposited;
+    }
+
+    /**
+     * 월 m(1…months)마다: 그 달에 거래가 늘어난 경우만 점을 찍음.
+     * 조건 — 그 달 마지막 거래(월말 기준 거래 번호 k)에서 청산 → 직전 잔고×0.5 로 종료.
+     * 순손익 = 종료잔고 − 원금(직전까지 누적 납입), 원금 제한: 손실은 −원금 이하로 자름.
+     */
+    function computePostLiquidationCappedProfitByMonth(monthlyWon, growthPerTrade, tradesPerMonth, months) {
+      const tpm = tradesPerMonth;
+      const g = growthPerTrade;
+      const points = [];
+      for (let m = 1; m <= months; m++) {
+        const nPrev = countTradesThroughMonth(m - 1, tpm);
+        const nCur = countTradesThroughMonth(m, tpm);
+        if (nCur <= nPrev) {
+          points.push({ x: m, y: NaN });
+          continue;
+        }
+        const k = nCur;
+        const beforeLiq = capitalAfterSuccessfulTrades(monthlyWon, g, tpm, k - 1);
+        const endBal = beforeLiq * 0.5;
+        const principal = cumulativeContributionsAfterSuccessfulTrades(monthlyWon, tpm, k - 1);
+        const raw = endBal - principal;
+        const capped = Math.max(raw, -principal);
+        points.push({ x: m, y: capped });
+      }
+      return { points };
+    }
+
+    /** 첫 청산이 거래 k에서 일어날 때 종료 자본 = (k번째 거래 직전 자본) × 0.5 — 월 납입 누적 반영. */
+    function computeExactExpectedAfterNTradesPay(monthlyWon, p, n, g, tpm) {
+      if (!Number.isFinite(n) || n < 0) return monthlyWon;
+      if (n === 0) return monthlyWon;
+      if (p <= 0) return capitalAfterSuccessfulTrades(monthlyWon, g, tpm, n);
+      if (p >= 1) return monthlyWon * 0.5;
+
+      let sum = 0;
+      for (let k = 1; k <= n; k++) {
+        const beforeK = capitalAfterSuccessfulTrades(monthlyWon, g, tpm, k - 1);
+        sum += Math.pow(1 - p, k - 1) * p * (beforeK * 0.5);
+      }
+      sum += Math.pow(1 - p, n) * capitalAfterSuccessfulTrades(monthlyWon, g, tpm, n);
+      return sum;
+    }
+
+    function computeExactExpectedPathMonthsPay(monthlyWon, p, months, tradesPerMonth, growthPerTrade) {
+      const out = new Array(months + 1);
+      const noLiq = buildCh2NoLiquidationPath(months, monthlyWon, MONTHLY_RATE);
+      out[0] = noLiq[0];
+      if (p <= 0) {
+        for (let m = 1; m <= months; m++) out[m] = noLiq[m];
+        return out;
+      }
+      for (let m = 1; m <= months; m++) {
+        const n = countTradesThroughMonth(m, tradesPerMonth);
+        out[m] = computeExactExpectedAfterNTradesPay(monthlyWon, p, n, growthPerTrade, tradesPerMonth);
+      }
+      return out;
+    }
+
+    /** 동일 입력 → 동일 난수열. Math.random()은 재현 불가라 몬테카를로 밴드에 시드 RNG 사용. */
+    function fnv1a32(str) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function deriveSimulationSeed(state) {
+      const payload = [
+        "ch2mc",
+        "v2pay",
+        String(Math.round(state.monthlyWon)),
+        state.p.toFixed(14),
+        state.d.toFixed(12),
+        state.months,
+        CH2_MONTE_CARLO_RUNS,
+      ].join("|");
+      const s = fnv1a32(payload);
+      return s === 0 ? 1 : s;
+    }
+
+    /** mulberry32: 브라우저마다 다른 Math.random() 대신 재현 가능한 U(0,1) */
+    function createSeededRng(seed) {
+      let a = seed >>> 0;
+      return function rng() {
+        let t = (a += 0x6d2b79f5);
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function cumulativeLiqByMonth(p, tradesPerMonth, month) {
+      const n = countTradesThroughMonth(month, tradesPerMonth);
+      if (n <= 0) return 0;
+      return 1 - Math.pow(1 - p, n);
+    }
+
+    /**
+     * 몬테카를로: 거래마다 청산 여부를 시드 RNG로 판정(흡수 상태 — 청산 후 이후 달 자본은 동일).
+     * 중심선(기대 경로)은 위 해석적 기대와 동일하게 두고, 밴드만 MC.
+     */
+    function simulateLiquidationPathMonteCarlo(state, rng) {
+      const { p, monthlyWon, months, tradesPerMonth, growthPerTrade } = state;
+      const tpm = tradesPerMonth;
+      const p10 = new Array(months + 1).fill(0);
+      const p90 = new Array(months + 1).fill(0);
       const valuesByMonth = Array.from({ length: months + 1 }, () => []);
 
-      for (let m = 0; m <= months; m++) {
-        noLiqPath[m] = seed * Math.pow(1 + MONTHLY_RATE, m);
-      }
-
-      // Monte Carlo: 각 경로에서 거래 단위로 진행하며,
-      // 청산이 발생하면 총자본의 50%만 남기고 즉시 종료한다.
       for (let sim = 0; sim < CH2_MONTE_CARLO_RUNS; sim++) {
-        let cap = seed;
+        let cap = monthlyWon;
+        let acc = 0;
         let terminated = false;
         let tradeIndex = 0;
         valuesByMonth[0].push(cap);
         for (let m = 1; m <= months; m++) {
-          const targetTradeCount = Math.round(m * tradesPerMonth);
+          const targetTradeCount = countTradesThroughMonth(m, tradesPerMonth);
           while (tradeIndex < targetTradeCount && !terminated) {
             tradeIndex += 1;
-            if (Math.random() < p) {
+            if (rng() < p) {
               cap *= 0.5;
               terminated = true;
               break;
             }
             cap *= growthPerTrade;
+            acc += 1 / tpm;
+            while (acc >= 1 - 1e-14) {
+              cap += monthlyWon;
+              acc -= 1;
+            }
           }
           valuesByMonth[m].push(cap);
         }
@@ -1489,62 +2951,223 @@
 
       for (let m = 0; m <= months; m++) {
         const sorted = sortNumeric(valuesByMonth[m]);
-        const sum = sorted.reduce((acc, v) => acc + v, 0);
-        expectedPath[m] = sum / sorted.length;
         p10[m] = percentile(sorted, 0.1);
         p90[m] = percentile(sorted, 0.9);
       }
-
-      return { expectedPath, noLiqPath, p10, p90 };
+      return { p10, p90 };
     }
 
-    function cumulativeLiqByMonth(p, tradesPerMonth, month) {
-      const n = Math.round(month * tradesPerMonth);
-      return 1 - Math.pow(1 - p, n);
+    function parseCh2MonthsRobust() {
+      const n = parseInt(String(ch2MonthInput.value).trim(), 10);
+      if (Number.isFinite(n)) return clamp(n, 1, 60);
+      const s = parseInt(ch2MonthSlider.value, 10);
+      return Number.isFinite(s) ? clamp(s, 1, 60) : 24;
     }
 
-    function firstLiqCurve(seed, tradesPerMonth, months) {
-      const xs = [];
-      const ys = [];
-      for (let m = 0; m <= months; m++) {
-        const capitalBefore = seed * Math.pow(1 + MONTHLY_RATE, m);
-        xs.push(m);
-        ys.push(capitalBefore * 0.5);
+    function getCh2State() {
+      const pPercent = parseLiqPercent0to100(liqProbInput.value, liqProbSlider.value);
+      const p = clamp(pPercent / 100, 0, 1);
+      const d = CH2_DEFAULT_DAYS_PER_TRADE;
+      const monthlyWon = getMonthlyPaymentWonNormalized();
+      const months = parseCh2MonthsRobust();
+      const tradesPerMonth = getTradesPerMonth(d);
+      const growthPerTrade = getGrowthPerTrade(MONTHLY_RATE, tradesPerMonth);
+      return { p, pPercent, d, monthlyWon, months, tradesPerMonth, growthPerTrade };
+    }
+
+    /** 기대금액 차트: 개월마다 교차하는 옅은 회색 띠(그리드·선 아래) */
+    const ch2MainAlternatingBandsPlugin = {
+      id: "ch2MainAlternatingBands",
+      beforeDraw(chart) {
+        const x = chart.scales.x;
+        const { ctx, chartArea } = chart;
+        if (!x || !chartArea) return;
+        const labels = chart.data.labels;
+        if (!labels || labels.length < 2) return;
+        ctx.save();
+        for (let i = 0; i < labels.length - 1; i += 2) {
+          const x0 = x.getPixelForValue(labels[i]);
+          const x1 = x.getPixelForValue(labels[i + 1]);
+          const left = Math.min(x0, x1);
+          const w = Math.abs(x1 - x0);
+          ctx.fillStyle = "rgba(148, 163, 184, 0.09)";
+          ctx.fillRect(left, chartArea.top, w, chartArea.bottom - chartArea.top);
+        }
+        ctx.restore();
+      },
+    };
+
+    const ch2ExpectedLiqMonthLinePlugin = {
+      id: "ch2ExpectedLiqMonthLine",
+      afterDraw(chart) {
+        const cfg = chart.options.plugins && chart.options.plugins.ch2ExpectedLiqMonthLine;
+        if (!cfg || !cfg.enabled || !Number.isFinite(cfg.month)) return;
+        const horizon = Number.isFinite(cfg.horizonMonths) ? cfg.horizonMonths : 0;
+        const xScale = chart.scales.x;
+        const { ctx, chartArea } = chart;
+        if (!xScale || !chartArea) return;
+
+        let xVal = cfg.month;
+        let outRight = xVal > horizon;
+        let outLeft = xVal < 0;
+        if (outRight) xVal = horizon;
+        if (outLeft) xVal = 0;
+
+        let pixel = xScale.getPixelForValue(xVal);
+        const left = chartArea.left;
+        const right = chartArea.right;
+        if (pixel < left) pixel = left;
+        if (pixel > right) pixel = right;
+
+        ctx.save();
+        ctx.strokeStyle = outRight || outLeft ? "rgba(244,114,182,0.38)" : "rgba(244,114,182,0.72)";
+        ctx.lineWidth = outRight || outLeft ? 1.2 : 1.6;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(pixel, chartArea.top);
+        ctx.lineTo(pixel, chartArea.bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+      },
+    };
+
+    function renderCh2KeySummary(state, noLiqPath, expectedPath) {
+      if (!ch2KeySummary) return;
+      const H = state.months;
+      const tpm = state.tradesPerMonth;
+      const totalTrades = countTradesThroughMonth(H, tpm);
+      const evNo = noLiqPath[H];
+      const evLiq = expectedPath[H];
+      const shortfall = evNo - evLiq;
+      const pctLess = evNo > 0 ? (shortfall / evNo) * 100 : 0;
+      const pHit = cumulativeLiqByMonth(state.p, state.tradesPerMonth, H);
+      const pLastExact =
+        totalTrades > 0 && state.p > 0 && state.p < 1
+          ? Math.pow(1 - state.p, totalTrades - 1) * state.p
+          : totalTrades > 0 && state.p >= 1
+            ? 0
+            : null;
+
+      const lastTradeLiqHint =
+        totalTrades > 0
+          ? state.p <= 0
+            ? `💡 <strong>생존 확률 가이드:</strong> 설정하신 ${H}개월 동안 약 <strong>${totalTrades}번</strong>의 거래가 예상됩니다. 현재 청산 확률이 <strong>0%</strong>이므로 하단의 그래프는 '기준 경로(1장)'와 동일합니다.`
+            : `💡 <strong>생존 확률 가이드:</strong> 설정하신 ${H}개월 동안 약 <strong>${totalTrades}번</strong>의 거래가 예상됩니다. 매 거래마다 <strong>${(state.p * 100).toFixed(2)}%</strong>의 청산 확률이 존재할 때, ${totalTrades - 1}번을 무사히 넘기고 <strong>마지막 ${totalTrades}번째 거래에서 처음으로 청산될 확률</strong>은 약 <strong>${(pLastExact * 100).toFixed(3)}%</strong>입니다.`
+          : `위 기간이면 거래가 <strong>0번</strong>으로 잡힙니다.`;
+
+      if (ch2KeyContext) {
+        ch2KeyContext.innerHTML = `아래 수치는 <strong>1장과 동일한 투입 금액</strong>을 기준으로, 설정하신 <strong>분석 기간(${H}개월)</strong>과 청산 확률을 적용한 결과입니다.<br /><br />${lastTradeLiqHint}`;
       }
-      return { xs, ys };
-    }
 
-    function renderCh2Metrics(state) {
-      const expectedTrades = Math.round(state.months * state.tradesPerMonth);
-      const expectedFirstLiqTrade = 1 / state.p;
-      const expectedFirstLiqMonth = 1 / (state.p * state.tradesPerMonth);
-      ch2Metrics.innerHTML = `
-        <article class="metric-chip"><span class="k">선택 기간의 기대 거래 수</span><span class="v">${expectedTrades.toLocaleString("ko-KR")}회</span></article>
-        <article class="metric-chip"><span class="k">기대 첫 청산 시점(거래)</span><span class="v">${expectedFirstLiqTrade.toLocaleString("ko-KR", { maximumFractionDigits: 1 })}회</span></article>
-        <article class="metric-chip"><span class="k">기대 첫 청산 시점(개월)</span><span class="v">${expectedFirstLiqMonth.toLocaleString("ko-KR", { maximumFractionDigits: 2 })}개월</span></article>
+      ch2KeySummary.innerHTML = `
+        <article class="ch2-key-article-prob">
+          <span class="ch2-key-label">기간 내 1회 이상 청산될 누적 확률</span>
+          <span class="ch2-key-value">${(pHit * 100).toFixed(1)}%</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">청산 리스크를 반영한 최종 기대 잔고</span>
+          <span class="ch2-key-value">${formatWon(evLiq)}</span>
+        </article>
+        <article>
+          <span class="ch2-key-label">이상적 기준선 대비 손실액 및 비율</span>
+          <span class="ch2-key-value">${formatWon(shortfall)} (${pctLess.toFixed(1)}%)</span>
+        </article>
       `;
     }
 
     function initCh2Charts() {
-      if (typeof Chart === "undefined" || !ch2MainCtx || !ch2ProbCtx || !ch2FirstLiqCtx) return;
-      try {
-        ch2MainChart = new Chart(ch2MainCtx, {
+      /** 누적 청산 확률 · 청산 후 수익금: 읽기 쉬운 중립 회색 점선 그리드 */
+      const ch2ReadabilityGrid = {
+        color: "rgba(180, 180, 180, 0.22)",
+        borderDash: [5, 5],
+        lineWidth: 1,
+        drawBorder: false,
+      };
+
+      const ch2MainLegendLabelFactory = () => ({
+        color: "#cbd5e1",
+        usePointStyle: true,
+        pointStyleWidth: 36,
+        padding: 14,
+        generateLabels(chart) {
+          const defGen = Chart.defaults.plugins.legend.labels.generateLabels;
+          let items = [];
+          try {
+            if (typeof defGen === "function") items = defGen(chart) || [];
+          } catch (e) {
+            items = [];
+          }
+          const toLineLegend = (ds, i, base) => {
+            const stroke =
+              typeof ds.borderColor === "string"
+                ? ds.borderColor
+                : Array.isArray(ds.borderColor)
+                  ? ds.borderColor[0]
+                  : "#94a3b8";
+            return {
+              ...base,
+              text: ds.label,
+              pointStyle: "line",
+              fillStyle: "transparent",
+              strokeStyle: stroke,
+              lineWidth: Math.max(Number(ds.borderWidth) || 2, 2),
+              lineDash: Array.isArray(ds.borderDash) && ds.borderDash.length ? ds.borderDash : [],
+              hidden: !chart.isDatasetVisible(i),
+              datasetIndex: i,
+              index: i,
+            };
+          };
+          if (!items.length) {
+            return chart.data.datasets.map((ds, i) => toLineLegend(ds, i, {}));
+          }
+          return items.map((item) => {
+            const ds = chart.data.datasets[item.datasetIndex];
+            if (!ds) return item;
+            return toLineLegend(ds, item.datasetIndex, item);
+          });
+        },
+      });
+
+      ch2MainChart = new Chart(ch2MainCtx, {
         type: "line",
+        plugins: [ch2MainAlternatingBandsPlugin],
         data: { labels: [], datasets: [] },
         options: {
           responsive: true, maintainAspectRatio: false,
+          animation: false,
           interaction: { mode: "index", intersect: false },
           plugins: {
-            legend: { labels: { color: "#cbd5e1" } },
+            legend: { display: true, position: "top", labels: ch2MainLegendLabelFactory() },
             tooltip: {
-              callbacks: { label: (ctx) => `${ctx.dataset.label}: ${formatWon(ctx.parsed.y)}` },
+              callbacks: {
+                label: (ctx) => {
+                  const y = ctx.parsed.y;
+                  if (!Number.isFinite(y)) return `${ctx.dataset.label}: —`;
+                  return `${ctx.dataset.label}: ${formatWon(y)}`;
+                },
+              },
             },
           },
           scales: {
-            x: { ticks: { color: "#94a3b8" }, title: { display: true, text: "개월", color: "#94a3b8" } },
+            x: {
+              ticks: { color: "#94a3b8" },
+              title: { display: true, text: "개월", color: "#94a3b8" },
+              grid: {
+                display: true,
+                color: "rgba(148, 163, 184, 0.16)",
+              },
+              border: { display: false },
+            },
             y: {
+              position: "right",
               ticks: { color: "#94a3b8", callback: (v) => formatCompact(Number(v)) },
-              title: { display: true, text: "돈(원)", color: "#94a3b8" },
+              title: { display: true, text: "원", color: "#94a3b8" },
+              grid: {
+                display: true,
+                color: "rgba(148, 163, 184, 0.16)",
+              },
+              border: { display: false },
             },
           },
         },
@@ -1552,143 +3175,251 @@
 
       ch2ProbChart = new Chart(ch2ProbCtx, {
         type: "line",
-        data: { labels: [], datasets: [] },
+        plugins: [ch2ExpectedLiqMonthLinePlugin],
+        data: {
+          datasets: [
+            {
+              label: "한 번이라도 청산될 확률",
+              data: [],
+              parsing: false,
+              borderColor: `hsl(${currentHueValue},95%,70%)`,
+              backgroundColor: `hsla(${currentHueValue},95%,62%,0.16)`,
+              tension: 0.2,
+              fill: true,
+              pointRadius: 0,
+            },
+          ],
+        },
         options: {
           responsive: true, maintainAspectRatio: false,
+          animation: false,
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: (ctx) => `누적 청산확률: ${ctx.parsed.y.toFixed(2)}%` } },
+            ch2ExpectedLiqMonthLine: { enabled: false, month: 0, horizonMonths: 60 },
+            tooltip: {
+              callbacks: {
+                title: (items) => `개월 ${Number(items[0].parsed.x).toFixed(0)}`,
+                label: (ctx) => `${ctx.parsed.y.toFixed(1)}%`,
+              },
+            },
           },
           scales: {
-            x: { ticks: { color: "#94a3b8" }, title: { display: true, text: "개월", color: "#94a3b8" } },
-            y: { min: 0, max: 100, ticks: { color: "#94a3b8" }, title: { display: true, text: "확률(%)", color: "#94a3b8" } },
+            x: {
+              type: "linear",
+              min: 0,
+              ticks: { color: "#94a3b8" },
+              title: { display: true, text: "개월", color: "#94a3b8" },
+              grid: { ...ch2ReadabilityGrid },
+              border: { display: false },
+            },
+            y: {
+              min: 0,
+              max: 100,
+              ticks: { color: "#94a3b8" },
+              title: { display: true, text: "확률(%)", color: "#94a3b8" },
+              grid: { ...ch2ReadabilityGrid },
+              border: { display: false },
+            },
           },
         },
       });
 
       ch2FirstLiqChart = new Chart(ch2FirstLiqCtx, {
         type: "line",
-        data: { labels: [], datasets: [] },
+        data: {
+          datasets: [
+            {
+              label: "처음 청산 그 달에 남는 수익금",
+              data: [],
+              parsing: false,
+              borderColor: `hsl(${currentHueValue},95%,72%)`,
+              pointRadius: 0,
+              tension: 0.2,
+              fill: false,
+            },
+          ],
+        },
         options: {
           responsive: true, maintainAspectRatio: false,
+          animation: false,
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: (ctx) => `종료금액: ${formatWon(ctx.parsed.y)}` } },
+            tooltip: {
+              filter: (item) => Number.isFinite(item.parsed.y),
+              callbacks: {
+                title: (items) =>
+                  `${Math.round(Number(items[0].parsed.x))}개월째 — 그 달 첫 청산이 그 거래에서 난다고 칠 때`,
+                label: (ctx) => `남는 돈: ${formatWon(ctx.parsed.y)}`,
+              },
+            },
           },
           scales: {
-            x: { ticks: { color: "#94a3b8" }, title: { display: true, text: "첫 청산 시점(개월)", color: "#94a3b8" } },
+            x: {
+              type: "linear",
+              min: 0,
+              ticks: { color: "#94a3b8" },
+              title: { display: true, text: "개월", color: "#94a3b8" },
+              grid: { ...ch2ReadabilityGrid },
+              border: { display: false },
+            },
             y: {
               ticks: { color: "#94a3b8", callback: (v) => formatCompact(Number(v)) },
-              title: { display: true, text: "최종 출금액", color: "#94a3b8" },
+              title: { display: true, text: "수익금(원)", color: "#94a3b8" },
+              grid: { ...ch2ReadabilityGrid },
+              border: { display: false },
             },
           },
         },
       });
-      } catch (e) {
-        ch2MainChart = ch2ProbChart = ch2FirstLiqChart = undefined;
-      }
     }
 
-    function renderCh2Table(state) {
-      const scenarios = [1, 2, 3, 5, 7, 10];
-      const cols = [3, 6, 12, 24, 36];
-      ch2DataTableBody.textContent = "";
+    /** 몬테카를로 보조 밴드: 동일 입력이면 재시뮬 방지 */
+    let ch2MonteCarloCacheKey = "";
+    let ch2MonteCarloCachedSim = null;
+
+    function renderCh2ProbDataTable(state) {
+      if (!ch2ProbDataTableBody) return;
+      const H = state.months;
+      const p = state.p;
+      const tpm = state.tradesPerMonth;
+      ch2ProbDataTableBody.textContent = "";
       const frag = document.createDocumentFragment();
-      scenarios.forEach((pPct) => {
+      for (let m = 0; m <= H; m++) {
         const tr = document.createElement("tr");
-        const th = document.createElement("td");
-        th.textContent = `${pPct}%`;
-        tr.appendChild(th);
-        cols.forEach((m) => {
-          const p = pPct / 100;
-          const liqProb = cumulativeLiqByMonth(p, state.tradesPerMonth, m);
-          const aliveProb = 1 - liqProb;
-          const freePath = state.seed * Math.pow(1 + MONTHLY_RATE, m);
-          const withdrawnOnLiq = freePath * 0.5;
-          const expected = aliveProb * freePath + liqProb * withdrawnOnLiq;
-          const td = document.createElement("td");
-          td.textContent = `${formatWon(expected)} / ${(liqProb * 100).toFixed(1)}%`;
-          tr.appendChild(td);
-        });
+        const tdM = document.createElement("td");
+        tdM.textContent = String(m);
+        const tdP = document.createElement("td");
+        const pct = cumulativeLiqByMonth(p, tpm, m) * 100;
+        tdP.textContent = `${pct.toFixed(2)}%`;
+        tr.appendChild(tdM);
+        tr.appendChild(tdP);
         frag.appendChild(tr);
-      });
-      ch2DataTableBody.appendChild(frag);
+      }
+      ch2ProbDataTableBody.appendChild(frag);
     }
 
     function redrawCh2() {
       const state = getCh2State();
-      liqProbSlider.value = state.pPercent.toFixed(1);
-      liqProbInput.value = state.pPercent.toFixed(1);
-      liqProbLabel.textContent = `${state.pPercent.toFixed(1)}%`;
-      tradeDaysSlider.value = String(state.d);
-      tradeDaysInput.value = String(state.d);
-      tradeDaysLabel.textContent = `${state.d}일`;
-      seedSlider.value = String(clamp(Math.round(state.seed / 100000) * 100000, 100000, 50000000));
-      seedInput.value = String(state.seed);
-      seedLabel.textContent = formatCompact(state.seed);
+      liqProbSlider.value = clamp(state.pPercent, 0, 100).toFixed(1);
+      liqProbInput.value =
+        state.pPercent % 1 === 0 || Math.abs(state.pPercent - Math.round(state.pPercent)) < 1e-6
+          ? String(Math.round(state.pPercent))
+          : String(Math.round(state.pPercent * 10) / 10);
+      liqProbLabel.textContent = formatLiqPercentLabel(state.pPercent);
       ch2MonthSlider.value = String(state.months);
       ch2MonthInput.value = String(state.months);
       ch2MonthLabel.textContent = `${state.months}개월`;
 
-      renderCh2Metrics(state);
-      if (!ch2MainChart || !ch2ProbChart || !ch2FirstLiqChart) {
-        renderCh2Table(state);
-        return;
-      }
-      const sim = simulateLiquidationPath(state);
+      const noLiqPath = buildCh2NoLiquidationPath(state.months, state.monthlyWon, MONTHLY_RATE);
+      const expectedPath = computeExactExpectedPathMonthsPay(
+        state.monthlyWon,
+        state.p,
+        state.months,
+        state.tradesPerMonth,
+        state.growthPerTrade
+      );
+
+      renderCh2KeySummary(state, noLiqPath, expectedPath);
+
       const labels = Array.from({ length: state.months + 1 }, (_, i) => `${i}`);
 
+      const mainDatasets = [
+        {
+          label: "청산 없음(제1장 기준)",
+          data: noLiqPath,
+          borderColor: `hsla(${currentHueValue},95%,78%,0.88)`,
+          borderDash: [10, 6],
+          pointStyle: "line",
+          pointRadius: 0,
+          tension: 0.18,
+          fill: false,
+          borderWidth: 2,
+        },
+        {
+          label: "청산 넣은 기대 잔고",
+          data: expectedPath,
+          borderColor: `hsl(${currentHueValue},95%,68%)`,
+          pointStyle: "line",
+          pointRadius: 0,
+          tension: 0.2,
+          fill: false,
+          borderWidth: 3,
+        },
+      ];
+
+      if (showCh2McBand && showCh2McBand.checked) {
+        const mcKey = [
+          state.monthlyWon,
+          state.p,
+          state.months,
+          state.tradesPerMonth,
+          state.growthPerTrade,
+          CH2_MONTE_CARLO_RUNS,
+        ].join("|");
+        let sim;
+        if (mcKey === ch2MonteCarloCacheKey && ch2MonteCarloCachedSim) {
+          sim = ch2MonteCarloCachedSim;
+        } else {
+          const rng = createSeededRng(deriveSimulationSeed(state));
+          sim = simulateLiquidationPathMonteCarlo(state, rng);
+          ch2MonteCarloCacheKey = mcKey;
+          ch2MonteCarloCachedSim = sim;
+        }
+        mainDatasets.push(
+          {
+            label: "무작위 상단(90% 밑)",
+            data: sim.p90,
+            borderColor: "rgba(148,163,184,0.4)",
+            pointStyle: "line",
+            pointRadius: 0,
+            borderDash: [4, 4],
+            tension: 0.2,
+            fill: false,
+          },
+          {
+            label: "무작위 하단(10% 밑)",
+            data: sim.p10,
+            borderColor: "rgba(148,163,184,0.4)",
+            pointStyle: "line",
+            pointRadius: 0,
+            borderDash: [4, 4],
+            tension: 0.2,
+            fill: 2,
+            backgroundColor: "rgba(148,163,184,0.08)",
+          }
+        );
+      } else {
+        ch2MonteCarloCacheKey = "";
+        ch2MonteCarloCachedSim = null;
+      }
+
       ch2MainChart.data.labels = labels;
-      ch2MainChart.data.datasets = [
-        { label: "청산 포함 기대 경로", data: sim.expectedPath, borderColor: `hsl(${currentHueValue},95%,68%)`, pointRadius: 0, tension: 0.2, fill: false, borderWidth: 3 },
-        { label: "10~90% 구간 상단", data: sim.p90, borderColor: "rgba(148,163,184,0.45)", pointRadius: 0, borderDash: [6, 4], tension: 0.2, fill: false },
-        { label: "10~90% 구간 하단", data: sim.p10, borderColor: "rgba(148,163,184,0.45)", pointRadius: 0, borderDash: [6, 4], tension: 0.2, fill: "+1", backgroundColor: "rgba(148,163,184,0.10)" },
-      ];
-      if (showNoLiqPath.checked) {
-        ch2MainChart.data.datasets.push({
-          label: "청산 없는 기대 경로",
-          data: sim.noLiqPath,
-          borderColor: `hsla(${currentHueValue},95%,78%,0.75)`,
-          pointRadius: 0, borderDash: [8, 6], tension: 0.18, fill: false,
-        });
-      }
-      ch2MainChart.update();
+      ch2MainChart.data.datasets = mainDatasets;
+      ch2MainChart.update("none");
 
-      const probs = labels.map((_, m) => cumulativeLiqByMonth(state.p, state.tradesPerMonth, m) * 100);
-      const expectedFirstLiqMonth = 1 / (state.p * state.tradesPerMonth);
-      ch2ProbChart.data.labels = labels;
-      ch2ProbChart.data.datasets = [
-        { label: "누적 청산확률", data: probs, borderColor: `hsl(${currentHueValue},95%,70%)`, backgroundColor: `hsla(${currentHueValue},95%,62%,0.16)`, tension: 0.2, fill: true, pointRadius: 0 },
-        { label: "기대 첫 청산개월", data: labels.map((x) => (Math.abs(Number(x) - expectedFirstLiqMonth) < 0.5 ? 100 : null)), borderColor: "rgba(244,114,182,0.65)", borderDash: [5, 5], pointRadius: 0, showLine: true },
-      ];
-      ch2ProbChart.update();
+      const expectedFirstLiqMonth = state.p > 1e-15 ? 1 / (state.p * state.tradesPerMonth) : NaN;
+      const probData = Array.from({ length: state.months + 1 }, (_, m) => ({
+        x: m,
+        y: cumulativeLiqByMonth(state.p, state.tradesPerMonth, m) * 100,
+      }));
+      ch2ProbChart.data.datasets[0].data = probData;
+      ch2ProbChart.options.scales.x.max = state.months;
+      ch2ProbChart.options.plugins.ch2ExpectedLiqMonthLine = {
+        enabled: state.p > 1e-15 && Number.isFinite(expectedFirstLiqMonth),
+        month: expectedFirstLiqMonth,
+        horizonMonths: state.months,
+      };
+      ch2ProbChart.update("none");
 
-      const firstLiq = firstLiqCurve(state.seed, state.tradesPerMonth, state.months);
-      ch2FirstLiqChart.data.labels = firstLiq.xs.map((x) => String(x));
-      ch2FirstLiqChart.data.datasets = [
-        { data: firstLiq.ys, borderColor: `hsl(${currentHueValue},95%,72%)`, pointRadius: 0, tension: 0.2, fill: false },
-      ];
-      ch2FirstLiqChart.update();
-
-      renderCh2Table(state);
-    }
-
-    function applyHueToCh2Charts(h) {
-      if (ch2MainChart && ch2MainChart.data.datasets.length) {
-        const ds = ch2MainChart.data.datasets;
-        if (ds[0]) ds[0].borderColor = `hsl(${h},95%,68%)`;
-        if (ds[3]) ds[3].borderColor = `hsla(${h},95%,78%,0.75)`;
-        ch2MainChart.update("none");
-      }
-      if (ch2ProbChart && ch2ProbChart.data.datasets[0]) {
-        ch2ProbChart.data.datasets[0].borderColor = `hsl(${h},95%,70%)`;
-        ch2ProbChart.data.datasets[0].backgroundColor = `hsla(${h},95%,62%,0.16)`;
-        ch2ProbChart.update("none");
-      }
-      if (ch2FirstLiqChart && ch2FirstLiqChart.data.datasets[0]) {
-        ch2FirstLiqChart.data.datasets[0].borderColor = `hsl(${h},95%,72%)`;
-        ch2FirstLiqChart.update("none");
-      }
+      const liqProfit = computePostLiquidationCappedProfitByMonth(
+        state.monthlyWon,
+        state.growthPerTrade,
+        state.tradesPerMonth,
+        state.months
+      );
+      ch2FirstLiqChart.data.datasets[0].data = liqProfit.points;
+      ch2FirstLiqChart.options.scales.x.max = state.months;
+      ch2FirstLiqChart.update("none");
     }
 
     function debounce(fn, ms) {
@@ -1701,14 +3432,15 @@
       };
     }
 
-    const redrawSoon = debounce(redraw, 120);
-    const redrawCh2Soon = debounce(redrawCh2, 120);
+    const redrawSoon = debounce(redraw, 200);
+    const redrawCh2Soon = debounce(redrawCh2, 200);
 
     paySlider.addEventListener("input", () => {
       const man = parseInt(paySlider.value, 10);
       payInput.value = String(man * 10000);
       updatePayPill(man * 10000);
-      redraw();
+      redrawSoon();
+      redrawCh2Soon();
     });
 
     function onPayInputLive() {
@@ -1718,6 +3450,7 @@
         updatePayPill(w);
       }
       redrawSoon();
+      redrawCh2Soon();
     }
 
     payInput.addEventListener("input", onPayInputLive);
@@ -1728,13 +3461,15 @@
         updatePayPill(w);
       }
       redraw();
+      redrawCh2();
     });
 
     monthSlider.addEventListener("input", () => {
       const v = parseInt(monthSlider.value, 10);
       monthInput.value = String(v);
       monthLabel.textContent = v + "개월";
-      redraw();
+      redrawSoon();
+      redrawCh2Soon();
     });
 
     monthInput.addEventListener("input", () => {
@@ -1748,7 +3483,8 @@
       }
       syncMonthSliderToMonths(v);
       monthLabel.textContent = v + "개월";
-      redraw();
+      redrawSoon();
+      redrawCh2Soon();
     });
 
     monthInput.addEventListener("blur", () => {
@@ -1757,38 +3493,28 @@
         monthInput.value = "24";
         syncMonthSliderToMonths(24);
         monthLabel.textContent = "24개월";
-        redraw();
+        redrawSoon();
+        redrawCh2Soon();
       }
     });
 
     liqProbSlider.addEventListener("input", () => {
-      liqProbInput.value = liqProbSlider.value;
-      redrawCh2();
+      const v = parseFloat(liqProbSlider.value);
+      liqProbInput.value = Number.isFinite(v) ? String(v) : liqProbSlider.value;
+      liqProbLabel.textContent = formatLiqPercentLabel(v);
+      redrawCh2Soon();
     });
     liqProbInput.addEventListener("input", redrawCh2Soon);
     liqProbInput.addEventListener("change", redrawCh2);
 
-    tradeDaysSlider.addEventListener("input", () => {
-      tradeDaysInput.value = tradeDaysSlider.value;
-      redrawCh2();
-    });
-    tradeDaysInput.addEventListener("input", redrawCh2Soon);
-    tradeDaysInput.addEventListener("change", redrawCh2);
-
-    seedSlider.addEventListener("input", () => {
-      seedInput.value = seedSlider.value;
-      redrawCh2();
-    });
-    seedInput.addEventListener("input", redrawCh2Soon);
-    seedInput.addEventListener("change", redrawCh2);
-
     ch2MonthSlider.addEventListener("input", () => {
       ch2MonthInput.value = ch2MonthSlider.value;
-      redrawCh2();
+      ch2MonthLabel.textContent = `${ch2MonthSlider.value}개월`;
+      redrawCh2Soon();
     });
     ch2MonthInput.addEventListener("input", redrawCh2Soon);
     ch2MonthInput.addEventListener("change", redrawCh2);
-    showNoLiqPath.addEventListener("change", redrawCh2);
+    if (showCh2McBand) showCh2McBand.addEventListener("change", redrawCh2);
 
     btnGenerateTable.addEventListener("click", () => {
       renderDataTable();
@@ -1796,8 +3522,30 @@
       tableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 
+    if (btnGenerateCh2ProbTable) {
+      btnGenerateCh2ProbTable.addEventListener("click", () => {
+        renderCh2ProbDataTable(getCh2State());
+        if (ch2ProbTableSection) {
+          ch2ProbTableSection.hidden = false;
+          ch2ProbTableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      });
+    }
+
     initChart();
     initCh2Charts();
+    initOracleMetrics();
+
+    (function wireOracleMonthButtons() {
+      const root = document.getElementById("oracleMetricsFilled");
+      if (!root) return;
+      root.addEventListener("click", (e) => {
+        const t = e.target && e.target.closest && e.target.closest(".oracle-month-btn");
+        if (!t || !root.contains(t)) return;
+        const idx = parseInt(String(t.dataset.monthIndex), 10);
+        if (Number.isFinite(idx)) setOracleMonthByIndex(idx);
+      });
+    })();
 
     payInput.value = "300000";
     monthInput.value = "24";
@@ -1809,60 +3557,7 @@
     redraw();
     redrawCh2();
 
-    // --- LED-like slow hue cycle (single-family at a time) ---
-    // 195 = cyan, 215 = azure, 260 = violet, 320 = rose, 10 = ember, back to 195
-    const HUE_KEYFRAMES = [195, 215, 260, 320, 10, 195];
-    const CYCLE_MS = 60000;
-
-    function lerpHue(a, b, k) {
-      let diff = b - a;
-      if (diff > 180) a += 360;
-      else if (diff < -180) b += 360;
-      return ((a + (b - a) * k) % 360 + 360) % 360;
-    }
-
-    function hueAt(ts) {
-      const segs = HUE_KEYFRAMES.length - 1;
-      const t = ((ts % CYCLE_MS) / CYCLE_MS) * segs;
-      const i = Math.min(segs - 1, Math.floor(t));
-      return lerpHue(HUE_KEYFRAMES[i], HUE_KEYFRAMES[i + 1], t - i);
-    }
-
-    function applyHue(h) {
-      currentHueValue = h;
-      document.documentElement.style.setProperty("--hue", h.toFixed(1));
-      if (chart && chart.data.datasets[0]) {
-        const ds = chart.data.datasets[0];
-        ds.borderColor = `hsl(${h}, 95%, 68%)`;
-        ds.pointBackgroundColor = `hsl(${h}, 100%, 92%)`;
-        ds.pointBorderColor = `hsl(${h}, 95%, 55%)`;
-        if (chart.options.plugins && chart.options.plugins.tooltip) {
-          chart.options.plugins.tooltip.borderColor = `hsla(${h}, 95%, 55%, 0.5)`;
-        }
-        if (chart.options.scales && chart.options.scales.y && chart.options.scales.y.title) {
-          chart.options.scales.y.title.color = `hsl(${h}, 95%, 72%)`;
-        }
-        if (chart.options.scales && chart.options.scales.x && chart.options.scales.x.title) {
-          chart.options.scales.x.title.color = `hsl(${h}, 95%, 72%)`;
-        }
-        chart.update("none");
-      }
-      applyHueToCh2Charts(h);
-    }
-
-    if (!reduceMotion) {
-      let lastTs = 0;
-      const step = (ts) => {
-        if (ts - lastTs > 90) {
-          lastTs = ts;
-          applyHue(hueAt(ts));
-        }
-        requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    } else {
-      applyHue(195);
-    }
+    document.documentElement.style.setProperty("--hue", "195");
   </script>
   <script>
     (function () {
@@ -1871,9 +3566,8 @@
       const bgmMuteBtn = document.getElementById("bgmMuteBtn");
       const bgmVolumeSlider = document.getElementById("bgmVolumeSlider");
       const bgmVolumePct = document.getElementById("bgmVolumePct");
-      const bgmIconPlaying = document.querySelector("#bgmMuteBtn .audio-icon__glyph--playing");
-      const bgmIconPaused = document.querySelector("#bgmMuteBtn .audio-icon__glyph--paused");
-      const bgmIconMuted = document.querySelector("#bgmMuteBtn .audio-icon__glyph--muted");
+      const bgmIconOn = document.querySelector("#bgmMuteBtn .audio-icon__glyph--on");
+      const bgmIconOff = document.querySelector("#bgmMuteBtn .audio-icon__glyph--off");
       if (!bgmAudio || !bgmAudioDock || !bgmMuteBtn || !bgmVolumeSlider || !bgmVolumePct) return;
 
       const FADE_VOL_MS = 180;
@@ -1924,14 +3618,11 @@
       function bgmSyncIcon() {
         const raw = parseInt(bgmVolumeSlider.value, 10);
         const n = Number.isFinite(raw) ? raw : 72;
-        const volAudible = n > 1;
-        const mutedUi = bgmUserMuted || !volAudible;
-        let mode = "playing";
-        if (mutedUi) mode = "muted";
-        else if (bgmAudio.paused) mode = "paused";
-        if (bgmIconPlaying) bgmIconPlaying.hidden = mode !== "playing";
-        if (bgmIconPaused) bgmIconPaused.hidden = mode !== "paused";
-        if (bgmIconMuted) bgmIconMuted.hidden = mode !== "muted";
+        const off = bgmAudio.paused || bgmUserMuted || n <= 1;
+        if (bgmIconOn && bgmIconOff) {
+          bgmIconOn.hidden = off;
+          bgmIconOff.hidden = !off;
+        }
       }
 
       function bgmSyncAll() {
@@ -2025,20 +3716,22 @@
         void bgmAudio.play().catch(function () {});
       });
 
-      bgmAudioDock.addEventListener(
-        "touchstart",
-        function () {
-          bgmAudioDock.classList.add("expanded");
-        },
-        { passive: true }
-      );
-      document.addEventListener(
-        "touchstart",
-        function (e) {
-          if (!bgmAudioDock.contains(e.target)) bgmAudioDock.classList.remove("expanded");
-        },
-        { passive: true }
-      );
+      (function bgmTouchExpanded() {
+        bgmAudioDock.addEventListener(
+          "touchstart",
+          function () {
+            bgmAudioDock.classList.add("expanded");
+          },
+          { passive: true }
+        );
+        document.addEventListener(
+          "touchstart",
+          function (e) {
+            if (!bgmAudioDock.contains(e.target)) bgmAudioDock.classList.remove("expanded");
+          },
+          { passive: true }
+        );
+      })();
 
       bgmAudio.volume = 0;
       bgmSyncAll();
