@@ -149,25 +149,13 @@
       padding-bottom: 0.5rem;
     }
 
-    .site-footer__brand {
-      margin: 0 0 0.35rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: hsl(var(--hue), 88%, 72%);
-    }
-
     .site-footer__credit {
       margin: 0 0 0.85rem;
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-
-    .site-footer__architect {
-      color: var(--text);
+      font-size: 0.92rem;
       font-weight: 500;
+      color: #e2e8f0;
+      line-height: 1.55;
+      letter-spacing: 0.04em;
     }
 
     .site-footer__legal {
@@ -422,6 +410,14 @@
       align-items: center;
       gap: 0.85rem;
       flex-wrap: wrap;
+    }
+
+    /* 참고용 계산: 슬라이더 트랙을 한 줄에서 쓰이던 길이의 1/5로 (pill·간격 제외 영역 기준) */
+    .ch2-narrative-slider-row input[type="range"]#ch2NarrativeMonthSlider {
+      flex: 0 0 calc((100% - 6rem) / 5);
+      width: calc((100% - 6rem) / 5);
+      max-width: calc((100% - 6rem) / 5);
+      min-width: 2.25rem;
     }
 
     input[type="range"] {
@@ -1981,7 +1977,7 @@
           <h3 class="ch2-ref-calc-title">참고용 계산</h3>
           <div class="field">
             <label for="ch2NarrativeMonthSlider">개월 수 (참고)</label>
-            <div class="slider-row">
+            <div class="slider-row ch2-narrative-slider-row">
               <input type="range" id="ch2NarrativeMonthSlider" min="1" max="60" step="1" value="12" />
               <span class="pill" id="ch2NarrativeMonthLabel">12개월</span>
             </div>
@@ -2312,12 +2308,7 @@
 
     <footer class="site-footer" role="contentinfo" aria-label="사이트 정보">
       <div class="site-footer__inner">
-        <p class="site-footer__brand" lang="en">The Oraculum</p>
-        <p class="site-footer__credit">
-          <span lang="en">Conceived &amp; built by <span class="site-footer__architect">The Architect</span>.</span>
-          <br />
-          기획·구현: The Architect
-        </p>
+        <p class="site-footer__credit" lang="en">Built by The Architect - The Oraculum</p>
         <p class="site-footer__legal">© 2026 The Oraculum. All rights reserved.</p>
       </div>
     </footer>
@@ -3023,6 +3014,7 @@
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
               y: {
+                position: "right",
                 min: 0,
                 max: 1,
                 ticks: { color: "#94a3b8" },
@@ -3070,6 +3062,7 @@
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
               y: {
+                position: "right",
                 ticks: { color: "#94a3b8" },
                 title: { display: true, text: "복리 결과 %", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
@@ -4151,33 +4144,42 @@
               label: "무청산 시 잔고",
               data: [],
               parsing: false,
-              borderColor: `hsla(${currentHueValue},85%,72%,0.92)`,
+              showLine: true,
+              borderColor: "#22d3ee",
               backgroundColor: "transparent",
               pointRadius: 0,
-              tension: 0.2,
+              pointHoverRadius: 0,
+              pointBorderWidth: 0,
+              tension: 0.25,
               fill: false,
-              borderWidth: 2,
-              borderDash: [8, 5],
+              borderWidth: 2.5,
+              borderDash: [10, 6],
             },
             {
               label: "누적 납입 원금",
               data: [],
               parsing: false,
-              borderColor: "rgba(148, 163, 184, 0.95)",
+              showLine: true,
+              borderColor: "#fbbf24",
               pointRadius: 0,
-              tension: 0.2,
+              pointHoverRadius: 0,
+              pointBorderWidth: 0,
+              tension: 0.25,
               fill: false,
-              borderWidth: 2,
+              borderWidth: 2.5,
             },
             {
               label: "수익금 (잔고−원금)",
               data: [],
               parsing: false,
-              borderColor: `hsl(${currentHueValue},95%,68%)`,
+              showLine: true,
+              borderColor: "#e879f9",
               pointRadius: 0,
-              tension: 0.2,
+              pointHoverRadius: 0,
+              pointBorderWidth: 0,
+              tension: 0.25,
               fill: false,
-              borderWidth: 2.5,
+              borderWidth: 3,
             },
           ],
         },
@@ -4185,11 +4187,20 @@
           responsive: true, maintainAspectRatio: false,
           animation: false,
           interaction: { mode: "index", intersect: false },
+          elements: {
+            line: { borderCapStyle: "round", borderJoinStyle: "round" },
+            point: { radius: 0, hoverRadius: 0, borderWidth: 0 },
+          },
           plugins: {
             legend: {
               display: true,
               position: "top",
-              labels: { color: "#cbd5e1", boxWidth: 12, padding: 12, usePointStyle: true },
+              labels: {
+                color: "#cbd5e1",
+                boxWidth: 28,
+                padding: 14,
+                usePointStyle: false,
+              },
             },
             tooltip: {
               filter: (item) => Number.isFinite(item.parsed.y),
