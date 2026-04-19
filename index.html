@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cella Oraculum</title>
+  <title>The Oraculum : Arcaneum</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -12,6 +12,12 @@
     onerror="this.onerror=null;var s=document.createElement('script');s.src='https://unpkg.com/chart.js@4.4.1/dist/chart.umd.min.js';document.head.appendChild(s);"
   ></script>
   <style>
+    @font-face {
+      font-family: "DragonAlphabet";
+      src: url("assets/dragon-alphabet.ttf") format("truetype");
+      font-display: block;
+    }
+
     :root {
       --void: #060608;
       --text: #eceff4;
@@ -42,6 +48,7 @@
       color: var(--text);
       position: relative;
       isolation: isolate;
+      overflow-x: hidden;
       background:
         radial-gradient(ellipse 120% 80% at 50% -20%, hsla(var(--hue), 85%, 45%, 0.28), transparent 55%),
         radial-gradient(ellipse 90% 60% at 100% 100%, hsla(var(--hue), 85%, 55%, 0.14), transparent 50%),
@@ -75,6 +82,32 @@
         radial-gradient(ellipse 70% 45% at 15% 85%, hsla(200, 60%, 38%, 0.07), transparent 50%);
     }
 
+    #matrix-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.48;
+    }
+
+    .matrix-scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.015) 0,
+        rgba(255, 255, 255, 0.015) 1px,
+        rgba(0, 0, 0, 0) 3px,
+        rgba(0, 0, 0, 0) 6px
+      );
+      mix-blend-mode: screen;
+      opacity: 0.08;
+    }
+
     .wrap {
       max-width: 1080px;
       margin: 0 auto;
@@ -89,11 +122,18 @@
     }
 
     header h1 {
-      font-size: 1.65rem;
+      font-size: 3.3rem;
       font-weight: 600;
       letter-spacing: 0.02em;
       margin: 0;
+      line-height: 1.12;
       text-shadow: 0 0 14px hsla(var(--hue), 95%, 55%, 0.28), 0 0 6px hsla(var(--hue), 95%, 60%, 0.15);
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: clamp(1.5rem, 9vw, 3.3rem);
+      }
     }
 
     .chapter {
@@ -204,7 +244,25 @@
     .ch2-mc-row {
       grid-column: 1 / -1;
       margin-top: 0.25rem;
-      padding-top: 0.4rem;
+      padding-top: 0.35rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ch2-input-card .ch2-input-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 720px) {
+      .ch2-input-card .ch2-input-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+
+      .ch2-input-card .ch2-mc-row {
+        grid-column: 1 / -1;
+      }
     }
 
     .field {
@@ -446,6 +504,45 @@
       color: var(--text);
     }
 
+    .table-section-lead {
+      margin: 0 0 0.75rem;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .table-section-lead .ch2-diff-label {
+      color: #fde68a;
+      font-weight: 600;
+    }
+
+    .table-section-lead .ch2-diff-label--gain {
+      color: #86efac;
+    }
+
+    .data-table--ch2-main thead .ch2-table-diff {
+      color: #fef3c7;
+      font-weight: 600;
+      background: hsla(var(--hue), 45%, 24%, 0.55);
+    }
+
+    .data-table--ch2-main thead .ch2-table-diff--gain {
+      color: #d1fae5;
+      background: hsla(150, 35%, 22%, 0.45);
+    }
+
+    .ch2-diff-cell-loss {
+      color: #fecaca !important;
+      font-weight: 700;
+      background: rgba(127, 29, 29, 0.22) !important;
+    }
+
+    .ch2-diff-cell-gain {
+      color: #bbf7d0 !important;
+      font-weight: 700;
+      background: rgba(20, 83, 45, 0.22) !important;
+    }
+
     .table-hint {
       margin: 0 0 0.65rem;
       font-size: 0.76rem;
@@ -609,14 +706,31 @@
 
     .ch2-metrics-wrap {
       margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
-    .ch2-metrics-wrap > .ch2-key-context {
-      margin-bottom: 0.9rem;
-      padding: 0.85rem 1rem 0.95rem;
+    .ch2-metrics-wrap .ch2-input-card {
+      margin-bottom: 1rem;
+    }
+
+    .ch2-key-context--banner {
+      margin: 0 0 1rem;
+      padding: 0.95rem 1.1rem;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #e2e8f0;
+      font-weight: 400;
       border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid hsla(var(--hue), 75%, 52%, 0.38);
+      background: linear-gradient(135deg, hsla(var(--hue), 42%, 20%, 0.92), hsla(var(--hue), 32%, 12%, 0.88));
+      box-shadow: 0 0 20px hsla(var(--hue), 90%, 55%, 0.1);
+    }
+
+    .ch2-key-context--banner strong {
+      color: #f8fafc;
+      font-weight: 600;
     }
 
     .ch2-key-context-group {
@@ -689,6 +803,16 @@
       gap: 0.75rem;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       margin-bottom: 1rem;
+    }
+
+    .ch2-key-summary--toss {
+      gap: 0.85rem;
+    }
+
+    .ch2-key-article-shortfall .ch2-key-value--loss {
+      color: #fca5a5 !important;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
     .ch2-key-summary article {
@@ -865,6 +989,25 @@
       }
     }
 
+    .ch4-iti-chart-card {
+      position: relative;
+    }
+    .ch4-iti-chart-wrap {
+      padding-bottom: 2.65rem;
+    }
+    .ch4-iti-table-btn {
+      position: absolute;
+      right: 0.75rem;
+      bottom: 0.55rem;
+      z-index: 2;
+    }
+
+    /* ITI 요약 표: ‘별 ITI 추이’ 카드 바로 아래에 붙임 */
+    .oracle-metrics-chart-pair .table-section.ch4-table-nested {
+      margin-top: 0.25rem;
+      margin-bottom: 0.15rem;
+    }
+
     /* 제3·4장: 메트릭 리포트 */
     .ch-intro {
       margin: 0 0 1.35rem;
@@ -890,6 +1033,219 @@
       font-size: 0.9rem;
       color: #e2e8f0;
       font-weight: 500;
+    }
+
+    .ch-principle {
+      margin: 0.85rem 0 0;
+      padding: 0.85rem 1rem;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .ch-principle strong {
+      color: #e2e8f0;
+    }
+
+    .ch-principle .ch-math {
+      display: block;
+      margin-top: 0.45rem;
+      font-family: "IBM Plex Sans KR", ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      word-break: break-all;
+    }
+
+    .iti-validity-badge {
+      display: inline-block;
+      margin-bottom: 0.35rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #e2e8f0;
+      background: hsla(var(--hue), 40%, 28%, 0.85);
+      border: 1px solid hsla(var(--hue), 65%, 50%, 0.35);
+    }
+
+    .ch-k-triad {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      margin-bottom: 0.25rem;
+    }
+
+    .ch-k-triad-note {
+      grid-column: 1 / -1;
+      margin: 0;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: var(--muted);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* 제3장 K-value: 토스형 대시보드 (그리드 대신 세로 플로우) */
+    .ch2-key-summary.ch3-k-dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ch3-insight-banner {
+      margin: 0;
+      padding: 0.95rem 1.1rem;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #e8edf5;
+      font-weight: 500;
+      border-radius: 14px;
+      border: 1px solid hsla(var(--hue), 75%, 52%, 0.45);
+      background: linear-gradient(135deg, hsla(var(--hue), 45%, 22%, 0.95), hsla(var(--hue), 35%, 14%, 0.88));
+      box-shadow: 0 0 24px hsla(var(--hue), 90%, 55%, 0.12);
+    }
+
+    .ch3-k-hero-row {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      align-items: stretch;
+    }
+
+    .ch3-k-hero-card {
+      padding: 1rem 1.1rem 1.05rem;
+      border-radius: 16px;
+      border: 1px solid hsla(var(--hue), 70%, 55%, 0.35);
+      background: hsla(var(--hue), 48%, 20%, 0.55);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .ch3-k-hero-card--solo .ch3-k-hero-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #94a3b8;
+      margin: 0 0 0.35rem;
+    }
+
+    .ch3-k-hero-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #f8fafc;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    .ch3-k-hero-card--solo .ch3-k-hero-value {
+      font-size: 1.95rem;
+    }
+
+    .ch3-k-hero-sub {
+      margin: 0.5rem 0 0;
+      font-size: 0.82rem;
+      color: #b8c5d6;
+    }
+
+    .ch3-k-cap-warn {
+      margin: 0.55rem 0 0;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      color: #fca5a5;
+      font-weight: 500;
+    }
+
+    .ch3-k-triad-grid {
+      display: grid;
+      gap: 0.55rem;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .ch3-k-triad-grid article {
+      padding: 0.75rem 0.85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .ch3-feas-card {
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(14, 14, 20, 0.75);
+    }
+
+    .ch3-feas-card .ch3-k-hero-title {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin: 0 0 0.35rem;
+    }
+
+    .ch3-feas-card .ch3-k-hero-value {
+      font-size: 1.35rem;
+    }
+
+    .ch3-compare-strip {
+      padding: 1rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .ch3-compare-strip h4 {
+      margin: 0 0 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    .ch3-compare-grid {
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .ch3-compare-line {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    .ch3-compare-line.is-secondary {
+      font-size: 0.82rem;
+      color: #94a3b8;
+    }
+
+    .ch3-compare-line.is-primary {
+      font-size: 0.98rem;
+      color: #f1f5f9;
+    }
+
+    .ch3-compare-line strong {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+
+    .ch3-compare-delta {
+      margin: 0.65rem 0 0;
+      padding-top: 0.65rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      font-size: 0.86rem;
+      color: #fde68a;
+      font-weight: 600;
+    }
+
+    .ch3-meta-foot {
+      margin: 0;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      color: var(--muted);
     }
 
     .metrics-empty {
@@ -1043,7 +1399,7 @@
       box-shadow: 0 0 12px hsla(var(--hue), 90%, 55%, 0.22);
     }
 
-    /* 오디오 독 (Cella Oraculum 인트로와 동일 계열; id는 bgm 접두 / 차트 스크립트와 분리) */
+    /* 오디오 독 (The Oraculum 인트로와 동일 계열; id는 bgm 접두 / 차트 스크립트와 분리) */
     #bgmAudioDock.audio-dock {
       position: fixed;
       right: max(24px, env(safe-area-inset-right));
@@ -1191,26 +1547,28 @@
   </style>
 </head>
 <body>
+  <canvas id="matrix-bg" width="300" height="150" aria-hidden="true"></canvas>
+  <div class="matrix-scanlines" aria-hidden="true"></div>
   <div class="wrap">
     <header>
-      <h1 lang="la">Cella Oraculum</h1>
+      <h1 lang="en">The Oraculum : Arcaneum</h1>
     </header>
 
     <p class="report-preamble">
-      이 보고서는 네 단계로 당신의 전략을 진단합니다.<br />
-      제1장에서는 청산이 없는 <strong>이상적인 기준선</strong>을, 제2장에서는 청산 리스크가 현실화될 때의 <strong>생존 기대치</strong>를 보여줍니다. 이어지는 제3장에서는 과거 데이터를 바탕으로 한 <strong>최적의 자산 투입 비중</strong>을 역산하고, 마지막 제4장에서는 현재의 성과가 단순한 요행인지 검증하는 <strong>희귀도 테스트</strong>를 진행합니다.
+      이 보고서는 네 단계로, <strong>내 돈이 어떻게 불어날 수 있는지</strong>와 <strong>전략이 얼마나 공격적·희귀한지</strong>를 함께 봅니다.<br />
+      1장은 <strong>얼마나 벌 수 있을지(복리 잠재력)</strong>, 2장은 <strong>청산이 끼면 어떻게 줄어드는지</strong>, 3장은 <strong>가속 페달(투입 비중)을 어디까지 밟았으면 했는지</strong>, 4장은 <strong>지금 성과가 운인지 실력에 가까운지</strong>를 짚습니다.
     </p>
 
     <section class="chapter" aria-labelledby="ch1-heading">
       <h2 id="ch1-heading" class="chapter-heading">
         <span class="chapter-num">제1장</span>
-        <span class="chapter-title">기준 경로</span>
+        <span class="chapter-title">기대 수익</span>
       </h2>
       <p class="ch1-intro">
-        <strong>청산이 없다고 가정했을 때의 이상적인 자산 성장 곡선입니다.</strong> 실제 투자에서는 청산, 수수료, 심리적 요인 등이 작용하므로, 이 수치는 단순히 '복리의 잠재력'을 확인하는 참고용 지표로만 활용하세요.
+        <strong>“이 조건이면 최대 얼마까지 불어날 수 있을까?”</strong>에 답하는 구간이에요. 월 손익 가정이 맞는 한에서, 복리로 쌓였을 때의 <strong>수익 한계치</strong>를 보여 줍니다.
       </p>
 
-      <section class="control-card" aria-label="매달 넣는 돈과 기간(기준선)">
+      <section class="control-card" aria-label="월 납입과 투자 기간">
         <div class="summary" id="summary" aria-live="polite"></div>
         <div class="control-grid">
           <div class="field field-col field-col--left">
@@ -1226,7 +1584,7 @@
             </div>
           </div>
           <div class="field field-col field-col--right">
-            <label for="monthSlider">시뮬레이션 기간</label>
+            <label for="monthSlider">투자 기간</label>
             <div class="slider-row">
               <input type="range" id="monthSlider" min="0" max="48" step="1" value="24" />
               <span class="pill" id="monthLabel">24개월</span>
@@ -1242,7 +1600,7 @@
 
       <section class="chart-card" aria-label="기준 경로 잔고">
         <div class="chart-head">
-          <h2>청산 없을 때 잔고</h2>
+          <h2>수익 한계치 (복리 잠재력)</h2>
         </div>
         <div class="chart-wrap">
           <canvas id="chart"></canvas>
@@ -1253,7 +1611,7 @@
       </section>
 
       <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
-        <h3 id="tableHeading">기준 경로 표</h3>
+        <h3 id="tableHeading">기대 수익 표</h3>
         <div class="table-scroll">
           <table class="data-table" id="dataTable">
             <thead>
@@ -1277,47 +1635,45 @@
         <span class="chapter-title">청산이 들어오면</span>
       </h2>
       <p class="ch2-chapter-lead">
-        <strong>단 한 번의 청산이 모든 것을 바꿀 수 있습니다.</strong><br />이 장에서는 제1장의 조건(월 30% 수익)에 '거래당 청산 확률'을 추가하여 현실적인 생존 시나리오를 보여줍니다.
+        <strong>청산 한 번이면, 아까 본 기대 수익 곡선은 그대로 유지되지 않아요.</strong><br />1장과 같은 월 납입·수익 가정에 <strong>거래마다 청산 확률</strong>만 얹어서, 내 돈이 어떻게 줄어드는지 보여 드려요.
       </p>
 
-      <section class="control-card" aria-label="청산 리스크 입력">
-        <div class="control-grid">
-          <div class="field field-col field-col--left">
-            <label for="liqProbSlider">거래당 청산 확률 (0~100%)</label>
-            <div class="slider-row">
-              <input type="range" id="liqProbSlider" min="0" max="100" step="0.1" value="1" />
-              <span class="pill" id="liqProbLabel">1%</span>
-            </div>
-            <label for="liqProbInput" class="hint">100% 까지 입력 가능</label>
-            <div class="input-with-suffix">
-              <input class="num-input" type="number" id="liqProbInput" min="0" max="100" step="0.1" value="1" />
-              <span class="input-suffix">%</span>
-            </div>
-          </div>
-          <div class="field field-col field-col--right">
-            <label for="ch2MonthSlider">분석 기간 설정</label>
-            <div class="slider-row">
-              <input type="range" id="ch2MonthSlider" min="1" max="60" step="1" value="12" />
-              <span class="pill" id="ch2MonthLabel">12개월</span>
-            </div>
-            <label for="ch2MonthInput" class="hint">60개월 까지 입력 가능</label>
-            <div class="input-with-suffix">
-              <input class="num-input" type="number" id="ch2MonthInput" min="1" max="60" step="1" value="12" />
-              <span class="input-suffix">개월</span>
-            </div>
-          </div>
-          <div class="ch2-mc-row">
-            <label class="toggle-row" for="showCh2McBand">
-              <input type="checkbox" id="showCh2McBand" />
-              무작위 시뮬레이션(Monte Carlo) 예측 밴드 보기
-            </label>
-          </div>
-        </div>
-      </section>
-
       <div class="ch2-metrics-wrap">
-        <p class="ch2-key-context" id="ch2KeyContext" aria-live="polite"></p>
-        <div class="ch2-key-summary" id="ch2KeySummary" aria-label="선택 기간 요약"></div>
+        <section class="control-card ch2-input-card" aria-label="청산 리스크 및 분석 기간">
+          <div class="ch2-input-grid">
+            <div class="field">
+              <label for="liqProbSlider">거래마다 청산 확률</label>
+              <div class="slider-row">
+                <input type="range" id="liqProbSlider" min="0" max="100" step="0.1" value="1" />
+                <span class="pill" id="liqProbLabel">1%</span>
+              </div>
+              <div class="input-with-suffix">
+                <input class="num-input" type="number" id="liqProbInput" min="0" max="100" step="0.1" value="1" aria-label="청산 확률 퍼센트" />
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="ch2MonthSlider">분석 기간</label>
+              <div class="slider-row">
+                <input type="range" id="ch2MonthSlider" min="1" max="60" step="1" value="12" />
+                <span class="pill" id="ch2MonthLabel">12개월</span>
+              </div>
+              <div class="input-with-suffix">
+                <input class="num-input" type="number" id="ch2MonthInput" min="1" max="60" step="1" value="12" aria-label="분석 기간 개월 수" />
+                <span class="input-suffix">개월</span>
+              </div>
+            </div>
+            <div class="ch2-mc-row">
+              <label class="toggle-row" for="showCh2McBand">
+                <input type="checkbox" id="showCh2McBand" />
+                Monte Carlo 예측 밴드 보기
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <p class="ch2-key-context ch2-key-context--banner" id="ch2KeyContext" aria-live="polite"></p>
+        <div class="ch2-key-summary ch2-key-summary--toss" id="ch2KeySummary" aria-label="선택 기간 요약"></div>
       </div>
 
       <section class="chart-stack" aria-label="청산 리스크 차트">
@@ -1327,9 +1683,6 @@
           </div>
           <div class="chart-wrap chart-wrap--mid">
             <canvas id="ch2ProbChart"></canvas>
-          </div>
-          <div class="chart-footer">
-            <button type="button" class="btn-table" id="btnGenerateCh2ProbTable">표 생성</button>
           </div>
         </section>
 
@@ -1341,6 +1694,9 @@
           </div>
           <div class="chart-wrap">
             <canvas id="ch2MainChart"></canvas>
+          </div>
+          <div class="chart-footer">
+            <button type="button" class="btn-table" id="btnGenerateCh2MainTable">표 생성</button>
           </div>
         </section>
 
@@ -1357,17 +1713,25 @@
         </section>
       </section>
 
-      <section class="table-section" id="ch2ProbTableSection" hidden aria-labelledby="ch2ProbTableHeading">
-        <h3 id="ch2ProbTableHeading">청산 확률 표</h3>
+      <section class="table-section" id="ch2MainTableSection" hidden aria-labelledby="ch2MainTableHeading">
+        <h3 id="ch2MainTableHeading">기대 잔고 월별 비교</h3>
+        <p class="table-section-lead">
+          <strong class="ch2-diff-label">행복 회로 대비 증발</strong>은 청산이 없을 때(1장 곡선)와 리스크 반영 잔고의 차이,
+          <strong class="ch2-diff-label ch2-diff-label--gain">리스크·무복리 차이</strong>는 같은 리스크 반영 잔고와 단순 납입만 누적한 경우의 차이예요.
+        </p>
         <div class="table-scroll">
-          <table class="data-table" id="ch2ProbDataTable">
+          <table class="data-table data-table--ch2-main" id="ch2MainDataTable">
             <thead>
               <tr>
-                <th scope="col">기간 (개월)</th>
-                <th scope="col">누적 청산 확률</th>
+                <th scope="col">개월</th>
+                <th scope="col">청산 없을 때</th>
+                <th scope="col">리스크 반영</th>
+                <th scope="col">무복리 누적</th>
+                <th scope="col" class="ch2-table-diff">행복 회로 대비 증발</th>
+                <th scope="col" class="ch2-table-diff ch2-table-diff--gain">리스크 반영 − 무복리</th>
               </tr>
             </thead>
-            <tbody id="ch2ProbDataTableBody"></tbody>
+            <tbody id="ch2MainDataTableBody"></tbody>
           </table>
         </div>
       </section>
@@ -1377,38 +1741,39 @@
 
     <div id="oracleMetricsRoot">
       <p id="oracleMetricsEmpty" class="metrics-empty" hidden>
-        아직 숫자 파일이 없습니다. 같은 폴더에 <code>btcusdt_12h.csv</code>를 둔 뒤
-        <code>python emit_metrics_data_js.py</code>로 <code>metrics_data.js</code>를 만든 다음 페이지를 다시 열어 주세요.
+        3·4장 숫자를 불러오려면, 같은 폴더에 <code>btcusdt_12h.csv</code>를 두고 <code>python emit_metrics_data_js.py</code>로
+        <code>metrics_data.js</code>를 만든 뒤 페이지를 새로 열어 주세요.
       </p>
 
       <section class="chapter" aria-labelledby="ch3-heading">
         <h2 id="ch3-heading" class="chapter-heading">
           <span class="chapter-num">제3장</span>
-          <span class="chapter-title">K-value</span>
+          <span class="chapter-title">최적 투입 비중 (K)</span>
         </h2>
 
         <div class="ch-intro" aria-label="K-value 서문">
           <p class="lead" style="margin: 0">
-            “과거의 거래들을 돌아봤을 때, 가속 페달을 얼마나 세게 밟았어야 수익이 가장 컸을까?”
+            “지나간 장을 다시 돌아보면, 가속 페달을 얼마나 밟았어야 내 돈이 가장 크게 불었을까?”
           </p>
           <p style="margin: 0.65rem 0 0">
-            K-value는 지나간 거래 내역을 바탕으로 최적의 투자 비중을 역산해 본 지표입니다. 현재 기본 설정은 총자산의 절반(<strong
-              style="color: #e2e8f0; font-weight: 600">k=0.5</strong>)을 투입하는 것입니다.
+            <strong>K-value</strong>는 그 질문에 숫자로 답해 줘요. 이미 끝난 거래 줄을 그대로 두고, <strong>총자산 중 몇 %를 넣었을 때 복리가 가장 컸는지</strong>를
+            찾습니다. 지금 라이브 설정은 대략 절반(<strong style="color: #e2e8f0; font-weight: 600">k=0.5</strong>)이에요.
           </p>
           <p style="margin: 0.65rem 0 0">
-            만약 K값이 높게 나왔다면 “과거 장에서는 더 과감하게 배팅했어도 좋았다”는 뜻이고, 반대로 낮게 나왔다면 “지금의 절반 투입 전략도 당시 기준으로는 꽤
-            공격적이었다”는 뜻이 됩니다.
+            숫자가 크면 “그때는 페달을 더 밟아도 과거 결과만 보면 불어났겠다”, 작으면 “지금 절반 넣는 것도 그 장에선 꽤 공격적이었다”에 가깝게 읽으면 됩니다.
           </p>
-          <p style="margin: 0.65rem 0 0">
-            다만 이 값이 앞으로의 수익을 보장하거나 AI가 방향성을 잘 맞춘다는 증거는 아닙니다. 단순히 ‘결과론적으로 봤을 때 가장 완벽했던 배팅 규모’를 보여주는
-            거울일 뿐입니다.
-          </p>
+          <div class="ch-principle">
+            <strong>원리:</strong> 로그 효용을 키우는 켈리(Kelly) 아이디어를 빌려, 거래마다 수익률
+            <span style="font-style: italic">r</span><sub>i</sub>가 있을 때 복리 성장
+            <span class="ch-math">f(k) = ∏<sub>i</sub>(1 + 2k·<span style="font-style: italic">r</span><sub>i</sub>)</span>
+            를 크게 만드는 <span style="font-style: italic">k</span>를 <strong>이분법</strong>으로 찾습니다. (구현·제약은 데이터 파이프라인에 따름)
+          </div>
         </div>
       </section>
 
       <div id="oracleMetricsFilled" hidden>
-        <div class="oracle-month-toolbar" aria-label="제3장 개월차 선택">
-          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh3">보고 싶은 개월차</span>
+        <div class="oracle-month-toolbar" aria-label="제3장 데이터 분석 시점">
+          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh3">데이터 분석 시점</span>
           <div
             id="oracleMonthButtonsCh3"
             class="oracle-month-buttons"
@@ -1423,8 +1788,7 @@
                   <h2 class="ch2-chart-plain">월별 K-value 추이</h2>
                 </div>
                 <p class="ch2-chart-blurb">
-                  지나간 거래들을 누적해 가며, 각 시점마다 ‘가장 완벽했던 배팅 규모(K)’가 어떻게 변했는지 보여줍니다. 그래프의 점을 누르면 해당 월의 상세 데이터를 볼 수
-                  있습니다.
+                  거래가 쌓일수록 “그 시점까지 보면 페달을 어디까지 밟았으면 최대였는지”가 바뀝니다. 점을 누르면 그 시점 상세로 맞춰져요.
                 </p>
                 <div class="chart-wrap chart-wrap--mid">
                   <canvas id="ch3KHistoryChart"></canvas>
@@ -1433,7 +1797,7 @@
 
               <section class="chart-card" aria-label="K-곡선">
                 <div class="chart-head ch2-chart-head-ruled">
-                  <h2 class="ch2-chart-plain">고른 달: 세기에 따른 복리 결과</h2>
+                  <h2 class="ch2-chart-plain">얼마를 넣었어야 수익이 가장 컸을까?</h2>
                 </div>
                 <p class="ch2-chart-blurb">
                   세로축은 k를 바꿨을 때의 복리 결과(%)입니다. 기본 설정(k=0.5), 적용 K값, 이론상 최적 K를 점으로 표시합니다.
@@ -1445,11 +1809,11 @@
               </section>
             </div>
 
-            <div class="ch2-key-summary" id="ch3DetailCards" aria-label="기준월 K-value 상세"></div>
+            <div class="ch2-key-summary ch3-k-dashboard" id="ch3DetailCards" aria-label="K값 요약, 수익률 비교, 분석 메타"></div>
             <p id="ch3PartialHint" class="ch-partial-hint" hidden></p>
 
             <div class="ch-band" aria-label="K-value 구간 해석">
-              <h3>이 수치를 어떻게 읽어야 할까요?</h3>
+              <h3>가속 페달, 이 정도면 이렇게 읽으면 돼요</h3>
               <ul class="ch-band-grid">
                 <li><strong>0.25 미만</strong> — 데이터가 조금만 틀어져도 위험할 수 있었던 아주 보수적인 장.</li>
                 <li><strong>0.25 ~ 0.50</strong> — 현재 기준(50% 투입)보다 비중을 줄이는 게 안전했던 구간.</li>
@@ -1458,15 +1822,15 @@
                 <li><strong>1.00 초과</strong> — 시스템 최대 한도(1.0)를 초과한 수치로, 한도 내에서 잘라서 적용합니다.</li>
               </ul>
               <p class="ch-partial-hint" style="margin-top: 0.65rem">
-                ⚠️ 주의: K값이 높게 나왔다는 건 ‘결과적으로 그때 돈을 더 넣었어도 안 터졌다’는 뜻이지, ‘AI의 예측 타율이 높았다’는 뜻은 아닙니다. 생존 여부나 시장
-                분위기는 별도로 판단해야 합니다.
+                페달을 세게 밟았다고 해서 <strong>판단이 좋았다</strong>는 뜻은 아니에요. “그때 그 거래 줄에선 더 넣어도 버텼다”에 가깝습니다. 앞으로도 그럴지는
+                따로 봐야 해요.
               </p>
             </div>
 
             <section class="table-section" aria-labelledby="ch3TableHeading">
-              <h3 id="ch3TableHeading">K-value 요약 표</h3>
+              <h3 id="ch3TableHeading">투입 비중(K) 요약 표</h3>
               <p class="table-hint">
-                K는 줄마다 <strong>누적 거래</strong> 기준입니다. ‘해당 월’ 열은 해당 월에 청산된 건수(참고)입니다.
+                한 줄마다 그 시점까지 <strong>쌓인 거래</strong>를 기준으로 K를 구해요. ‘해당 월 청산’은 그달에만 청산된 건수(참고)예요.
               </p>
               <div class="table-scroll">
                 <table class="data-table" id="ch3SummaryTable">
@@ -1475,9 +1839,9 @@
                       <th scope="col">월</th>
                       <th scope="col">해당 월 청산 건수</th>
                       <th scope="col">누적 거래 건수</th>
-                      <th scope="col">적용 K값</th>
-                      <th scope="col">이론상 최적값</th>
-                      <th scope="col">최대 한도 적용 K값</th>
+                      <th scope="col">실제 적용 K</th>
+                      <th scope="col">이론상 최적(Uncapped)</th>
+                      <th scope="col">제한된 최적(Capped)</th>
                       <th scope="col">기본 설정 기준 복리(%)</th>
                       <th scope="col">적용 K값 기준 복리(%)</th>
                     </tr>
@@ -1493,26 +1857,27 @@
         <section class="chapter" aria-labelledby="ch4-heading">
           <h2 id="ch4-heading" class="chapter-heading">
             <span class="chapter-num">제4장</span>
-            <span class="chapter-title">Imperfect Truth Index</span>
+            <span class="chapter-title">성과의 희귀성 (ITI)</span>
           </h2>
 
           <div class="ch-intro" aria-label="ITI 서문">
-            <p class="lead" style="margin: 0">“지금의 이 성과가 단순히 운이 좋아서 만들어진 걸까?”</p>
+            <p class="lead" style="margin: 0">“지금 이 수익, 그냥 운 아니야?”</p>
             <p style="margin: 0.65rem 0 0">
-              ITI는 내 실제 성과가 무작위의 시장에서 얼마나 희귀한 결과인지를 보여주는 지표입니다.
+              <strong>ITI</strong>는 그 질문에 숫자로 답하려는 지표예요. 내 거래와 같은 규칙으로, 가격만 무작위로 돌린 비교군을 많이 만들어 봅니다.
             </p>
             <p style="margin: 0.65rem 0 0">
-              쉽게 말해, 컴퓨터에게 나와 똑같은 제약 조건(거래 횟수, 평균 보유 시간, 레버리지 등)을 주고 수만 번 무작위로 거래하게 했을 때,
-              <strong>‘나보다 수익이 좋게 나온 경우가 상위 몇 %나 되는가?’</strong>를 묻는 것입니다.
+              그중에서 <strong>나보다 수익이 더 나온 경우가 얼마나 되는지</strong>를 퍼센트로 보여 줘요. 낮을수록 “그냥 운으로 치기엔 드문 쪽”에 가깝게 읽을 수
+              있어요.
             </p>
-            <p style="margin: 0.65rem 0 0">
-              ITI 값이 낮을수록 내 성과가 단순한 요행이 아닐 가능성이 큽니다. 하지만 이 역시 절대적인 ‘실력 증명서’는 아니며, 무작위 실험의 조건(12시간봉, 수수료
-              세팅 등)을 어떻게 두느냐에 따라 숫자는 달라질 수 있습니다.
-            </p>
+            <div class="ch-principle">
+              <strong>원리:</strong> 몬테카를로 시뮬레이션에 가까운 방식으로, 실제와 같은 조건(횟수·시간·레버리지 등)의 무작위 거래를 대략
+              <strong>10만 번</strong> 돌린 뒤, 나보다 수익이 높은 경우의 비율로 <strong>확률적 희귀도</strong>(p-value에 가까운 해석)를 봅니다. 조건을 바꾸면
+              숫자도 달라져요.
+            </div>
           </div>
 
-        <div class="oracle-month-toolbar" aria-label="제4장 개월차 선택">
-          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh4">보고 싶은 개월차</span>
+        <div class="oracle-month-toolbar" aria-label="제4장 데이터 분석 시점">
+          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh4">데이터 분석 시점</span>
           <div
             id="oracleMonthButtonsCh4"
             class="oracle-month-buttons"
@@ -1522,15 +1887,41 @@
 
           <div id="ch4Dynamic">
             <div class="oracle-metrics-chart-pair" aria-label="ITI 월별 추이 및 Monte Carlo 수렴">
-              <section class="chart-card" aria-label="월별 ITI">
+              <section class="chart-card ch4-iti-chart-card" aria-label="월별 ITI">
                 <div class="chart-head ch2-chart-head-ruled">
-                  <h2 class="ch2-chart-plain">월별 ITI 추이 (희귀성 지표)</h2>
+                  <h2 class="ch2-chart-plain">별 ITI 추이 (희귀성 지표)</h2>
                 </div>
                 <p class="ch2-chart-blurb">
-                  첫 거래부터 해당 월까지 누적된 내 성과가, 무작위의 시장에서 얼마나 나오기 힘든 결과인지(%)를 보여줍니다.
+                  첫 거래부터 해당 월까지 누적된 내 성과가, 무작위의 시장에서 <strong>얼마나 나오기 힘든 결과인지</strong>(%)를 보여줍니다.
                 </p>
-                <div class="chart-wrap chart-wrap--mid">
+                <div class="chart-wrap chart-wrap--mid ch4-iti-chart-wrap">
                   <canvas id="ch4ItiHistoryChart"></canvas>
+                </div>
+                <button type="button" class="btn-table ch4-iti-table-btn" id="btnGenerateCh4Table">표 생성</button>
+              </section>
+
+              <section class="table-section ch4-table-nested" id="ch4TableSection" hidden aria-labelledby="ch4TableHeading">
+                <h3 id="ch4TableHeading">ITI 요약 표</h3>
+                <p class="table-hint">
+                  실제 복리·ITI·비교 요약은 첫 달부터 해당 월까지 <strong>누적 거래</strong> 기준입니다. ‘해당 월’ 열은 해당 월 청산 건수(참고)입니다. 제3장 K와 같은 줄을 씁니다.
+                </p>
+                <div class="table-scroll">
+                  <table class="data-table" id="ch4SummaryTable">
+                    <thead>
+                      <tr>
+                        <th scope="col">월</th>
+                        <th scope="col">해당 월 청산 건수</th>
+                        <th scope="col">누적 거래 건수</th>
+                        <th scope="col">실제 수익률 %</th>
+                        <th scope="col">희귀도 ITI %</th>
+                        <th scope="col">비교 반복 횟수</th>
+                        <th scope="col">평균 포지션 보유 시간</th>
+                        <th scope="col">평균 포지션 관망 시간</th>
+                        <th scope="col">레버리지</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ch4SummaryTableBody"></tbody>
+                  </table>
                 </div>
               </section>
 
@@ -1539,7 +1930,7 @@
                   <h2 class="ch2-chart-plain">신뢰도 검증 (Monte Carlo 수렴)</h2>
                 </div>
                 <p class="ch2-chart-blurb">
-                  무작위 실험 횟수가 늘어날수록 ITI 값이 어떻게 안정화(수렴)되는지 보여주는 차트입니다.
+                  비교를 몇 번이나 돌렸는지 늘려 가며, ITI가 어디로 수렴하는지 확인해요. 숫자가 안정적으로 찍히면 더 믿고 볼 수 있어요.
                 </p>
                 <div class="chart-wrap chart-wrap--mid">
                   <canvas id="ch4ConvergenceChart"></canvas>
@@ -1551,44 +1942,18 @@
             <p id="ch4PartialHint" class="ch-partial-hint" hidden></p>
 
             <div class="ch-band" aria-label="ITI 구간 해석">
-              <h3>ITI 값, 어떻게 해석할까요?</h3>
+              <h3>ITI, 이렇게 보면 돼요</h3>
               <ul class="ch-band-grid">
                 <li>
-                  <strong>1% 미만 (상위 1%)</strong> — 단순히 운으로 치부하기엔 매우 희귀한, 압도적인 퍼포먼스입니다.
+                  <strong>1% 미만</strong> — 무작위로 비슷한 걸 많이 돌려도 이만큼 나오기 어려운 편. <em>운으로 치기엔 아깝다</em> 쪽.
                 </li>
                 <li>
-                  <strong>1% ~ 5%</strong> — 요행보다는 전략의 우위가 작용했을 확률이 높습니다. (현재 2개월차 3.14% 해당)
+                  <strong>1% ~ 5%</strong> — 꽤 드문 편. <strong>전략이 도움이 됐을 수 있다</strong>는 쪽으로 읽을 여지가 있어요.
                 </li>
-                <li><strong>5% ~ 15%</strong> — 다소 애매한 구간입니다. 무작위 비교 조건을 조금만 바꿔도 수치가 크게 흔들릴 수 있습니다.</li>
-                <li><strong>15% 이상</strong> — 평범한 결과입니다. 이 수치만으로 전략의 우수성을 증명하기는 어렵습니다.</li>
+                <li><strong>5% ~ 15%</strong> — 그럭저럭 흔한 편과 드문 편 사이. 비교 조건을 바꾸면 숫자도 꽤 움직여요.</li>
+                <li><strong>15% 이상</strong> — 꽤 흔하게 나올 수 있는 구간. 이 숫자만으로 “대박 전략”이라고 말하긴 어려워요.</li>
               </ul>
             </div>
-
-            <section class="table-section" aria-labelledby="ch4TableHeading">
-              <h3 id="ch4TableHeading">ITI 요약 표</h3>
-              <p class="table-hint">
-                실제 복리·ITI·비교 요약은 <strong>첫 달부터 해당 월까지 누적 거래</strong> 기준입니다. ‘해당 월’ 열은 해당 월 청산 건수(참고)입니다. 제3장 K와
-                같은 줄을 씁니다.
-              </p>
-              <div class="table-scroll">
-                <table class="data-table" id="ch4SummaryTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">월</th>
-                      <th scope="col">해당 월 청산 건수</th>
-                      <th scope="col">누적 거래 건수</th>
-                      <th scope="col">실제 복리 %</th>
-                      <th scope="col">ITI %</th>
-                      <th scope="col">무작위 횟수</th>
-                      <th scope="col">평균 포지션 보유 시간</th>
-                      <th scope="col">평균 포지션 관망 시간</th>
-                      <th scope="col">레버리지</th>
-                    </tr>
-                  </thead>
-                  <tbody id="ch4SummaryTableBody"></tbody>
-                </table>
-              </div>
-            </section>
           </div>
         </section>
       </div>
@@ -1681,9 +2046,9 @@
     const showCh2McBand = document.getElementById("showCh2McBand");
     const ch2KeySummary = document.getElementById("ch2KeySummary");
     const ch2KeyContext = document.getElementById("ch2KeyContext");
-    const btnGenerateCh2ProbTable = document.getElementById("btnGenerateCh2ProbTable");
-    const ch2ProbTableSection = document.getElementById("ch2ProbTableSection");
-    const ch2ProbDataTableBody = document.getElementById("ch2ProbDataTableBody");
+    const btnGenerateCh2MainTable = document.getElementById("btnGenerateCh2MainTable");
+    const ch2MainTableSection = document.getElementById("ch2MainTableSection");
+    const ch2MainDataTableBody = document.getElementById("ch2MainDataTableBody");
 
     /** 제3·4장: emit_metrics_data_js.py → metrics_data.js */
     const oracleMetricsEmptyEl = document.getElementById("oracleMetricsEmpty");
@@ -1694,6 +2059,8 @@
     const ch4PartialHintEl = document.getElementById("ch4PartialHint");
     const ch3SummaryTableBody = document.getElementById("ch3SummaryTableBody");
     const ch4SummaryTableBody = document.getElementById("ch4SummaryTableBody");
+    const btnGenerateCh4Table = document.getElementById("btnGenerateCh4Table");
+    const ch4TableSection = document.getElementById("ch4TableSection");
 
     let oracleCharts = {
       kHist: null,
@@ -1768,6 +2135,56 @@
       }
     }
 
+    function explainKTriad(kv) {
+      const ku = kv.valueUncapped;
+      const kc = kv.valueCapped;
+      const used = kv.valueUsed;
+      if (used == null || !Number.isFinite(Number(used))) return "실제 적용 K(Final)가 비어 있어요. 데이터를 확인해 주세요.";
+      const uOk = ku != null && Number.isFinite(Number(ku));
+      const cOk = kc != null && Number.isFinite(Number(kc));
+      if (!uOk || !cOk) return "이론값이나 한도 적용값을 아직 못 구했어요.";
+      const u = Number(ku);
+      const c = Number(kc);
+      const f = Number(used);
+      const near = (a, b) => Math.abs(a - b) < 1e-4;
+      if (near(u, c) && near(c, f)) {
+        return "세 값이 같아요. 이론상 최적이 한도(1.0) 안에 있고, 그대로 실제에도 쓰는 설정이에요.";
+      }
+      if (u > 1 + 1e-5 && near(c, f)) {
+        return "이론상 최적(Uncapped)은 1.0을 넘어요. 그래서 한도(Capped)로 잘라 쓰고, 실제 적용(Final)도 그에 맞춰져요.";
+      }
+      if (!near(u, c) && near(c, f)) {
+        return "이론값과 한도 적용값이 달라요. ‘1.0 안에서만’ 쓸 때 잘린 값이 따로 나옵니다. 실제 적용은 그 잘린 값을 따라가요.";
+      }
+      if (!near(c, f)) {
+        return "한도 적용값과 실제 적용값이 조금 달라요. 반올림·운용 규칙 때문에 맞춰진 경우가 있어요.";
+      }
+      return "이론(Uncapped) → 한도 반영(Capped) → 실제 적용(Final) 순으로 좁혀진 값이에요.";
+    }
+
+    function formatItiValidityBlock(iti) {
+      const p = iti.percent != null ? Number(iti.percent) : NaN;
+      if (!Number.isFinite(p)) {
+        return '<span class="iti-validity-badge">[유효성 판단: 확인 불가]</span><p style="margin:0.4rem 0 0;font-size:0.88rem;color:#94a3b8">ITI 숫자가 비어 있어요.</p>';
+      }
+      let badge;
+      let line;
+      if (p < 1) {
+        badge = "신뢰도 높음";
+        line = "무작위로 비슷한 조건을 많이 돌려도, 이만큼 나오긴 꽤 어려운 편이에요. 운으로만 치기엔 아깝다 쪽.";
+      } else if (p < 5) {
+        badge = "신뢰도 보통";
+        line = "꽤 드문 편이에요. 전략이 도움이 됐을 수 있다고 여유 있게 읽을 수 있어요.";
+      } else if (p < 15) {
+        badge = "신뢰도 낮음";
+        line = "흔한 편과 드문 편 사이. 비교 조건을 바꾸면 숫자도 꽤 움직여요.";
+      } else {
+        badge = "판단 유보";
+        line = "꽤 흔하게 나올 수 있는 구간이에요. 이 숫자만으로 ‘대박’이라고 말하긴 어려워요.";
+      }
+      return `<span class="iti-validity-badge">[유효성 판단: ${badge}]</span><p style="margin:0.45rem 0 0;font-size:0.88rem;font-weight:500;color:#e2e8f0;line-height:1.5">${line}</p>`;
+    }
+
     function renderCh3DetailCards() {
       if (!ch3DetailCardsEl) return;
       const months = oracleState.months;
@@ -1794,56 +2211,108 @@
       const feasStr =
         feas == null || !Number.isFinite(Number(feas)) ? "—" : Number(feas) > 1e6 ? "∞에 가깝게" : fmtOrDash(feas, 4);
 
-      ch3DetailCardsEl.innerHTML = `
-        <article class="ch2-key-article-prob">
-          <span class="ch2-key-label">기준월</span>
-          <span class="ch2-key-value">${row.label || "—"}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">최종 적용 K값</span>
-          <span class="ch2-key-value">${fmtOrDash(used, 4)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">가장 이상적이었을 K값</span>
-          <span class="ch2-key-value">${ku == null || !Number.isFinite(Number(ku)) ? "—" : fmtOrDash(ku, 4)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">최대 한도(1.0) 적용 값</span>
-          <span class="ch2-key-value">${capped == null || !Number.isFinite(Number(capped)) ? "—" : fmtOrDash(capped, 4)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">현재 기본 설정 (k=${fmtOrDash(kv.baselineK != null ? kv.baselineK : 0.5, 2)})</span>
-          <span class="ch2-key-value">넣는 비중 약 ${kv.baselineAllocationPercent != null ? kv.baselineAllocationPercent : 50}%</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">해당 K값의 자산 투입 비중</span>
-          <span class="ch2-key-value">${alloc == null ? "—" : fmtOrDash(alloc, 2) + "%"}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">청산을 피할 수 있었던 아슬아슬한 한계치</span>
-          <span class="ch2-key-value">${feasStr}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">기본 설정 기준 복리(%)</span>
-          <span class="ch2-key-value">${fmtPctFlexible(kv.baselineResultPercent)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">적용 K값 기준 복리(%)</span>
-          <span class="ch2-key-value">${fmtPctFlexible(kv.resultAtUsedPercent)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">누적 거래 건수</span>
-          <span class="ch2-key-value">${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">해당 월 청산 건수</span>
-          <span class="ch2-key-value">${kv.monthBucketTradeCount != null ? kv.monthBucketTradeCount : row.tradeCount != null ? row.tradeCount : "—"}</span>
-        </article>
-        <article style="grid-column: 1 / -1">
-          <span class="ch2-key-label">짧은 해석</span>
-          <span class="ch2-key-value" style="font-size: 0.92rem; font-weight: 500">${kv.interpretation || "—"}</span>
-        </article>
-      `;
+      const triadNote = explainKTriad(kv);
+      const interpRaw = kv.interpretation ? String(kv.interpretation).trim() : "";
+      const escHtml = (s) =>
+        String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+
+      const near = (a, b) =>
+        a != null &&
+        b != null &&
+        Number.isFinite(Number(a)) &&
+        Number.isFinite(Number(b)) &&
+        Math.abs(Number(a) - Number(b)) < 1e-4;
+      const uNum = ku != null && Number.isFinite(Number(ku)) ? Number(ku) : null;
+      const cNum = capped != null && Number.isFinite(Number(capped)) ? Number(capped) : null;
+      const fNum = used != null && Number.isFinite(Number(used)) ? Number(used) : null;
+      const kuOverOne = uNum != null && uNum > 1 + 1e-5;
+      const showKTriad =
+        uNum != null &&
+        fNum != null &&
+        (kuOverOne || !near(uNum, fNum) || (cNum != null && (!near(uNum, cNum) || !near(cNum, fNum))));
+
+      const baselineK = kv.baselineK != null ? kv.baselineK : 0.5;
+      const baseAlloc = kv.baselineAllocationPercent != null ? kv.baselineAllocationPercent : 50;
+      const basePct = kv.baselineResultPercent;
+      const optPct = kv.resultAtUsedPercent;
+      let deltaBlock = "";
+      if (
+        basePct != null &&
+        optPct != null &&
+        Number.isFinite(Number(basePct)) &&
+        Number.isFinite(Number(optPct))
+      ) {
+        const d = Number(optPct) - Number(basePct);
+        if (Math.abs(d) < 0.005) {
+          deltaBlock = `<p class="ch3-compare-delta">두 설정의 복리 수익률은 거의 같습니다.</p>`;
+        } else if (d > 0) {
+          deltaBlock = `<p class="ch3-compare-delta">🔥 최적 설정이 약 ${d.toFixed(2)}%p 더 높은 복리 — 같은 기간에 더 벌 수 있었던 여지가 있었어요.</p>`;
+        } else {
+          deltaBlock = `<p class="ch3-compare-delta">기본 설정이 약 ${Math.abs(d).toFixed(2)}%p 더 높은 복리로 나왔어요. (역사적 시뮬 기준)</p>`;
+        }
+      }
+
+      const monthTrades = kv.monthBucketTradeCount != null ? kv.monthBucketTradeCount : row.tradeCount;
+      const allocDisp = alloc == null ? "—" : `${fmtOrDash(alloc, 1)}%`;
+      const allocSubSolo =
+        alloc == null
+          ? ""
+          : `<p class="ch3-k-hero-sub">내 자산의 약 ${fmtOrDash(alloc, 1)}% 투입</p>`;
+
+      const kHeroHtml = showKTriad
+        ? `<div class="ch3-k-hero-card">
+            <div class="ch3-k-triad-grid">
+              <article>
+                <span class="ch2-key-label">가장 이상적이었을 K값</span>
+                <span class="ch2-key-value">${ku == null || !Number.isFinite(Number(ku)) ? "—" : fmtOrDash(ku, 4)}</span>
+              </article>
+              <article>
+                <span class="ch2-key-label">최대 한도(1.0) 적용 값</span>
+                <span class="ch2-key-value">${capped == null || !Number.isFinite(Number(capped)) ? "—" : fmtOrDash(capped, 4)}</span>
+              </article>
+              <article>
+                <span class="ch2-key-label">최종 적용 K값</span>
+                <span class="ch2-key-value">${fmtOrDash(used, 4)}</span>
+              </article>
+            </div>
+            <p class="ch-k-triad-note">${escHtml(triadNote)}</p>
+          </div>`
+        : `<div class="ch3-k-hero-card ch3-k-hero-card--solo">
+            <p class="ch3-k-hero-title">과거 최적의 투자 비중 (K값)</p>
+            <div class="ch3-k-hero-value">${fmtOrDash(used, 4)}</div>
+            ${allocSubSolo}
+          </div>`;
+
+      const parts = [];
+      if (interpRaw) {
+        parts.push(`<aside class="ch3-insight-banner" role="note">💡 한줄 요약: ${escHtml(interpRaw)}</aside>`);
+      }
+      parts.push(`<div class="ch3-k-hero-row">
+        ${kHeroHtml}
+        <div class="ch3-feas-card">
+          <p class="ch3-k-hero-title">파산하지 않을 최대 한계선</p>
+          <div class="ch3-k-hero-value">${feasStr}</div>
+        </div>
+      </div>`);
+      parts.push(`<section class="ch3-compare-strip" aria-label="수익률 비교">
+        <h4>수익률 비교</h4>
+        <div class="ch3-compare-grid">
+          <p class="ch3-compare-line is-secondary"><strong>현재 내 설정</strong> (k=${fmtOrDash(baselineK, 2)}, 투입 약 ${baseAlloc}%) → 복리 <strong>${fmtPctFlexible(basePct)}</strong></p>
+          <p class="ch3-compare-line is-primary"><strong>최적의 설정</strong> (k=${fmtOrDash(used, 4)}, 투입 약 ${allocDisp}) → 복리 <strong>${fmtPctFlexible(optPct)}</strong></p>
+        </div>
+        ${deltaBlock}
+      </section>`);
+      parts.push(
+        `<p class="ch3-meta-foot">* 분석 데이터: ${escHtml(row.label || "—")} · 누적 거래 ${
+          kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"
+        }건 · 당월 ${monthTrades != null ? monthTrades : "—"}건</p>`
+      );
+
+      ch3DetailCardsEl.innerHTML = parts.join("");
     }
 
     function renderCh4DetailCards() {
@@ -1880,15 +2349,15 @@
           <span class="ch2-key-value">${row.label || "—"}</span>
         </article>
         <article>
-          <span class="ch2-key-label">ITI (%)</span>
+          <span class="ch2-key-label">희귀도 ITI (%)</span>
           <span class="ch2-key-value">${fmtPctFlexible(iti.percent)}</span>
         </article>
         <article>
-          <span class="ch2-key-label">실제 복리 % (누적 거래 기준)</span>
+          <span class="ch2-key-label">실제 수익률 (누적 기준)</span>
           <span class="ch2-key-value">${fmtPctFlexible(iti.actualReturnPercent)}</span>
         </article>
         <article>
-          <span class="ch2-key-label">시뮬레이션 횟수</span>
+          <span class="ch2-key-label">비교용 반복 횟수</span>
           <span class="ch2-key-value">${simDisplay}</span>
         </article>
         <article>
@@ -1906,12 +2375,12 @@
           }</span>
         </article>
         <article style="grid-column: 1 / -1">
-          <span class="ch2-key-label">무작위 실험 통제 조건</span>
+          <span class="ch2-key-label">같은 조건으로 맞춘 비교 설정</span>
           <span class="ch2-key-value" style="font-size: 0.88rem; font-weight: 500">${ctrlLine}</span>
         </article>
         <article style="grid-column: 1 / -1">
-          <span class="ch2-key-label">구간 짧은 말</span>
-          <span class="ch2-key-value" style="font-size: 0.92rem; font-weight: 500">${iti.interpretation || "—"}</span>
+          <span class="ch2-key-label">운 vs 실력, 감 잡기</span>
+          <span class="ch2-key-value" style="font-size: 0.92rem; font-weight: 500">${formatItiValidityBlock(iti)}</span>
         </article>
       `;
     }
@@ -2014,11 +2483,11 @@
         },
       ];
       const mk = mkScatter("기본 설정 k=0.5", 0.5, "rgba(148, 163, 184, 0.95)");
-      const u = mkScatter("적용 K값", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
+      const u = mkScatter("실제 적용 (Final)", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
       const ku = kv.valueUncapped;
       const kc = kv.valueCapped;
-      const unc = mkScatter("이론상 최적값", ku, "rgba(251, 191, 36, 0.95)");
-      const cap = mkScatter("최대 한도 적용 K값", kc, "rgba(167, 139, 250, 0.95)");
+      const unc = mkScatter("이론상 최적 (Uncapped)", ku, "rgba(251, 191, 36, 0.95)");
+      const cap = mkScatter("제한된 최적 (Capped)", kc, "rgba(167, 139, 250, 0.95)");
       [mk, u].forEach((x) => {
         if (x) ds.push(x);
       });
@@ -2138,7 +2607,7 @@
             labels,
             datasets: [
               {
-                label: "적용 K값",
+                label: "실제 적용 K",
                 data: kVals.map((k) => (k == null ? null : k)),
                 borderColor: `hsl(${h}, 95%, 68%)`,
                 backgroundColor: `hsla(${h}, 90%, 52%, 0.1)`,
@@ -2176,13 +2645,13 @@
                     const row = months[i];
                     const kv = row.kValue || {};
                     return [
-                      `적용 K값: ${fmtOrDash(kv.valueUsed, 4)}`,
-                      `이론상 최적값: ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
-                      `최대 한도 적용 K값: ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
-                      `자산 투입 비중(대략): ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
-                      `기본 설정 기준 복리: ${fmtPctFlexible(kv.baselineResultPercent)}`,
-                      `누적 거래 건수: ${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}`,
-                      `해당 월 청산 건수: ${row.tradeCount != null ? row.tradeCount : "—"}`,
+                      `실제 적용(Final): ${fmtOrDash(kv.valueUsed, 4)}`,
+                      `이론상(Uncapped): ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
+                      `한도 반영(Capped): ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
+                      `투입 비중(대략): ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
+                      `기본 설정 복리: ${fmtPctFlexible(kv.baselineResultPercent)}`,
+                      `누적 거래: ${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}`,
+                      `해당 월 청산: ${row.tradeCount != null ? row.tradeCount : "—"}`,
                     ];
                   },
                 },
@@ -2259,7 +2728,7 @@
             labels,
             datasets: [
               {
-                label: "ITI (%)",
+                label: "희귀도 (%)",
                 data: itiPcts.map((p) => (p == null ? null : p)),
                 borderColor: `hsl(${h}, 95%, 68%)`,
                 backgroundColor: `hsla(${h}, 90%, 52%, 0.12)`,
@@ -2301,11 +2770,11 @@
                         ? iti.cumulativeTradeCount
                         : iti.nullModelSummary && iti.nullModelSummary.tradeCount;
                     return [
-                      `ITI: ${fmtPctFlexible(iti.percent)}`,
-                      `실제 복리 (누적 거래 기준): ${fmtPctFlexible(iti.actualReturnPercent)}`,
-                      `시뮬레이션 횟수: ${iti.simulationCount != null ? iti.simulationCount : "—"}`,
-                      `누적 거래 건수: ${nCum != null ? nCum : "—"}`,
-                      `해당 월 청산 건수: ${row.tradeCount != null ? row.tradeCount : "—"}`,
+                      `희귀도(ITI): ${fmtPctFlexible(iti.percent)}`,
+                      `실제 수익률: ${fmtPctFlexible(iti.actualReturnPercent)}`,
+                      `비교 반복 횟수: ${iti.simulationCount != null ? iti.simulationCount : "—"}`,
+                      `누적 거래: ${nCum != null ? nCum : "—"}`,
+                      `해당 월 청산: ${row.tradeCount != null ? row.tradeCount : "—"}`,
                     ];
                   },
                 },
@@ -2320,7 +2789,7 @@
               y: {
                 min: 0,
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "ITI (%)", color: "#94a3b8" },
+                title: { display: true, text: "희귀도 (%)", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
             },
@@ -2341,7 +2810,7 @@
           data: {
             datasets: [
               {
-                label: "ITI 추정(%)",
+                label: "희귀도 추정(%)",
                 data: convData,
                 parsing: false,
                 borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
@@ -2359,8 +2828,8 @@
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  title: (items) => `시뮬레이션 ${items[0]?.parsed.x}회까지`,
-                  label: (ctx) => `ITI 추정: ${fmtOrDash(ctx.parsed.y, 4)}%`,
+                  title: (items) => `비교 ${items[0]?.parsed.x}회까지`,
+                  label: (ctx) => `희귀도 추정: ${fmtOrDash(ctx.parsed.y, 4)}%`,
                 },
               },
             },
@@ -2368,13 +2837,13 @@
               x: {
                 type: "linear",
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "시뮬레이션 누적 횟수", color: "#94a3b8" },
+                title: { display: true, text: "비교 누적 횟수", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
               y: {
                 min: 0,
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "ITI (%)", color: "#94a3b8" },
+                title: { display: true, text: "희귀도 (%)", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
             },
@@ -2420,7 +2889,8 @@
       renderCh3DetailCards();
       renderCh4DetailCards();
       renderCh3Table();
-      renderCh4Table();
+      if (ch4SummaryTableBody) ch4SummaryTableBody.textContent = "";
+      if (ch4TableSection) ch4TableSection.hidden = true;
       initOracleCharts();
     }
 
@@ -2638,9 +3108,9 @@
       const f = document.createDocumentFragment();
       f.appendChild(document.createTextNode("매달 "));
       appendStrong(f, formatWon(monthlyWon));
-      f.appendChild(document.createTextNode("을 투자하고 월 30%의 수익이 꾸준히 발생한다면, 청산이 한 번도 일어나지 않았을 때 "));
+      f.appendChild(document.createTextNode("씩 넣고, 월 30%씩 잘 붙는다고만 가정하면 "));
       appendStrong(f, months + "개월");
-      f.appendChild(document.createTextNode(" 뒤의 예상 잔고는 "));
+      f.appendChild(document.createTextNode(" 뒤 잔고는 최대 "));
       const gap = document.createElement("span");
       gap.className = "summary-amount-gap";
       gap.setAttribute("aria-hidden", "true");
@@ -2648,7 +3118,7 @@
       appendStrong(f, formatWon(finalWon));
       f.appendChild(document.createTextNode(" (대략 "));
       appendStrong(f, formatCompact(finalWon));
-      f.appendChild(document.createTextNode(")입니다. (현실적인 리스크가 배제된 참고선입니다.)"));
+      f.appendChild(document.createTextNode(")까지 불어날 수 있어요. 위 그래프가 그 ‘수익 한계치(복리 잠재력)’예요."));
       summaryEl.appendChild(f);
     }
 
@@ -2682,7 +3152,7 @@
           labels: [],
           datasets: [
             {
-              label: "누적 잔고",
+              label: "수익 한계치 (복리)",
               data: [],
               borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
               backgroundColor: "rgba(255, 255, 255, 0.04)",
@@ -2730,7 +3200,7 @@
                 },
                 label(item) {
                   const w = item.parsed.y * WON_PER_MAN;
-                  return " 누적 잔고: " + formatWon(Math.round(w));
+                  return " 잔고: " + formatWon(Math.round(w));
                 },
               },
             },
@@ -2835,6 +3305,15 @@
       for (let m = 1; m <= months; m++) {
         balance = balance * (1 + monthlyRate) + monthlyWon;
         path[m] = balance;
+      }
+      return path;
+    }
+
+    /** 제1장과 동일 월납입만 선형 누적(이자·복리 없음). path[m] = 월납입 × (m+1). */
+    function buildSimpleDepositOnlyPath(months, monthlyWon) {
+      const path = new Array(months + 1);
+      for (let m = 0; m <= months; m++) {
+        path[m] = monthlyWon * (m + 1);
       }
       return path;
     }
@@ -3103,36 +3582,33 @@
       const shortfall = evNo - evLiq;
       const pctLess = evNo > 0 ? (shortfall / evNo) * 100 : 0;
       const pHit = cumulativeLiqByMonth(state.p, state.tradesPerMonth, H);
-      const pLastExact =
-        totalTrades > 0 && state.p > 0 && state.p < 1
-          ? Math.pow(1 - state.p, totalTrades - 1) * state.p
-          : totalTrades > 0 && state.p >= 1
-            ? 0
-            : null;
+      const pPct = (state.p * 100).toFixed(2);
 
-      const lastTradeLiqHint =
-        totalTrades > 0
-          ? state.p <= 0
-            ? `💡 <strong>생존 확률 가이드:</strong> 설정하신 ${H}개월 동안 약 <strong>${totalTrades}번</strong>의 거래가 예상됩니다. 현재 청산 확률이 <strong>0%</strong>이므로 하단의 그래프는 '기준 경로(1장)'와 동일합니다.`
-            : `💡 <strong>생존 확률 가이드:</strong> 설정하신 ${H}개월 동안 약 <strong>${totalTrades}번</strong>의 거래가 예상됩니다. 매 거래마다 <strong>${(state.p * 100).toFixed(2)}%</strong>의 청산 확률이 존재할 때, ${totalTrades - 1}번을 무사히 넘기고 <strong>마지막 ${totalTrades}번째 거래에서 처음으로 청산될 확률</strong>은 약 <strong>${(pLastExact * 100).toFixed(3)}%</strong>입니다.`
-          : `위 기간이면 거래가 <strong>0번</strong>으로 잡힙니다.`;
+      let contextHtml = "";
+      if (totalTrades <= 0) {
+        contextHtml = `💡 이 기간에는 거래 횟수가 <strong>0번</strong>으로 잡혀 있어요. 청산 확률을 올려도 곡선이 크게 움직이지 않을 수 있어요.`;
+      } else if (state.p <= 0) {
+        contextHtml = `💡 <strong>${H}개월</strong> 동안 약 <strong>${totalTrades}번</strong>의 거래를 가정해요. 거래당 청산 확률이 <strong>0%</strong>이므로, 아래 수치는 1장과 같은 <strong>청산 없는 기대 곡선</strong>과 같아요.`;
+      } else {
+        contextHtml = `💡 <strong>${H}개월</strong> 동안 약 <strong>${totalTrades}번</strong>의 거래를 하게 됩니다. 매번 <strong>${pPct}%</strong>의 확률로 청산당한다고 가정할 때, 마지막 거래까지 살아남지 못하고 <strong>단 한 번이라도 전 재산을 잃을 확률</strong>은 <strong>${(pHit * 100).toFixed(1)}%</strong>입니다.`;
+      }
 
       if (ch2KeyContext) {
-        ch2KeyContext.innerHTML = `아래 수치는 <strong>1장과 동일한 투입 금액</strong>을 기준으로, 설정하신 <strong>분석 기간(${H}개월)</strong>과 청산 확률을 적용한 결과입니다.<br /><br />${lastTradeLiqHint}`;
+        ch2KeyContext.innerHTML = contextHtml;
       }
 
       ch2KeySummary.innerHTML = `
         <article class="ch2-key-article-prob">
-          <span class="ch2-key-label">기간 내 1회 이상 청산될 누적 확률</span>
+          <span class="ch2-key-label">한 번이라도 파산할 확률</span>
           <span class="ch2-key-value">${(pHit * 100).toFixed(1)}%</span>
         </article>
         <article>
-          <span class="ch2-key-label">청산 리스크를 반영한 최종 기대 잔고</span>
+          <span class="ch2-key-label">현실적인 예상 잔고</span>
           <span class="ch2-key-value">${formatWon(evLiq)}</span>
         </article>
-        <article>
-          <span class="ch2-key-label">이상적 기준선 대비 손실액 및 비율</span>
-          <span class="ch2-key-value">${formatWon(shortfall)} (${pctLess.toFixed(1)}%)</span>
+        <article class="ch2-key-article-shortfall">
+          <span class="ch2-key-label">행복 회로 대비 증발한 돈</span>
+          <span class="ch2-key-value ch2-key-value--loss">${formatWon(-shortfall)} (${pctLess.toFixed(1)}%)</span>
         </article>
       `;
     }
@@ -3339,25 +3815,47 @@
     let ch2MonteCarloCacheKey = "";
     let ch2MonteCarloCachedSim = null;
 
-    function renderCh2ProbDataTable(state) {
-      if (!ch2ProbDataTableBody) return;
+    function renderCh2MainDataTable(state) {
+      if (!ch2MainDataTableBody) return;
       const H = state.months;
-      const p = state.p;
-      const tpm = state.tradesPerMonth;
-      ch2ProbDataTableBody.textContent = "";
+      const noLiqPath = buildCh2NoLiquidationPath(H, state.monthlyWon, MONTHLY_RATE);
+      const simpleDepositPath = buildSimpleDepositOnlyPath(H, state.monthlyWon);
+      const expectedPath = computeExactExpectedPathMonthsPay(
+        state.monthlyWon,
+        state.p,
+        H,
+        state.tradesPerMonth,
+        state.growthPerTrade
+      );
+      ch2MainDataTableBody.textContent = "";
       const frag = document.createDocumentFragment();
       for (let m = 0; m <= H; m++) {
+        const evNo = noLiqPath[m];
+        const evLiq = expectedPath[m];
+        const evSim = simpleDepositPath[m];
+        const dHappyReal = evNo - evLiq;
+        const dLiqSimple = evLiq - evSim;
         const tr = document.createElement("tr");
-        const tdM = document.createElement("td");
-        tdM.textContent = String(m);
-        const tdP = document.createElement("td");
-        const pct = cumulativeLiqByMonth(p, tpm, m) * 100;
-        tdP.textContent = `${pct.toFixed(2)}%`;
-        tr.appendChild(tdM);
-        tr.appendChild(tdP);
+        const add = (text) => {
+          const cell = document.createElement("td");
+          cell.textContent = text;
+          tr.appendChild(cell);
+        };
+        add(String(m));
+        add(formatWon(evNo));
+        add(formatWon(evLiq));
+        add(formatWon(evSim));
+        const lossCell = document.createElement("td");
+        lossCell.className = "ch2-diff-cell-loss";
+        lossCell.textContent = formatWon(-dHappyReal);
+        tr.appendChild(lossCell);
+        const gainCell = document.createElement("td");
+        gainCell.className = "ch2-diff-cell-gain";
+        gainCell.textContent = formatWon(dLiqSimple);
+        tr.appendChild(gainCell);
         frag.appendChild(tr);
       }
-      ch2ProbDataTableBody.appendChild(frag);
+      ch2MainDataTableBody.appendChild(frag);
     }
 
     function redrawCh2() {
@@ -3374,6 +3872,7 @@
       ch2MonthLabel.textContent = `${state.months}개월`;
 
       const noLiqPath = buildCh2NoLiquidationPath(state.months, state.monthlyWon, MONTHLY_RATE);
+      const simpleDepositPath = buildSimpleDepositOnlyPath(state.months, state.monthlyWon);
       const expectedPath = computeExactExpectedPathMonthsPay(
         state.monthlyWon,
         state.p,
@@ -3388,13 +3887,24 @@
 
       const mainDatasets = [
         {
-          label: "청산 없음(제1장 기준)",
+          label: "기대 수익 곡선 (1장·복리)",
           data: noLiqPath,
           borderColor: `hsla(${currentHueValue},95%,78%,0.88)`,
           borderDash: [10, 6],
           pointStyle: "line",
           pointRadius: 0,
           tension: 0.18,
+          fill: false,
+          borderWidth: 2,
+        },
+        {
+          label: "단순 납입 누적 (무복리)",
+          data: simpleDepositPath,
+          borderColor: "rgba(100, 116, 139, 0.92)",
+          borderDash: [4, 5],
+          pointStyle: "line",
+          pointRadius: 0,
+          tension: 0.15,
           fill: false,
           borderWidth: 2,
         },
@@ -3447,7 +3957,7 @@
             pointRadius: 0,
             borderDash: [4, 4],
             tension: 0.2,
-            fill: 2,
+            fill: 3,
             backgroundColor: "rgba(148,163,184,0.08)",
           }
         );
@@ -3585,13 +4095,22 @@
       tableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 
-    if (btnGenerateCh2ProbTable) {
-      btnGenerateCh2ProbTable.addEventListener("click", () => {
-        renderCh2ProbDataTable(getCh2State());
-        if (ch2ProbTableSection) {
-          ch2ProbTableSection.hidden = false;
-          ch2ProbTableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (btnGenerateCh2MainTable) {
+      btnGenerateCh2MainTable.addEventListener("click", () => {
+        renderCh2MainDataTable(getCh2State());
+        if (ch2MainTableSection) {
+          ch2MainTableSection.hidden = false;
+          ch2MainTableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
+      });
+    }
+
+    if (btnGenerateCh4Table && ch4TableSection) {
+      btnGenerateCh4Table.addEventListener("click", () => {
+        if (!oracleState.months || !oracleState.months.length) return;
+        renderCh4Table();
+        ch4TableSection.hidden = false;
+        ch4TableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
     }
 
@@ -3809,6 +4328,85 @@
       bgmSyncAll();
       bgmUserMuted = false;
       bgmEnsurePlayThenFade(0, bgmSliderTo01());
+    })();
+  </script>
+  <script>
+    (function () {
+      const canvas = document.getElementById("matrix-bg");
+      if (!canvas || !(canvas instanceof HTMLCanvasElement)) return;
+      const context = canvas.getContext("2d");
+      if (!context) return;
+
+      const glyphs = "ORACULUMDRAGONALPHABETARCANEUM";
+      const fontSize = 22;
+      let columns = [];
+      let columnSpeeds = [];
+      let viewWidth = window.innerWidth;
+      let viewHeight = window.innerHeight;
+      let matrixDpr = 1;
+      let animationFrame = 0;
+
+      function prefersReducedMotion() {
+        return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      }
+
+      function paintReducedMotionFallback() {
+        context.fillStyle = "rgba(2, 8, 18, 0.55)";
+        context.fillRect(0, 0, viewWidth, viewHeight);
+      }
+
+      function resize() {
+        viewWidth = window.innerWidth;
+        viewHeight = window.innerHeight;
+        matrixDpr = Math.min(window.devicePixelRatio || 1, 2.5);
+        const bufW = Math.max(1, Math.floor(viewWidth * matrixDpr));
+        const bufH = Math.max(1, Math.floor(viewHeight * matrixDpr));
+        canvas.width = bufW;
+        canvas.height = bufH;
+        canvas.style.width = viewWidth + "px";
+        canvas.style.height = viewHeight + "px";
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.scale(matrixDpr, matrixDpr);
+        const count = Math.max(24, Math.floor(viewWidth / fontSize));
+        columns = Array.from({ length: count }, function () {
+          return Math.random() * viewHeight * -1;
+        });
+        columnSpeeds = Array.from({ length: count }, function () {
+          return fontSize * (0.08 + Math.random() * 0.07);
+        });
+      }
+
+      function draw() {
+        context.fillStyle = "rgba(2, 8, 18, 0.48)";
+        context.fillRect(0, 0, viewWidth, viewHeight);
+        context.font = fontSize + 'px "DragonAlphabet"';
+        context.textBaseline = "alphabetic";
+        for (let i = 0; i < columns.length; i += 1) {
+          const text = glyphs[Math.floor(Math.random() * glyphs.length)];
+          const x = i * fontSize;
+          const y = columns[i];
+          context.fillStyle = i % 4 === 0 ? "#9ec9ff" : "#5a9fff";
+          context.fillText(text, x, y);
+          columns[i] =
+            y > viewHeight + Math.random() * 120 ? Math.random() * -240 : y + columnSpeeds[i];
+        }
+        animationFrame = window.requestAnimationFrame(draw);
+      }
+
+      function start() {
+        function onResize() {
+          resize();
+          if (prefersReducedMotion()) paintReducedMotionFallback();
+        }
+        onResize();
+        window.addEventListener("resize", onResize);
+        if (prefersReducedMotion()) return;
+        document.fonts.load(fontSize + 'px "DragonAlphabet"').finally(function () {
+          draw();
+        });
+      }
+
+      start();
     })();
   </script>
 </body>
