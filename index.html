@@ -837,6 +837,34 @@
       height: min(34vh, 280px);
     }
 
+    /* 제3·4장: 월별 추이 + 바로 이어지는 그래프(복리/수렴)를 한 화면에 가깝게 */
+    .oracle-metrics-chart-pair {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .oracle-metrics-chart-pair > .chart-card {
+      margin-bottom: 0;
+    }
+    .oracle-metrics-chart-pair .chart-head {
+      padding-bottom: 0.35rem;
+    }
+    .oracle-metrics-chart-pair .ch2-chart-blurb {
+      padding-bottom: 0.3rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .oracle-metrics-chart-pair .chart-wrap,
+    .oracle-metrics-chart-pair .chart-wrap--mid {
+      height: min(30vh, 240px);
+    }
+    @media (min-height: 760px) {
+      .oracle-metrics-chart-pair .chart-wrap,
+      .oracle-metrics-chart-pair .chart-wrap--mid {
+        height: min(34vh, 280px);
+      }
+    }
+
     /* 제3·4장: 메트릭 리포트 */
     .ch-intro {
       margin: 0 0 1.35rem;
@@ -1127,6 +1155,26 @@
     #bgmAudioDock .audio-icon__svg {
       display: block;
       pointer-events: none;
+      width: 26px;
+      height: 26px;
+      color: #ffffff;
+      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.55));
+    }
+
+    #bgmMuteBtn .audio-icon__glyph {
+      display: none;
+    }
+
+    #bgmMuteBtn[data-icon-mode="playing"] .audio-icon__glyph--playing {
+      display: block;
+    }
+
+    #bgmMuteBtn[data-icon-mode="paused"] .audio-icon__glyph--paused {
+      display: block;
+    }
+
+    #bgmMuteBtn[data-icon-mode="muted"] .audio-icon__glyph--muted {
+      display: block;
     }
 
     .visually-hidden {
@@ -1210,9 +1258,9 @@
           <table class="data-table" id="dataTable">
             <thead>
               <tr>
-                <th scope="col">몇 달째</th>
-                <th scope="col">원</th>
-                <th scope="col">모인 돈</th>
+                <th scope="col">경과(월)</th>
+                <th scope="col">당월 자본</th>
+                <th scope="col">누적 잔고</th>
               </tr>
             </thead>
             <tbody id="dataTableBody"></tbody>
@@ -1315,7 +1363,7 @@
           <table class="data-table" id="ch2ProbDataTable">
             <thead>
               <tr>
-                <th scope="col">개월</th>
+                <th scope="col">기간 (개월)</th>
                 <th scope="col">누적 청산 확률</th>
               </tr>
             </thead>
@@ -1369,34 +1417,36 @@
         </div>
 
         <div id="ch3Dynamic">
-            <section class="chart-card" aria-label="월별 K-value">
-              <div class="chart-head ch2-chart-head-ruled">
-                <h2 class="ch2-chart-plain">월별 K-value 추이</h2>
-              </div>
-              <p class="ch2-chart-blurb">
-                지나간 거래들을 누적해 가며, 각 시점마다 ‘가장 완벽했던 배팅 규모(K)’가 어떻게 변했는지 보여줍니다. 그래프의 점을 누르면 해당 월의 상세 데이터를 볼 수
-                있습니다.
-              </p>
-              <div class="chart-wrap chart-wrap--mid">
-                <canvas id="ch3KHistoryChart"></canvas>
-              </div>
-            </section>
+            <div class="oracle-metrics-chart-pair" aria-label="K-value 월별 추이 및 선택 월 복리 곡선">
+              <section class="chart-card" aria-label="월별 K-value">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h2 class="ch2-chart-plain">월별 K-value 추이</h2>
+                </div>
+                <p class="ch2-chart-blurb">
+                  지나간 거래들을 누적해 가며, 각 시점마다 ‘가장 완벽했던 배팅 규모(K)’가 어떻게 변했는지 보여줍니다. 그래프의 점을 누르면 해당 월의 상세 데이터를 볼 수
+                  있습니다.
+                </p>
+                <div class="chart-wrap chart-wrap--mid">
+                  <canvas id="ch3KHistoryChart"></canvas>
+                </div>
+              </section>
+
+              <section class="chart-card" aria-label="K-곡선">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h2 class="ch2-chart-plain">고른 달: 세기에 따른 복리 결과</h2>
+                </div>
+                <p class="ch2-chart-blurb">
+                  세로축은 k를 바꿨을 때의 복리 결과(%)입니다. 기본 설정(k=0.5), 적용 K값, 이론상 최적 K를 점으로 표시합니다.
+                  <strong>곡선이 높다고 안전해지는 것은 아닙니다.</strong>
+                </p>
+                <div class="chart-wrap">
+                  <canvas id="ch3KCurveChart"></canvas>
+                </div>
+              </section>
+            </div>
 
             <div class="ch2-key-summary" id="ch3DetailCards" aria-label="기준월 K-value 상세"></div>
             <p id="ch3PartialHint" class="ch-partial-hint" hidden></p>
-
-            <section class="chart-card" aria-label="K-곡선">
-              <div class="chart-head ch2-chart-head-ruled">
-                <h2 class="ch2-chart-plain">고른 달: 세기에 따른 복리 결과</h2>
-              </div>
-              <p class="ch2-chart-blurb">
-                세로축은 k를 바꿨을 때 나오는 복리 결과(%)입니다. 지금 기준(k=0.5), 실제로 쓴 K, (있으면) 한도 안에서 더 좋았을 K를 점으로 찍습니다.
-                <strong>곡선이 높다고 안전해지는 것은 아닙니다.</strong>
-              </p>
-              <div class="chart-wrap">
-                <canvas id="ch3KCurveChart"></canvas>
-              </div>
-            </section>
 
             <div class="ch-band" aria-label="K-value 구간 해석">
               <h3>이 수치를 어떻게 읽어야 할까요?</h3>
@@ -1416,20 +1466,20 @@
             <section class="table-section" aria-labelledby="ch3TableHeading">
               <h3 id="ch3TableHeading">K-value 요약 표</h3>
               <p class="table-hint">
-                K는 줄마다 <strong>위에서 모은 거래</strong> 기준입니다. ‘해당 월 거래’는 그 달에만 청산된 건수(참고)입니다.
+                K는 줄마다 <strong>누적 거래</strong> 기준입니다. ‘해당 월’ 열은 해당 월에 청산된 건수(참고)입니다.
               </p>
               <div class="table-scroll">
                 <table class="data-table" id="ch3SummaryTable">
                   <thead>
                     <tr>
                       <th scope="col">월</th>
-                      <th scope="col">그 달만 청산</th>
-                      <th scope="col">모은 거래 수</th>
-                      <th scope="col">쓰는 K</th>
-                      <th scope="col">한도 안 최적</th>
-                      <th scope="col">한도로 자른 K</th>
-                      <th scope="col">지금 기준 복리 %</th>
-                      <th scope="col">쓰는 K 복리 %</th>
+                      <th scope="col">해당 월 청산 건수</th>
+                      <th scope="col">누적 거래 건수</th>
+                      <th scope="col">적용 K값</th>
+                      <th scope="col">이론상 최적값</th>
+                      <th scope="col">최대 한도 적용 K값</th>
+                      <th scope="col">기본 설정 기준 복리(%)</th>
+                      <th scope="col">적용 K값 기준 복리(%)</th>
                     </tr>
                   </thead>
                   <tbody id="ch3SummaryTableBody"></tbody>
@@ -1471,32 +1521,34 @@
         </div>
 
           <div id="ch4Dynamic">
-            <section class="chart-card" aria-label="월별 ITI">
-              <div class="chart-head ch2-chart-head-ruled">
-                <h2 class="ch2-chart-plain">월별 ITI 추이 (희귀성 지표)</h2>
-              </div>
-              <p class="ch2-chart-blurb">
-                첫 거래부터 해당 월까지 누적된 내 성과가, 무작위의 시장에서 얼마나 나오기 힘든 결과인지(%)를 보여줍니다.
-              </p>
-              <div class="chart-wrap chart-wrap--mid">
-                <canvas id="ch4ItiHistoryChart"></canvas>
-              </div>
-            </section>
+            <div class="oracle-metrics-chart-pair" aria-label="ITI 월별 추이 및 Monte Carlo 수렴">
+              <section class="chart-card" aria-label="월별 ITI">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h2 class="ch2-chart-plain">월별 ITI 추이 (희귀성 지표)</h2>
+                </div>
+                <p class="ch2-chart-blurb">
+                  첫 거래부터 해당 월까지 누적된 내 성과가, 무작위의 시장에서 얼마나 나오기 힘든 결과인지(%)를 보여줍니다.
+                </p>
+                <div class="chart-wrap chart-wrap--mid">
+                  <canvas id="ch4ItiHistoryChart"></canvas>
+                </div>
+              </section>
+
+              <section class="chart-card" aria-label="Monte Carlo 수렴">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h2 class="ch2-chart-plain">신뢰도 검증 (Monte Carlo 수렴)</h2>
+                </div>
+                <p class="ch2-chart-blurb">
+                  무작위 실험 횟수가 늘어날수록 ITI 값이 어떻게 안정화(수렴)되는지 보여주는 차트입니다.
+                </p>
+                <div class="chart-wrap chart-wrap--mid">
+                  <canvas id="ch4ConvergenceChart"></canvas>
+                </div>
+              </section>
+            </div>
 
             <div class="ch2-key-summary" id="ch4DetailCards" aria-label="기준월 ITI 상세"></div>
             <p id="ch4PartialHint" class="ch-partial-hint" hidden></p>
-
-            <section class="chart-card" aria-label="Monte Carlo 수렴">
-              <div class="chart-head ch2-chart-head-ruled">
-                <h2 class="ch2-chart-plain">신뢰도 검증 (Monte Carlo 수렴)</h2>
-              </div>
-              <p class="ch2-chart-blurb">
-                무작위 실험 횟수가 늘어날수록 ITI 값이 어떻게 안정화(수렴)되는지 보여주는 차트입니다.
-              </p>
-              <div class="chart-wrap chart-wrap--mid">
-                <canvas id="ch4ConvergenceChart"></canvas>
-              </div>
-            </section>
 
             <div class="ch-band" aria-label="ITI 구간 해석">
               <h3>ITI 값, 어떻게 해석할까요?</h3>
@@ -1515,7 +1567,7 @@
             <section class="table-section" aria-labelledby="ch4TableHeading">
               <h3 id="ch4TableHeading">ITI 요약 표</h3>
               <p class="table-hint">
-                실제 복리·ITI·비교 요약은 <strong>첫 달부터 그 달까지 모은 거래</strong> 기준입니다. ‘해당 월 거래’는 그 달에만 청산된 건수(참고)입니다. 제3장 K와
+                실제 복리·ITI·비교 요약은 <strong>첫 달부터 해당 월까지 누적 거래</strong> 기준입니다. ‘해당 월’ 열은 해당 월 청산 건수(참고)입니다. 제3장 K와
                 같은 줄을 씁니다.
               </p>
               <div class="table-scroll">
@@ -1523,13 +1575,13 @@
                   <thead>
                     <tr>
                       <th scope="col">월</th>
-                      <th scope="col">그 달만 청산</th>
-                      <th scope="col">모은 거래 수</th>
+                      <th scope="col">해당 월 청산 건수</th>
+                      <th scope="col">누적 거래 건수</th>
                       <th scope="col">실제 복리 %</th>
                       <th scope="col">ITI %</th>
                       <th scope="col">무작위 횟수</th>
-                      <th scope="col">평균 들고 있던 시간</th>
-                      <th scope="col">평균 쉰 시간</th>
+                      <th scope="col">평균 포지션 보유 시간</th>
+                      <th scope="col">평균 포지션 관망 시간</th>
                       <th scope="col">레버리지</th>
                     </tr>
                   </thead>
@@ -1568,17 +1620,21 @@
         aria-label="Volume"
       />
     </div>
-    <button type="button" class="audio-icon" id="bgmMuteBtn" aria-label="음소거 해제">
-      <svg class="audio-icon__svg" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g class="audio-icon__glyph audio-icon__glyph--on" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <button type="button" class="audio-icon" id="bgmMuteBtn" data-icon-mode="paused" aria-label="재생">
+      <svg class="audio-icon__svg" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="audio-icon__glyph audio-icon__glyph--playing" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="M11 5 6 9 H4 v6 h2 l5 4 V5 z" />
           <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
           <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
         </g>
-        <g class="audio-icon__glyph audio-icon__glyph--off" hidden fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <g class="audio-icon__glyph audio-icon__glyph--paused" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="M11 5 6 9 H4 v6 h2 l5 4 V5 z" />
-          <path d="M17 9l6 6" />
-          <path d="M23 9l-6 6" />
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+        </g>
+        <g class="audio-icon__glyph audio-icon__glyph--muted" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 5 6 9 H4 v6 h2 l5 4 V5 z" />
+          <path d="M16.5 8.5l5 5" stroke="#ffffff" stroke-width="2.35" />
+          <path d="M21.5 8.5l-5 5" stroke="#ffffff" stroke-width="2.35" />
         </g>
       </svg>
     </button>
@@ -1768,19 +1824,19 @@
           <span class="ch2-key-value">${feasStr}</span>
         </article>
         <article>
-          <span class="ch2-key-label">지금 기준(k=0.5) 복리 %</span>
+          <span class="ch2-key-label">기본 설정 기준 복리(%)</span>
           <span class="ch2-key-value">${fmtPctFlexible(kv.baselineResultPercent)}</span>
         </article>
         <article>
-          <span class="ch2-key-label">쓰는 K로 난 복리 %</span>
+          <span class="ch2-key-label">적용 K값 기준 복리(%)</span>
           <span class="ch2-key-value">${fmtPctFlexible(kv.resultAtUsedPercent)}</span>
         </article>
         <article>
-          <span class="ch2-key-label">모은 거래 수</span>
+          <span class="ch2-key-label">누적 거래 건수</span>
           <span class="ch2-key-value">${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}</span>
         </article>
         <article>
-          <span class="ch2-key-label">그 달만 청산된 거래 수</span>
+          <span class="ch2-key-label">해당 월 청산 건수</span>
           <span class="ch2-key-value">${kv.monthBucketTradeCount != null ? kv.monthBucketTradeCount : row.tradeCount != null ? row.tradeCount : "—"}</span>
         </article>
         <article style="grid-column: 1 / -1">
@@ -1806,8 +1862,8 @@
       const ctrlLine = [
         `레버리지 ${nm.leverage != null ? nm.leverage : "—"}배`,
         `수수료 ${nm.feePerTrade != null ? nm.feePerTrade : "—"}`,
-        `평균 보유 ${nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 1) + "시간" : "—"}`,
-        `평균 휴식 ${nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 1) + "시간" : "—"}`,
+        `평균 포지션 보유 시간 ${nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 1) + "시간" : "—"}`,
+        `평균 포지션 관망 시간 ${nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 1) + "시간" : "—"}`,
         "(롱/숏 포지션 순서 동일)",
       ].join(", ");
       const hint = [];
@@ -1828,7 +1884,7 @@
           <span class="ch2-key-value">${fmtPctFlexible(iti.percent)}</span>
         </article>
         <article>
-          <span class="ch2-key-label">실제 복리 %(모은 거래)</span>
+          <span class="ch2-key-label">실제 복리 % (누적 거래 기준)</span>
           <span class="ch2-key-value">${fmtPctFlexible(iti.actualReturnPercent)}</span>
         </article>
         <article>
@@ -1836,11 +1892,11 @@
           <span class="ch2-key-value">${simDisplay}</span>
         </article>
         <article>
-          <span class="ch2-key-label">그 달만 청산된 거래 수</span>
+          <span class="ch2-key-label">해당 월 청산 건수</span>
           <span class="ch2-key-value">${row.tradeCount != null ? row.tradeCount : "—"}</span>
         </article>
         <article>
-          <span class="ch2-key-label">모은 거래 수(ITI)</span>
+          <span class="ch2-key-label">누적 거래 건수 (ITI)</span>
           <span class="ch2-key-value">${
             iti.cumulativeTradeCount != null
               ? iti.cumulativeTradeCount
@@ -1957,12 +2013,12 @@
           fill: false,
         },
       ];
-      const mk = mkScatter("지금 기준 k=0.5", 0.5, "rgba(148, 163, 184, 0.95)");
-      const u = mkScatter("쓰는 K", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
+      const mk = mkScatter("기본 설정 k=0.5", 0.5, "rgba(148, 163, 184, 0.95)");
+      const u = mkScatter("적용 K값", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
       const ku = kv.valueUncapped;
       const kc = kv.valueCapped;
-      const unc = mkScatter("한도 안 최적(계산)", ku, "rgba(251, 191, 36, 0.95)");
-      const cap = mkScatter("한도(k≤1)", kc, "rgba(167, 139, 250, 0.95)");
+      const unc = mkScatter("이론상 최적값", ku, "rgba(251, 191, 36, 0.95)");
+      const cap = mkScatter("최대 한도 적용 K값", kc, "rgba(167, 139, 250, 0.95)");
       [mk, u].forEach((x) => {
         if (x) ds.push(x);
       });
@@ -2082,7 +2138,7 @@
             labels,
             datasets: [
               {
-                label: "쓰는 K",
+                label: "적용 K값",
                 data: kVals.map((k) => (k == null ? null : k)),
                 borderColor: `hsl(${h}, 95%, 68%)`,
                 backgroundColor: `hsla(${h}, 90%, 52%, 0.1)`,
@@ -2120,13 +2176,13 @@
                     const row = months[i];
                     const kv = row.kValue || {};
                     return [
-                      `쓰는 K: ${fmtOrDash(kv.valueUsed, 4)}`,
-                      `한도 안 최적: ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
-                      `한도로 자른 K: ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
-                      `넣는 비중(대략): ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
-                      `지금 기준 복리: ${fmtPctFlexible(kv.baselineResultPercent)}`,
-                      `모은 거래 수: ${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}`,
-                      `그 달만 청산: ${row.tradeCount != null ? row.tradeCount : "—"}`,
+                      `적용 K값: ${fmtOrDash(kv.valueUsed, 4)}`,
+                      `이론상 최적값: ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
+                      `최대 한도 적용 K값: ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
+                      `자산 투입 비중(대략): ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
+                      `기본 설정 기준 복리: ${fmtPctFlexible(kv.baselineResultPercent)}`,
+                      `누적 거래 건수: ${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}`,
+                      `해당 월 청산 건수: ${row.tradeCount != null ? row.tradeCount : "—"}`,
                     ];
                   },
                 },
@@ -2171,7 +2227,7 @@
                     const k = ctx.parsed.x;
                     const ap = k != null && Number.isFinite(k) ? k * 100 : null;
                     const y = ctx.parsed.y;
-                    return [`k: ${fmtOrDash(k, 3)}`, `넣는 비중(대략): ${ap == null ? "—" : fmtOrDash(ap, 2)}%`, `복리 결과: ${fmtOrDash(y, 4)}%`];
+                    return [`k: ${fmtOrDash(k, 3)}`, `자산 투입 비중(대략): ${ap == null ? "—" : fmtOrDash(ap, 2)}%`, `복리 결과: ${fmtOrDash(y, 4)}%`];
                   },
                 },
               },
@@ -2246,10 +2302,10 @@
                         : iti.nullModelSummary && iti.nullModelSummary.tradeCount;
                     return [
                       `ITI: ${fmtPctFlexible(iti.percent)}`,
-                      `실제 복리(모은 거래): ${fmtPctFlexible(iti.actualReturnPercent)}`,
-                      `정해 둔 무작위 횟수: ${iti.simulationCount != null ? iti.simulationCount : "—"}`,
-                      `모은 거래 수: ${nCum != null ? nCum : "—"}`,
-                      `그 달만 청산: ${row.tradeCount != null ? row.tradeCount : "—"}`,
+                      `실제 복리 (누적 거래 기준): ${fmtPctFlexible(iti.actualReturnPercent)}`,
+                      `시뮬레이션 횟수: ${iti.simulationCount != null ? iti.simulationCount : "—"}`,
+                      `누적 거래 건수: ${nCum != null ? nCum : "—"}`,
+                      `해당 월 청산 건수: ${row.tradeCount != null ? row.tradeCount : "—"}`,
                     ];
                   },
                 },
@@ -2303,7 +2359,7 @@
               legend: { display: false },
               tooltip: {
                 callbacks: {
-                  title: (items) => `무작위 ${items[0]?.parsed.x}번까지`,
+                  title: (items) => `시뮬레이션 ${items[0]?.parsed.x}회까지`,
                   label: (ctx) => `ITI 추정: ${fmtOrDash(ctx.parsed.y, 4)}%`,
                 },
               },
@@ -2312,7 +2368,7 @@
               x: {
                 type: "linear",
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "무작위 돌린 횟수(누적)", color: "#94a3b8" },
+                title: { display: true, text: "시뮬레이션 누적 횟수", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
               y: {
@@ -2565,9 +2621,9 @@
     }
 
     const canvas = document.getElementById("chart");
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas && canvas.getContext ? canvas.getContext("2d") : null;
 
-    let chart;
+    let chart = null;
 
     let currentHueValue = 195;
 
@@ -2618,6 +2674,7 @@
     }
 
     function initChart() {
+      if (!ctx || typeof Chart === "undefined") return;
       chart = new Chart(ctx, {
         type: "line",
         plugins: [gradientFillPlugin],
@@ -2625,7 +2682,7 @@
           labels: [],
           datasets: [
             {
-              label: "돈",
+              label: "누적 잔고",
               data: [],
               borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
               backgroundColor: "rgba(255, 255, 255, 0.04)",
@@ -2673,7 +2730,7 @@
                 },
                 label(item) {
                   const w = item.parsed.y * WON_PER_MAN;
-                  return " " + formatWon(Math.round(w));
+                  return " 누적 잔고: " + formatWon(Math.round(w));
                 },
               },
             },
@@ -2691,9 +2748,9 @@
                 font: { size: 13 },
                 padding: 4,
               },
-              title: {
+                title: {
                 display: true,
-                text: "시간 ( 개월 )",
+                text: "기간 (개월)",
                 color: `hsl(${currentHueValue}, 95%, 72%)`,
                 font: { size: 13, family: "'IBM Plex Sans KR', system-ui, sans-serif" },
               },
@@ -2713,7 +2770,7 @@
               },
               title: {
                 display: true,
-                text: "돈 ( 원 )",
+                text: "금액 (원)",
                 color: `hsl(${currentHueValue}, 95%, 72%)`,
                 font: { size: 13, family: "'IBM Plex Sans KR', system-ui, sans-serif" },
               },
@@ -2724,6 +2781,7 @@
     }
 
     function redraw() {
+      if (!chart) return;
       const months = getCurrentMonths();
       const monthlyWon = getMonthlyPaymentWonNormalized();
 
@@ -2737,9 +2795,12 @@
       updateSummary(months, monthlyWon, finalWon);
     }
 
-    const ch2MainCtx = document.getElementById("ch2MainChart").getContext("2d");
-    const ch2ProbCtx = document.getElementById("ch2ProbChart").getContext("2d");
-    const ch2FirstLiqCtx = document.getElementById("ch2FirstLiqChart").getContext("2d");
+    const ch2MainEl = document.getElementById("ch2MainChart");
+    const ch2ProbEl = document.getElementById("ch2ProbChart");
+    const ch2FirstLiqEl = document.getElementById("ch2FirstLiqChart");
+    const ch2MainCtx = ch2MainEl && ch2MainEl.getContext ? ch2MainEl.getContext("2d") : null;
+    const ch2ProbCtx = ch2ProbEl && ch2ProbEl.getContext ? ch2ProbEl.getContext("2d") : null;
+    const ch2FirstLiqCtx = ch2FirstLiqEl && ch2FirstLiqEl.getContext ? ch2FirstLiqEl.getContext("2d") : null;
     let ch2MainChart;
     let ch2ProbChart;
     let ch2FirstLiqChart;
@@ -3077,6 +3138,7 @@
     }
 
     function initCh2Charts() {
+      if (!ch2MainCtx || !ch2ProbCtx || !ch2FirstLiqCtx || typeof Chart === "undefined") return;
       /** 누적 청산 확률 · 청산 후 수익금: 읽기 쉬운 중립 회색 점선 그리드 */
       const ch2ReadabilityGrid = {
         color: "rgba(180, 180, 180, 0.22)",
@@ -3152,7 +3214,7 @@
           scales: {
             x: {
               ticks: { color: "#94a3b8" },
-              title: { display: true, text: "개월", color: "#94a3b8" },
+              title: { display: true, text: "기간 (개월)", color: "#94a3b8" },
               grid: {
                 display: true,
                 color: "rgba(148, 163, 184, 0.16)",
@@ -3162,7 +3224,7 @@
             y: {
               position: "right",
               ticks: { color: "#94a3b8", callback: (v) => formatCompact(Number(v)) },
-              title: { display: true, text: "원", color: "#94a3b8" },
+              title: { display: true, text: "당월 자본", color: "#94a3b8" },
               grid: {
                 display: true,
                 color: "rgba(148, 163, 184, 0.16)",
@@ -3179,7 +3241,7 @@
         data: {
           datasets: [
             {
-              label: "한 번이라도 청산될 확률",
+              label: "1회 이상 청산될 확률",
               data: [],
               parsing: false,
               borderColor: `hsl(${currentHueValue},95%,70%)`,
@@ -3198,7 +3260,7 @@
             ch2ExpectedLiqMonthLine: { enabled: false, month: 0, horizonMonths: 60 },
             tooltip: {
               callbacks: {
-                title: (items) => `개월 ${Number(items[0].parsed.x).toFixed(0)}`,
+                title: (items) => `기간 ${Number(items[0].parsed.x).toFixed(0)}개월`,
                 label: (ctx) => `${ctx.parsed.y.toFixed(1)}%`,
               },
             },
@@ -3208,7 +3270,7 @@
               type: "linear",
               min: 0,
               ticks: { color: "#94a3b8" },
-              title: { display: true, text: "개월", color: "#94a3b8" },
+              title: { display: true, text: "기간 (개월)", color: "#94a3b8" },
               grid: { ...ch2ReadabilityGrid },
               border: { display: false },
             },
@@ -3229,7 +3291,7 @@
         data: {
           datasets: [
             {
-              label: "처음 청산 그 달에 남는 수익금",
+              label: "첫 청산 발생 시 잔여 수익금",
               data: [],
               parsing: false,
               borderColor: `hsl(${currentHueValue},95%,72%)`,
@@ -3248,8 +3310,8 @@
               filter: (item) => Number.isFinite(item.parsed.y),
               callbacks: {
                 title: (items) =>
-                  `${Math.round(Number(items[0].parsed.x))}개월째 — 그 달 첫 청산이 그 거래에서 난다고 칠 때`,
-                label: (ctx) => `남는 돈: ${formatWon(ctx.parsed.y)}`,
+                  `경과 ${Math.round(Number(items[0].parsed.x))}개월 · 첫 청산 가정`,
+                label: (ctx) => `잔여 수익금: ${formatWon(ctx.parsed.y)}`,
               },
             },
           },
@@ -3258,13 +3320,13 @@
               type: "linear",
               min: 0,
               ticks: { color: "#94a3b8" },
-              title: { display: true, text: "개월", color: "#94a3b8" },
+              title: { display: true, text: "기간 (개월)", color: "#94a3b8" },
               grid: { ...ch2ReadabilityGrid },
               border: { display: false },
             },
             y: {
               ticks: { color: "#94a3b8", callback: (v) => formatCompact(Number(v)) },
-              title: { display: true, text: "수익금(원)", color: "#94a3b8" },
+              title: { display: true, text: "잔여 수익금 (원)", color: "#94a3b8" },
               grid: { ...ch2ReadabilityGrid },
               border: { display: false },
             },
@@ -3299,6 +3361,7 @@
     }
 
     function redrawCh2() {
+      if (!ch2MainChart || !ch2ProbChart || !ch2FirstLiqChart) return;
       const state = getCh2State();
       liqProbSlider.value = clamp(state.pPercent, 0, 100).toFixed(1);
       liqProbInput.value =
@@ -3336,7 +3399,7 @@
           borderWidth: 2,
         },
         {
-          label: "청산 넣은 기대 잔고",
+          label: "청산 리스크 반영 기대 잔고",
           data: expectedPath,
           borderColor: `hsl(${currentHueValue},95%,68%)`,
           pointStyle: "line",
@@ -3367,7 +3430,7 @@
         }
         mainDatasets.push(
           {
-            label: "무작위 상단(90% 밑)",
+            label: "상위 10% (낙관적 시나리오)",
             data: sim.p90,
             borderColor: "rgba(148,163,184,0.4)",
             pointStyle: "line",
@@ -3377,7 +3440,7 @@
             fill: false,
           },
           {
-            label: "무작위 하단(10% 밑)",
+            label: "하위 10% (비관적 시나리오)",
             data: sim.p10,
             borderColor: "rgba(148,163,184,0.4)",
             pointStyle: "line",
@@ -3566,8 +3629,6 @@
       const bgmMuteBtn = document.getElementById("bgmMuteBtn");
       const bgmVolumeSlider = document.getElementById("bgmVolumeSlider");
       const bgmVolumePct = document.getElementById("bgmVolumePct");
-      const bgmIconOn = document.querySelector("#bgmMuteBtn .audio-icon__glyph--on");
-      const bgmIconOff = document.querySelector("#bgmMuteBtn .audio-icon__glyph--off");
       if (!bgmAudio || !bgmAudioDock || !bgmMuteBtn || !bgmVolumeSlider || !bgmVolumePct) return;
 
       const FADE_VOL_MS = 180;
@@ -3611,18 +3672,29 @@
         } else {
           bgmVolumePct.textContent = `${Math.round(n)}%`;
         }
-        const audibleIntent = !bgmAudio.paused && !bgmUserMuted && n > 1;
-        bgmMuteBtn.setAttribute("aria-label", audibleIntent ? "음소거" : "음소거 해제");
+        let aria;
+        if (bgmUserMuted || n <= 1) {
+          aria = "음소거 해제";
+        } else if (bgmAudio.paused) {
+          aria = "재생";
+        } else {
+          aria = "음소거";
+        }
+        bgmMuteBtn.setAttribute("aria-label", aria);
       }
 
       function bgmSyncIcon() {
         const raw = parseInt(bgmVolumeSlider.value, 10);
         const n = Number.isFinite(raw) ? raw : 72;
-        const off = bgmAudio.paused || bgmUserMuted || n <= 1;
-        if (bgmIconOn && bgmIconOff) {
-          bgmIconOn.hidden = off;
-          bgmIconOff.hidden = !off;
+        let mode;
+        if (bgmUserMuted || n <= 1) {
+          mode = "muted";
+        } else if (bgmAudio.paused) {
+          mode = "paused";
+        } else {
+          mode = "playing";
         }
+        bgmMuteBtn.setAttribute("data-icon-mode", mode);
       }
 
       function bgmSyncAll() {
