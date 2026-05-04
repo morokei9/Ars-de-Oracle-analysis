@@ -40,6 +40,17 @@
     html {
       font-size: 120%;
       background-color: #020308;
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    .chapter-heading {
+      scroll-margin-top: 1.4rem;
     }
 
     /* assets/Gemini_Generated_Image_.png — 블러는 레이어에만 (body 배경에는 filter 불가) */
@@ -109,7 +120,7 @@
       height: 100%;
       z-index: 3;
       pointer-events: none;
-      opacity: 0.15;
+      opacity: 0.45;
     }
 
     .matrix-scanlines {
@@ -158,6 +169,25 @@
       letter-spacing: 0.04em;
     }
 
+    .site-footer__contact {
+      margin: 0 0 0.55rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      color: rgba(203, 213, 225, 0.85);
+    }
+
+    .site-footer__contact a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dotted hsla(var(--hue), 90%, 60%, 0.5);
+      padding-bottom: 1px;
+    }
+
+    .site-footer__contact a:hover {
+      color: hsl(var(--hue), 100%, 78%);
+      border-bottom-color: hsl(var(--hue), 100%, 70%);
+    }
+
     .site-footer__legal {
       margin: 0;
       font-size: 0.78rem;
@@ -165,9 +195,20 @@
       color: rgba(148, 163, 184, 0.85);
     }
 
+    .site-footer__caveat {
+      margin: 0 0 1.1rem;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: rgba(203, 213, 225, 0.75);
+      letter-spacing: 0.01em;
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     header {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 3.2rem;
     }
 
     header h1 {
@@ -190,28 +231,29 @@
     }
 
     .chapter-heading {
-      margin: 0 0 1.35rem;
-      padding-bottom: 0.95rem;
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--accent-border);
       display: flex;
       flex-wrap: wrap;
       align-items: baseline;
-      gap: 0.45rem 1rem;
+      gap: 0.5rem 1rem;
     }
 
     .chapter-num {
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.78rem;
+      font-weight: 700;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: hsl(var(--hue), 90%, 68%);
     }
 
     .chapter-title {
-      font-size: 1.2rem;
-      font-weight: 600;
+      font-size: 1.55rem;
+      font-weight: 700;
       color: var(--text);
       letter-spacing: -0.02em;
+      line-height: 1.2;
     }
 
     .explain-grid {
@@ -293,7 +335,7 @@
       }
     }
 
-    /* 제2장: 몬테카를로 옵션은 그리드 아래 전체 너비 */
+    /* 제4장 (청산): 몬테카를로 옵션은 그리드 아래 전체 너비 */
     .ch2-mc-row {
       grid-column: 1 / -1;
       margin-top: 0.25rem;
@@ -423,34 +465,34 @@
     input[type="range"] {
       flex: 1;
       min-width: 140px;
-      height: 8px;
+      height: 4px;
       -webkit-appearance: none;
       appearance: none;
-      background: linear-gradient(90deg, hsla(var(--hue), 90%, 60%, 0.38), hsla(var(--hue), 85%, 40%, 0.12));
-      border-radius: 8px;
+      background: linear-gradient(90deg, hsla(var(--hue), 90%, 60%, 0.45), hsla(var(--hue), 85%, 40%, 0.15));
+      border-radius: 4px;
       outline: none;
-      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.55);
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.45);
     }
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 22px;
-      height: 22px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, hsl(var(--hue), 100%, 92%), hsl(var(--hue), 95%, 62%) 55%, hsl(var(--hue), 90%, 45%));
+      background: radial-gradient(circle at 35% 35%, hsl(var(--hue), 100%, 94%), hsl(var(--hue), 95%, 62%) 60%, hsl(var(--hue), 90%, 48%));
       cursor: grab;
-      box-shadow: var(--glow);
-      border: 2px solid hsla(var(--hue), 100%, 88%, 0.35);
+      box-shadow: 0 0 8px hsla(var(--hue), 95%, 55%, 0.4);
+      border: 1.5px solid hsla(var(--hue), 100%, 88%, 0.5);
     }
 
     input[type="range"]::-moz-range-thumb {
-      width: 22px;
-      height: 22px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, hsl(var(--hue), 100%, 92%), hsl(var(--hue), 95%, 62%));
+      background: radial-gradient(circle at 35% 35%, hsl(var(--hue), 100%, 94%), hsl(var(--hue), 95%, 62%));
       cursor: grab;
-      box-shadow: var(--glow);
-      border: 2px solid hsla(var(--hue), 100%, 88%, 0.35);
+      box-shadow: 0 0 8px hsla(var(--hue), 95%, 55%, 0.4);
+      border: 1.5px solid hsla(var(--hue), 100%, 88%, 0.5);
     }
 
     .pill {
@@ -599,25 +641,44 @@
     }
 
     .btn-table {
-      padding: 0.45rem 1rem;
-      border-radius: 10px;
+      padding: 0.35rem 0.85rem;
+      border-radius: 8px;
       border: 1px solid var(--accent-border);
-      background: hsla(var(--hue), 85%, 42%, 0.35);
-      color: hsl(var(--hue), 95%, 92%);
+      background: hsla(var(--hue), 85%, 42%, 0.18);
+      color: hsl(var(--hue), 95%, 88%);
       font: inherit;
-      font-size: 0.86rem;
+      font-size: 0.8rem;
       font-weight: 500;
+      letter-spacing: 0.02em;
       cursor: pointer;
-      box-shadow: var(--glow);
-      transition: transform 0.12s ease, filter 0.15s ease;
+      transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
     }
 
     .btn-table:hover {
-      filter: brightness(1.08);
+      background: hsla(var(--hue), 85%, 50%, 0.28);
+      border-color: var(--accent-border-strong);
     }
 
     .btn-table:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
+    }
+
+    .btn-table[aria-expanded="true"] {
+      background: hsla(var(--hue), 85%, 50%, 0.32);
+      color: hsl(var(--hue), 100%, 94%);
+    }
+
+    .table-section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.85rem;
+      margin: 0 0 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .table-section-head h3 {
+      margin: 0;
     }
 
     .table-section {
@@ -629,6 +690,35 @@
       box-shadow: var(--glow);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Inline table that lives inside a chart-card and toggles open/close. */
+    .table-section--inline {
+      margin-top: 0;
+      padding: 0 0;
+      border: 0;
+      border-top: 1px solid var(--accent-border);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition:
+        max-height 320ms cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 220ms ease-out,
+        padding-top 320ms cubic-bezier(0.4, 0, 0.2, 1),
+        padding-bottom 320ms cubic-bezier(0.4, 0, 0.2, 1),
+        margin-top 320ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .table-section--inline.is-open {
+      max-height: 6000px;
+      opacity: 1;
+      padding: 0.9rem 0 0.25rem;
+      margin-top: 0.9rem;
     }
 
     .table-section h3 {
@@ -867,7 +957,7 @@
       font-weight: 600;
     }
 
-    /* 제2장: 요약 카드 아래 작은 참고 문구 */
+    /* 제4장 (청산): 요약 카드 아래 작은 참고 문구 */
     .ch2-key-context--ref {
       margin: 0.65rem 0 0;
       padding: 0.45rem 0.6rem;
@@ -892,7 +982,7 @@
       gap: 0.55rem;
     }
 
-    /* 거래 수·누적 청산 확률 해설 (제2장 상단) */
+    /* 거래 수·누적 청산 확률 해설 (제4장 청산 상단) */
     .ch2-key-context-panel {
       margin: 0;
       padding: 0.85rem 1rem 0.95rem;
@@ -1050,7 +1140,7 @@
     }
 
     .chapter-sep {
-      margin: 2.8rem 0 2.2rem;
+      margin: 2.4rem 0 1.6rem;
       border: none;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -1113,7 +1203,7 @@
       height: min(34vh, 280px);
     }
 
-    /* 제3·4장: 월별 추이 + 바로 이어지는 그래프(복리/수렴)를 한 화면에 가깝게 */
+    /* 제1·2장 (ITI · K-value): 월별 추이 + 바로 이어지는 그래프(복리/수렴)를 한 화면에 가깝게 */
     .oracle-metrics-chart-pair {
       display: flex;
       flex-direction: column;
@@ -1144,26 +1234,42 @@
     .ch4-iti-chart-card {
       position: relative;
     }
-    .ch4-iti-chart-wrap {
-      padding-bottom: 2.65rem;
-    }
-    .ch4-iti-table-btn {
-      position: absolute;
-      right: 0.75rem;
-      bottom: 0.55rem;
-      z-index: 2;
-    }
 
-    /* ITI 요약 표: ‘월별 ITI 추이’ 카드 바로 아래에 붙임 */
-    .oracle-metrics-chart-pair .table-section.ch4-table-nested {
-      margin-top: 0.25rem;
-      margin-bottom: 0.15rem;
+    /* 보조 검증 차트(예: Monte Carlo 수렴) — 본 차트보다 강등된 시각 가중치 */
+    .chart-card--secondary {
+      background: rgba(10, 10, 14, 0.4);
+      border-color: rgba(255, 255, 255, 0.08);
     }
-
-    /* 제3·4장: 메트릭 리포트 */
+    .chart-card--secondary .chart-head .ch2-chart-plain {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: rgba(226, 232, 240, 0.78);
+    }
+    .chart-card--secondary .chart-head .ch2-chart-plain::before {
+      content: "보조 검증 · ";
+      color: rgba(148, 163, 184, 0.75);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+    }
+    .chart-card--secondary .ch2-chart-blurb {
+      font-size: 0.74rem;
+      color: rgba(148, 163, 184, 0.72);
+    }
+    .oracle-metrics-chart-pair .chart-card--secondary .chart-wrap,
+    .oracle-metrics-chart-pair .chart-card--secondary .chart-wrap--mid {
+      height: min(20vh, 160px);
+    }
+    @media (min-height: 760px) {
+      .oracle-metrics-chart-pair .chart-card--secondary .chart-wrap,
+      .oracle-metrics-chart-pair .chart-card--secondary .chart-wrap--mid {
+        height: min(22vh, 180px);
+      }
+    }
+    /* 제1·2장 (ITI · K-value): 메트릭 리포트 */
     .ch-intro {
-      margin: 0 0 1.35rem;
-      padding: 1.1rem 1.2rem 1.15rem;
+      margin: 0 0 1rem;
+      padding: 0.9rem 1.2rem 0.95rem;
       border-radius: 14px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       background: rgba(14, 14, 22, 0.45);
@@ -1173,9 +1279,9 @@
     }
 
     .ch-intro p {
-      margin: 0 0 0.55rem;
+      margin: 0 0 0.5rem;
       font-size: 0.86rem;
-      line-height: 1.75;
+      line-height: 1.7;
       color: #cbd5e1;
     }
 
@@ -1184,46 +1290,185 @@
     }
 
     .ch-intro .lead {
-      font-size: 0.9rem;
+      margin-bottom: 0.55rem;
+      font-size: 0.95rem;
       color: #e2e8f0;
-      font-weight: 500;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
 
-    .ch-principle {
-      margin: 0.85rem 0 0;
-      padding: 0.85rem 1rem;
+    .ch-intro__abbr {
+      color: rgba(148, 163, 184, 0.85);
       font-size: 0.82rem;
+      font-style: italic;
+      letter-spacing: -0.01em;
+    }
+
+    .ch-principle-fold {
+      margin: 0.7rem 0 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .ch-principle-fold > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.78rem;
+      color: rgba(148, 163, 184, 0.85);
+      letter-spacing: -0.01em;
+      user-select: none;
+      transition: color 160ms ease;
+    }
+
+    .ch-principle-fold > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .ch-principle-fold > summary::before {
+      content: "▸ ";
+      display: inline-block;
+      margin-right: 0.25rem;
+      color: rgba(148, 163, 184, 0.6);
+      transition: transform 180ms ease;
+    }
+
+    .ch-principle-fold[open] > summary::before {
+      content: "▾ ";
+    }
+
+    .ch-principle-fold > summary:hover {
+      color: #e2e8f0;
+    }
+
+    .ch-principle-body {
+      padding: 0 0.85rem 0.75rem;
+      font-size: 0.8rem;
       line-height: 1.65;
       color: #cbd5e1;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.2);
     }
 
-    .ch-principle strong {
-      color: #e2e8f0;
-    }
-
-    .ch-principle .ch-math {
+    .ch-principle-body .ch-math {
       display: block;
-      margin-top: 0.45rem;
+      margin: 0.4rem 0;
       font-family: "IBM Plex Sans KR", ui-sans-serif, system-ui, sans-serif;
       font-size: 0.8rem;
       color: #94a3b8;
       word-break: break-all;
     }
 
-    .iti-validity-badge {
-      display: inline-block;
-      margin-bottom: 0.35rem;
-      padding: 0.25rem 0.55rem;
-      border-radius: 8px;
-      font-size: 0.78rem;
+    /* 제1장 ITI 결론 카드 (verdict-first) */
+    .ch4-detail-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 0 0 1.1rem;
+    }
+    .ch4-verdict {
+      margin: 0 0 0.9rem;
+      padding: 1rem 1.2rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid var(--accent-border);
+      background: linear-gradient(180deg, hsla(var(--hue), 55%, 22%, 0.55), hsla(var(--hue), 35%, 14%, 0.4));
+      box-shadow: var(--glow);
+    }
+    .ch4-verdict__headline {
+      margin: 0 0 0.32rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .ch4-verdict__detail {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: rgba(203, 213, 225, 0.85);
+    }
+    .ch4-verdict--strong {
+      border-color: hsla(var(--hue), 90%, 60%, 0.55);
+    }
+    .ch4-verdict--ambiguous {
+      border-color: rgba(212, 175, 55, 0.4);
+      background: linear-gradient(180deg, rgba(60, 50, 20, 0.45), rgba(35, 30, 14, 0.35));
+    }
+    .ch4-verdict--weak {
+      border-color: rgba(180, 90, 90, 0.35);
+      background: linear-gradient(180deg, rgba(60, 24, 24, 0.42), rgba(35, 14, 14, 0.32));
+    }
+    .ch4-verdict--unknown {
+      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(14, 14, 20, 0.5);
+    }
+    .ch4-hero-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin: 0 0 0.85rem;
+    }
+    .ch4-hero-card {
+      padding: 0.95rem 1.1rem 1.05rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(10, 10, 14, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .ch4-hero-card--primary {
+      border-color: hsla(var(--hue), 65%, 50%, 0.45);
+      background: linear-gradient(160deg, hsla(var(--hue), 50%, 18%, 0.65), rgba(10, 10, 14, 0.5));
+    }
+    .ch4-hero-label {
+      font-size: 0.76rem;
+      color: rgba(148, 163, 184, 0.95);
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .ch4-hero-value {
+      font-size: 1.95rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+    .ch4-hero-sub {
+      font-size: 0.74rem;
+      color: rgba(148, 163, 184, 0.7);
+    }
+    .ch4-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.55rem;
+      margin: 0 0 0.6rem;
+      padding: 0;
+    }
+    .ch4-stat-grid > div {
+      padding: 0.6rem 0.85rem 0.7rem;
+      border-radius: 10px;
+      background: rgba(10, 10, 14, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .ch4-stat-grid dt {
+      font-size: 0.72rem;
+      color: rgba(148, 163, 184, 0.85);
+      margin-bottom: 0.25rem;
+    }
+    .ch4-stat-grid dd {
+      margin: 0;
+      font-size: 0.98rem;
       font-weight: 600;
-      letter-spacing: -0.02em;
       color: #e2e8f0;
-      background: hsla(var(--hue), 40%, 28%, 0.85);
-      border: 1px solid hsla(var(--hue), 65%, 50%, 0.35);
+      font-variant-numeric: tabular-nums;
+    }
+    .ch4-meta-foot {
+      margin: 0;
+      padding: 0.4rem 0.2rem 0;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      color: rgba(148, 163, 184, 0.65);
     }
 
     .ch-k-triad {
@@ -1245,7 +1490,7 @@
       background: rgba(255, 255, 255, 0.04);
     }
 
-    /* 제3장 K-value: 토스형 대시보드 (그리드 대신 세로 플로우) */
+    /* 제2장 K-value: 대시보드 (그리드 대신 세로 플로우) */
     .ch2-key-summary.ch3-k-dashboard {
       display: flex;
       flex-direction: column;
@@ -1415,6 +1660,24 @@
       line-height: 1.65;
     }
 
+    .metrics-empty__lead {
+      margin: 0 0 0.45rem;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .metrics-empty__hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .metrics-empty__hint small {
+      font-size: 0.85rem;
+    }
+
     .ch-band {
       margin: 1.35rem 0 1.15rem;
       padding: 1rem 1.05rem 1.05rem;
@@ -1471,7 +1734,7 @@
     }
 
     .report-preamble {
-      margin: 0 auto 2rem;
+      margin: 0 auto 3.6rem;
       max-width: 52rem;
       padding: 1.35rem 1.5rem 1.45rem;
       text-align: center;
@@ -1540,7 +1803,7 @@
 
     .report-preamble__roadmap li {
       margin: 0;
-      padding: 0.65rem 0.7rem 0.75rem;
+      padding: 0;
       border-radius: 12px;
       text-align: left;
       border: 1px solid hsla(var(--hue), 50%, 45%, 0.28);
@@ -1549,9 +1812,28 @@
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .report-preamble__roadmap li:hover {
-      border-color: hsla(var(--hue), 70%, 55%, 0.45);
-      box-shadow: 0 0 18px hsla(var(--hue), 90%, 50%, 0.12);
+    .report-preamble__roadmap li:hover,
+    .report-preamble__roadmap li:focus-within {
+      border-color: hsla(var(--hue), 70%, 55%, 0.5);
+      box-shadow: 0 0 18px hsla(var(--hue), 90%, 50%, 0.16);
+    }
+
+    .report-preamble__roadmap-link {
+      display: block;
+      padding: 0.65rem 0.7rem 0.75rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .report-preamble__roadmap-link:focus-visible {
+      box-shadow: 0 0 0 2px hsla(var(--hue), 90%, 60%, 0.55);
+    }
+
+    .report-preamble__roadmap-link:hover .report-preamble__ch-title {
+      color: #f1f5f9;
     }
 
     .report-preamble__ch-num {
@@ -1600,11 +1882,11 @@
 
     .oracle-month-toolbar {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.65rem 1rem;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.55rem;
       margin: 0 0 1.25rem;
-      padding: 0.75rem 1rem;
+      padding: 0.75rem 1rem 0.85rem;
       border-radius: 14px;
       border: 1px solid var(--accent-border);
       background: hsla(var(--hue), 45%, 18%, 0.42);
@@ -1612,11 +1894,12 @@
     }
 
     .oracle-month-toolbar-label {
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--text);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(148, 163, 184, 0.85);
       margin: 0;
-      flex-shrink: 0;
     }
 
     .oracle-month-buttons {
@@ -1624,7 +1907,6 @@
       flex-wrap: wrap;
       gap: 0.4rem 0.45rem;
       align-items: center;
-      flex: 1 1 12rem;
       min-width: 0;
     }
 
@@ -1826,36 +2108,271 @@
     <section class="report-preamble" aria-label="보고서 소개">
       <p class="report-preamble__lead">
         <span class="report-preamble__brand">오라클 엔진</span>
-        <span class="report-preamble__latin" lang="la">(Ars de Oraculum)</span>의 잠재성과 한계를 탐색할 수 있습니다.
+        <span class="report-preamble__latin" lang="la">(Ars de Oraculum)</span>의 잠재성과 한계를 네 개의 질문으로 분해합니다.
       </p>
-      <ul class="report-preamble__roadmap">
+      <ul class="report-preamble__roadmap" role="list">
         <li>
-          <span class="report-preamble__ch-num">1장</span>
-          <span class="report-preamble__ch-title">기대 수익</span>
+          <a class="report-preamble__roadmap-link" href="#ch4-heading">
+            <span class="report-preamble__ch-num">1장</span>
+            <span class="report-preamble__ch-title">운인가, 실력인가</span>
+          </a>
         </li>
         <li>
-          <span class="report-preamble__ch-num">2장</span>
-          <span class="report-preamble__ch-title">프로젝트 종료 가능성</span>
+          <a class="report-preamble__roadmap-link" href="#ch3-heading">
+            <span class="report-preamble__ch-num">2장</span>
+            <span class="report-preamble__ch-title">얼마를 걸어야 했나</span>
+          </a>
         </li>
         <li>
-          <span class="report-preamble__ch-num">3장</span>
-          <span class="report-preamble__ch-title">최대이윤 투자 비중</span>
+          <a class="report-preamble__roadmap-link" href="#ch1-heading">
+            <span class="report-preamble__ch-num">3장</span>
+            <span class="report-preamble__ch-title">그래서 얼마가 되나</span>
+          </a>
         </li>
         <li>
-          <span class="report-preamble__ch-num">4장</span>
-          <span class="report-preamble__ch-title">운이 아닐 확률</span>
+          <a class="report-preamble__roadmap-link" href="#ch2-heading">
+            <span class="report-preamble__ch-num">4장</span>
+            <span class="report-preamble__ch-title">청산 한 번이면 끝</span>
+          </a>
         </li>
       </ul>
     </section>
 
+    <div id="oracleMetricsRoot">
+      <div id="oracleMetricsEmpty" class="metrics-empty" hidden>
+        <p class="metrics-empty__lead">제1·2장 데이터를 불러올 수 없습니다.</p>
+        <p class="metrics-empty__hint">잠시 후 새로 고침해 주십시오.</p>
+        <!-- 개발자: data/btcusdt_12h.csv 갱신 후 `python scripts/build_metrics.py` 실행 후 새로고침 -->
+      </div>
+
+      <div id="oracleMetricsFilled" hidden>
+
+        <section class="chapter" aria-labelledby="ch4-heading">
+          <h2 id="ch4-heading" class="chapter-heading">
+            <span class="chapter-num">제1장</span>
+            <span class="chapter-title">운인가, 실력인가</span>
+          </h2>
+
+          <div class="ch-intro" aria-label="제1장 서문">
+            <p class="lead">"이 수익이 운이라면, 뒷장은 의미가 없습니다."</p>
+            <p>
+              거래 횟수·평균 보유 시간·롱숏 순서는 그대로 둔 채 <strong>가격만 무작위</strong>로 돌린 시장 10만 개를 만들고, 그중 실제 수익을 이긴 무작위 경로가 몇 %인지 셉니다.
+            </p>
+            <p>
+              이 값이 곧 <strong>ITI</strong> <span class="ch-intro__abbr" lang="en">(Imperfect Truth Index, "불완전한 진실 지수")</span> — 풀어 말하면 <strong>이 결과를 우연만으로 재현할 확률</strong>입니다.
+            </p>
+            <p>
+              <strong>낮을수록</strong> 우연으로 설명하기 어렵습니다. 1% 미만이면 "우연으로는 거의 나오지 않는 결과"에 가깝습니다.
+            </p>
+            <details class="ch-principle-fold">
+              <summary>계산 원리 (몬테카를로)</summary>
+              <div class="ch-principle-body">
+                실제 누적 수익이 무작위 시장 10만 개의 분포에서 차지하는 위치를 <strong>p-value</strong>로 봅니다. 거래 횟수·평균 보유 시간·롱숏 순서는 고정한 채 가격만 무작위로 흔듭니다.
+              </div>
+            </details>
+          </div>
+
+          <div class="oracle-month-toolbar" aria-label="제1장 기간 선택 (누적)">
+            <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh4">기간 선택 (누적)</span>
+            <div
+              id="oracleMonthButtonsCh4"
+              class="oracle-month-buttons"
+              role="group"
+              aria-labelledby="oracleMonthToolbarLabelCh4"></div>
+          </div>
+
+          <div id="ch4Dynamic">
+            <div class="oracle-metrics-chart-pair" aria-label="ITI 월별 추이 및 Monte Carlo 수렴">
+              <section class="chart-card ch4-iti-chart-card" aria-label="월별 ITI">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h3 class="ch2-chart-plain">월별 ITI 추이</h3>
+                </div>
+                <p class="ch2-chart-blurb">
+                  첫 거래부터 해당 월까지 누적된 성과가 무작위 시장에서 <strong>얼마나 나오기 힘든 결과인지</strong>(%)를 보여줍니다. 낮을수록 희귀합니다.
+                </p>
+                <div class="chart-wrap chart-wrap--mid ch4-iti-chart-wrap">
+                  <canvas id="ch4ItiHistoryChart"></canvas>
+                </div>
+                <div class="chart-footer">
+                  <button type="button" class="btn-table" id="btnGenerateCh4Table" aria-expanded="false">표 펼치기</button>
+                </div>
+                <div class="table-section table-section--inline" id="ch4TableSection" hidden aria-labelledby="ch4TableHeading">
+                  <div class="table-section-head">
+                    <h3 id="ch4TableHeading">월별 ITI 요약 표</h3>
+                  </div>
+                  <p class="table-hint">
+                    첫 달부터 해당 월까지 <strong>누적 거래</strong> 기준의 실제 복리·ITI·비교 요약입니다. ‘해당 달 거래’ 열은 그달의 거래 횟수입니다.
+                  </p>
+                  <div class="table-scroll">
+                    <table class="data-table" id="ch4SummaryTable">
+                      <thead>
+                        <tr>
+                          <th scope="col">월</th>
+                          <th scope="col">해당 달 거래 횟수</th>
+                          <th scope="col">누적 거래 횟수</th>
+                          <th scope="col">실제 수익률 (%)</th>
+                          <th scope="col">ITI (%)</th>
+                          <th scope="col">비교 반복 횟수</th>
+                          <th scope="col">평균 포지션 보유 시간</th>
+                          <th scope="col">평균 포지션 관망 시간</th>
+                          <th scope="col">레버리지</th>
+                        </tr>
+                      </thead>
+                      <tbody id="ch4SummaryTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+
+              <section class="chart-card chart-card--secondary" aria-label="ITI 시뮬 안정성 (Monte Carlo 수렴)">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h3 class="ch2-chart-plain">시뮬 결과의 안정성</h3>
+                </div>
+                <p class="ch2-chart-blurb">
+                  시뮬을 더 돌려도 위 ITI 값이 흔들리지 않는지 자체 점검합니다.
+                </p>
+                <div class="chart-wrap chart-wrap--mid">
+                  <canvas id="ch4ConvergenceChart"></canvas>
+                </div>
+              </section>
+            </div>
+
+            <div class="ch4-detail-stack" id="ch4DetailCards" aria-label="기준월 ITI 상세"></div>
+            <p id="ch4PartialHint" class="ch-partial-hint" hidden></p>
+
+            <div class="ch-band" aria-label="ITI 구간 해석">
+              <h3>이 수치, 이렇게 읽습니다</h3>
+              <ul class="ch-band-grid">
+                <li><strong>1% 미만</strong> — 우연으로는 거의 나오지 않습니다. 강한 신호.</li>
+                <li><strong>1% ~ 5%</strong> — 우연이라기엔 드뭅니다. 잠정 신호.</li>
+                <li><strong>5% ~ 15%</strong> — 운이라 단정하기도, 실력이라 단정하기도 어렵습니다.</li>
+                <li><strong>15% 이상</strong> — 우연으로도 흔히 나옵니다. 신호로 보기 어렵습니다.</li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
+
+        <hr class="chapter-sep" aria-hidden="true" />
+
+        <section class="chapter" aria-labelledby="ch3-heading">
+          <h2 id="ch3-heading" class="chapter-heading">
+            <span class="chapter-num">제2장</span>
+            <span class="chapter-title">얼마를 걸어야 했나</span>
+          </h2>
+
+          <div class="ch-intro" aria-label="제2장 서문">
+            <p class="lead">"운이 아니라면, 그때 얼마를 걸었어야 가장 컸을까."</p>
+            <p>
+              K는 <strong>한 거래에 시드의 몇 %를 거는지</strong>를 뜻합니다. 기본값은 <strong>k=0.5 (시드의 절반)</strong>입니다.
+            </p>
+            <p>
+              <strong>K가 0.5보다 크면</strong> 더 세게 걸었어야 했다는 뜻, <strong>작으면</strong> 줄였어야 했다는 뜻입니다.
+            </p>
+            <details class="ch-principle-fold">
+              <summary>계산 원리 (켈리 기준)</summary>
+              <div class="ch-principle-body">
+                거래별 수익률 <em>r</em><sub>i</sub>가 주어졌을 때, 복리 성장
+                <span class="ch-math">f(k) = ∏<sub>i</sub>(1 + k·<em>r</em><sub>i</sub>)</span>
+                을 최대화하는 <em>k</em>를 이분법으로 찾습니다. 시스템 한도는 <em>k</em>=1.0 (시드 전부) 입니다.
+              </div>
+            </details>
+          </div>
+
+          <div class="oracle-month-toolbar" aria-label="제2장 기간 선택 (누적)">
+            <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh3">기간 선택 (누적)</span>
+            <div
+              id="oracleMonthButtonsCh3"
+              class="oracle-month-buttons"
+              role="group"
+              aria-labelledby="oracleMonthToolbarLabelCh3"></div>
+          </div>
+
+          <div id="ch3Dynamic">
+            <div class="oracle-metrics-chart-pair" aria-label="K-value 월별 추이 및 K-곡선">
+              <section class="chart-card" aria-label="월별 K-value">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h3 class="ch2-chart-plain">월별 사후 최적 K 추이</h3>
+                </div>
+                <p class="ch2-chart-blurb">달마다 사후 최적 K가 얼마로 잡혔는지. 점을 터치하면 우측 곡선이 그 달로 바뀝니다.</p>
+                <div class="chart-wrap chart-wrap--mid">
+                  <canvas id="ch3KHistoryChart"></canvas>
+                </div>
+              </section>
+
+              <section class="chart-card" aria-label="K값별 복리 곡선">
+                <div class="chart-head ch2-chart-head-ruled">
+                  <h3 class="ch2-chart-plain">얼마를 걸면 얼마가 됐을까</h3>
+                </div>
+                <p class="ch2-chart-blurb">
+                  곡선의 정점이 사후 최적 K입니다. 기본(k=0.5), 실제 적용, 이론상 최적을 점으로 표시합니다.
+                </p>
+                <div class="chart-wrap">
+                  <canvas id="ch3KCurveChart"></canvas>
+                </div>
+              </section>
+            </div>
+
+            <div class="ch2-key-summary ch3-k-dashboard" id="ch3DetailCards" aria-label="K값 요약, 수익률 비교, 분석 메타"></div>
+            <p id="ch3PartialHint" class="ch-partial-hint" hidden></p>
+
+            <div class="ch-band" aria-label="K-value 구간 해석">
+              <h3>이 수치, 이렇게 읽습니다</h3>
+              <ul class="ch-band-grid">
+                <li><strong>0.25 미만</strong> — 더 적게 걸었어야 했습니다. 시그널이 약했습니다.</li>
+                <li><strong>0.25 ~ 0.50</strong> — 기본값(50%)보다 줄였어야 했습니다.</li>
+                <li><strong>0.50 ~ 0.75</strong> — 기본값보다 약간 더 걸었어도 안전했습니다.</li>
+                <li><strong>0.75 ~ 1.00</strong> — 시드 전부에 가깝게 걸어도 버틸 만큼 강한 신호였습니다.</li>
+                <li><strong>1.00 초과</strong> — 사후엔 한도 너머가 최적이었습니다. 한도(1.0)로 잘라 적용합니다.</li>
+              </ul>
+              <p class="ch-partial-hint" style="margin-top: 0.65rem">
+                사후값이며 미래에도 같은 K가 반복된다는 보장은 없습니다. 한도(1.0)에 닿으면 그 너머 정보는 가려집니다.
+              </p>
+            </div>
+
+            <section class="table-section" aria-labelledby="ch3TableHeading">
+              <div class="table-section-head">
+                <h3 id="ch3TableHeading">월별 K값 요약 표</h3>
+              </div>
+              <p class="table-hint">
+                한 줄마다 그 시점까지 <strong>누적된 거래</strong>를 기준으로 K를 계산합니다. ‘해당 달 거래’는 그달에만 체결된 횟수입니다.
+              </p>
+              <div class="table-scroll">
+                <table class="data-table" id="ch3SummaryTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">월</th>
+                      <th scope="col">해당 달 거래 횟수</th>
+                      <th scope="col">누적 거래 횟수</th>
+                      <th scope="col">실제 적용 K</th>
+                      <th scope="col">이론상 최적 K (한도 미적용)</th>
+                      <th scope="col">한도 적용 최적 K</th>
+                      <th scope="col">기본 설정 복리 (%)</th>
+                      <th scope="col">실제 적용 K 복리 (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ch3SummaryTableBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <hr class="chapter-sep" aria-hidden="true" />
+
     <section class="chapter" aria-labelledby="ch1-heading">
       <h2 id="ch1-heading" class="chapter-heading">
-        <span class="chapter-num">제1장</span>
-        <span class="chapter-title">기대 수익</span>
+        <span class="chapter-num">제3장</span>
+        <span class="chapter-title">그래서 얼마가 되나</span>
       </h2>
-      <p class="ch1-intro">
-        <strong>월별 투자 금액</strong>과 <strong>투자 기간</strong>을 변수로 기대 수익을 확인해보는 챕터 입니다.
-      </p>
+      <div class="ch-intro" aria-label="제3장 서문">
+        <p class="lead">"매월 X원을 넣으면, 결국 얼마가 됩니까."</p>
+        <p>
+          앞 두 장의 시그널이 똑같이 반복된다는 가정으로 잔고를 단순 복리로 그립니다. 청산·슬리피지·세금이 없는 <strong>이론적 베이스라인</strong>이며, 다음 장에서 한 번에 무너집니다.
+        </p>
+      </div>
 
       <section class="control-card" aria-label="월 납입과 투자 기간">
         <div class="summary" id="summary" aria-live="polite"></div>
@@ -1889,29 +2406,30 @@
 
       <section class="chart-card" aria-label="기준 경로 잔고">
         <div class="chart-head">
-          <h2>기대 수익 그래프</h2>
+          <h3>월별 잔고 곡선</h3>
         </div>
         <div class="chart-wrap">
           <canvas id="chart"></canvas>
         </div>
         <div class="chart-footer">
-          <button type="button" class="btn-table" id="btnGenerateTable">표 생성</button>
+          <button type="button" class="btn-table" id="btnGenerateTable" aria-expanded="false">표 펼치기</button>
         </div>
-      </section>
-
-      <section class="table-section" id="tableSection" hidden aria-labelledby="tableHeading">
-        <h3 id="tableHeading">기대 수익 표</h3>
-        <div class="table-scroll">
-          <table class="data-table" id="dataTable">
-            <thead>
-              <tr>
-                <th scope="col">경과(월)</th>
-                <th scope="col">수익금 (원)</th>
-                <th scope="col">누적 잔고</th>
-              </tr>
-            </thead>
-            <tbody id="dataTableBody"></tbody>
-          </table>
+        <div class="table-section table-section--inline" id="tableSection" hidden aria-labelledby="tableHeading">
+          <div class="table-section-head">
+            <h3 id="tableHeading">월별 잔고 표</h3>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table" id="dataTable">
+              <thead>
+                <tr>
+                  <th scope="col">경과 (월)</th>
+                  <th scope="col">수익금 (원)</th>
+                  <th scope="col">누적 잔고 (원)</th>
+                </tr>
+              </thead>
+              <tbody id="dataTableBody"></tbody>
+            </table>
+          </div>
         </div>
       </section>
     </section>
@@ -1920,33 +2438,36 @@
 
     <section class="chapter" aria-labelledby="ch2-heading">
       <h2 id="ch2-heading" class="chapter-heading">
-        <span class="chapter-num">제2장</span>
-        <span class="chapter-title">청산이 들어오면</span>
+        <span class="chapter-num">제4장</span>
+        <span class="chapter-title">청산 한 번이면 끝</span>
       </h2>
-      <p class="ch2-chapter-lead">
-        청산 1회 시 전체 투자금의 절반이 없어지고 그대로 프로젝트는 종료됩니다. 청산 가능성을 변수로 수익 분기점을 확인해보는 챕터입니다.
-      </p>
+      <div class="ch-intro" aria-label="제4장 서문">
+        <p class="lead">"그 잔고는 청산 한 번에 절반이 사라집니다."</p>
+        <p>
+          청산이 1회 발생하면 <strong>투자금의 절반</strong>이 사라지고 프로젝트는 그 자리에서 종료된다고 가정합니다. 거래당 청산 확률을 옮겨가며, 시간이 흐를수록 청산 누적 확률과 기대 잔고가 어떻게 함께 무너지는지 봅니다.
+        </p>
+      </div>
 
       <div class="ch2-metrics-wrap">
         <section class="control-card ch2-input-card" aria-label="청산 리스크 및 분석 기간">
           <div class="ch2-input-grid">
             <div class="ch2-input-partition">
               <div class="field ch2-input-pane ch2-input-pane--liq">
-                <label for="liqProbSlider">거래 당 청산 확률 설정 (0~100%)</label>
+                <label for="liqProbSlider">거래당 청산 확률 (슬라이더 0~5%, 입력 0~100%)</label>
                 <div class="slider-row ch2-liq-slider-row">
-                  <input type="range" id="liqProbSlider" min="0" max="100" step="0.001" value="1" />
+                  <input type="range" id="liqProbSlider" min="0" max="5" step="0.001" value="1" />
                   <span class="pill" id="liqProbLabel">1%</span>
                 </div>
                 <div class="input-with-suffix">
                   <input
                     class="num-input"
-                    type="number"
+                    type="text"
                     id="liqProbInput"
-                    min="0"
-                    max="100"
-                    step="0.001"
+                    inputmode="decimal"
+                    autocomplete="off"
                     value="1.000"
-                    aria-label="청산 확률 퍼센트 소수 셋째 자리까지"
+                    placeholder="0~100"
+                    aria-label="청산 확률 퍼센트 (0~100, 소수 셋째 자리까지)"
                   />
                   <span class="input-suffix">%</span>
                 </div>
@@ -1978,19 +2499,19 @@
           <div class="field">
             <label for="ch2NarrativeMonthSlider">개월 수 (참고)</label>
             <div class="slider-row ch2-narrative-slider-row">
-              <input type="range" id="ch2NarrativeMonthSlider" min="1" max="60" step="1" value="12" />
+              <input type="range" id="ch2NarrativeMonthSlider" min="0" max="12" step="1" value="12" />
               <span class="pill" id="ch2NarrativeMonthLabel">12개월</span>
             </div>
             <div class="input-with-suffix">
               <input
                 class="num-input"
-                type="number"
+                type="text"
                 id="ch2NarrativeMonthInput"
-                min="1"
-                max="60"
-                step="1"
+                inputmode="numeric"
+                autocomplete="off"
                 value="12"
-                aria-label="참고용 계산 개월 수"
+                placeholder="0~60"
+                aria-label="참고용 계산 개월 수 (0~60)"
               />
               <span class="input-suffix">개월</span>
             </div>
@@ -2003,20 +2524,43 @@
         <section class="chart-card">
           <div class="chart-head ch2-chart-head-main">
             <div>
-              <h2 class="ch2-chart-title">청산 가능성 반영 수익금</h2>
+              <h3 class="ch2-chart-title">청산 가능성 반영 잔고</h3>
             </div>
           </div>
           <div class="chart-wrap">
             <canvas id="ch2MainChart"></canvas>
           </div>
           <div class="chart-footer">
-            <button type="button" class="btn-table" id="btnGenerateCh2MainTable">표 생성</button>
+            <button type="button" class="btn-table" id="btnGenerateCh2MainTable" aria-expanded="false">표 펼치기</button>
+          </div>
+          <div class="table-section table-section--inline" id="ch2MainTableSection" hidden aria-labelledby="ch2MainTableHeading">
+            <div class="table-section-head">
+              <h3 id="ch2MainTableHeading">기대 잔고 월별 비교</h3>
+            </div>
+            <p class="table-section-lead">
+              <strong class="ch2-diff-label">이론과의 격차</strong> = 청산이 없었다면 가졌을 잔고와 기대 잔고의 차. <strong class="ch2-diff-label ch2-diff-label--gain">적금 대비 증감</strong> = 그냥 모았을 때와 기대 잔고의 차이며, 마이너스면 청산 위험 때문에 적금보다도 못한 상태입니다.
+            </p>
+            <div class="table-scroll">
+              <table class="data-table data-table--ch2-main" id="ch2MainDataTable">
+                <thead>
+                  <tr>
+                    <th scope="col">개월</th>
+                    <th scope="col">청산 없을 때 잔고</th>
+                    <th scope="col">기대 잔고</th>
+                    <th scope="col">그냥 모은 돈</th>
+                    <th scope="col" class="ch2-table-diff">이론과의 격차</th>
+                    <th scope="col" class="ch2-table-diff ch2-table-diff--gain">적금 대비 증감</th>
+                  </tr>
+                </thead>
+                <tbody id="ch2MainDataTableBody"></tbody>
+              </table>
+            </div>
           </div>
         </section>
 
         <section class="chart-card">
           <div class="chart-head ch2-chart-head-ruled">
-            <h2 class="ch2-chart-plain">월별 누적 청산 확률 추이</h2>
+            <h3 class="ch2-chart-plain">월별 누적 청산 확률 추이</h3>
           </div>
           <div class="chart-wrap chart-wrap--mid">
             <canvas id="ch2ProbChart"></canvas>
@@ -2026,7 +2570,7 @@
 
         <section class="chart-card">
           <div class="chart-head ch2-chart-head-ruled">
-            <h2 class="ch2-chart-plain">첫 청산 발생 시점별 최종 수익금</h2>
+            <h3 class="ch2-chart-plain">첫 청산 발생 시점별 최종 수익금</h3>
           </div>
           <p class="ch2-liq-profit-note">
             청산이 발생하면 전체 잔고의 절반이 없어지고 프로젝트는 종료됩니다. 아래 그래프는 해당 달에 청산이 발생했을 때 남게 되는 원금과 수익금을 보여줍니다.
@@ -2035,281 +2579,44 @@
             <canvas id="ch2FirstLiqChart"></canvas>
           </div>
           <div class="chart-footer">
-            <button type="button" class="btn-table" id="btnGenerateCh2FirstLiqTable">표 생성</button>
+            <button type="button" class="btn-table" id="btnGenerateCh2FirstLiqTable" aria-expanded="false">표 펼치기</button>
+          </div>
+          <div class="table-section table-section--inline" id="ch2FirstLiqTableSection" hidden aria-labelledby="ch2FirstLiqTableHeading">
+            <div class="table-section-head">
+              <h3 id="ch2FirstLiqTableHeading">첫 청산 시점별 잔고·원금·수익금</h3>
+            </div>
+            <p class="table-hint">
+              해당 달 마지막 거래에서 첫 청산이 발생했다고 가정할 때, <strong>무청산 시 잔고</strong>(비교), <strong>누적 납입 원금</strong>, <strong>수익금</strong>(잔고−원금, 손실은 −원금까지)을 표시합니다.
+            </p>
+            <div class="table-scroll">
+              <table class="data-table data-table--ch2-first-liq" id="ch2FirstLiqDataTable">
+                <thead>
+                  <tr>
+                    <th scope="col">월</th>
+                    <th scope="col">무청산 시 잔고 (원)</th>
+                    <th scope="col">누적 납입 원금 (원)</th>
+                    <th scope="col">수익금 (원)</th>
+                  </tr>
+                </thead>
+                <tbody id="ch2FirstLiqDataTableBody"></tbody>
+              </table>
+            </div>
           </div>
         </section>
-      </section>
-
-      <section class="table-section" id="ch2FirstLiqTableSection" hidden aria-labelledby="ch2FirstLiqTableHeading">
-        <h3 id="ch2FirstLiqTableHeading">첫 청산 시점별 잔고·원금·수익금</h3>
-        <p class="table-hint">
-          해당 달 마지막 거래에서 첫 청산이 발생했다고 가정할 때, <strong>무청산 시 잔고</strong>(비교), <strong>누적 납입 원금</strong>, <strong>수익금</strong>(잔고−원금, 손실은 −원금까지)입니다.
-        </p>
-        <div class="table-scroll">
-          <table class="data-table data-table--ch2-first-liq" id="ch2FirstLiqDataTable">
-            <thead>
-              <tr>
-                <th scope="col">월</th>
-                <th scope="col">무청산 시 잔고 (원)</th>
-                <th scope="col">누적 납입 원금 (원)</th>
-                <th scope="col">수익금 (원)</th>
-              </tr>
-            </thead>
-            <tbody id="ch2FirstLiqDataTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="table-section" id="ch2MainTableSection" hidden aria-labelledby="ch2MainTableHeading">
-        <h3 id="ch2MainTableHeading">기대 잔고 월별 비교</h3>
-        <p class="table-section-lead">
-          <strong class="ch2-diff-label">행복 회로 대비 증발</strong>은 청산이 없을 때(1장 곡선)와 리스크 반영 잔고의 차이,
-          <strong class="ch2-diff-label ch2-diff-label--gain">리스크·무복리 차이</strong>는 같은 리스크 반영 잔고와 단순 납입만 누적한 경우의 차이예요.
-        </p>
-        <div class="table-scroll">
-          <table class="data-table data-table--ch2-main" id="ch2MainDataTable">
-            <thead>
-              <tr>
-                <th scope="col">개월</th>
-                <th scope="col">청산 없을 때</th>
-                <th scope="col">리스크 반영</th>
-                <th scope="col">무복리 누적</th>
-                <th scope="col" class="ch2-table-diff">행복 회로 대비 증발</th>
-                <th scope="col" class="ch2-table-diff ch2-table-diff--gain">리스크 반영 − 무복리</th>
-              </tr>
-            </thead>
-            <tbody id="ch2MainDataTableBody"></tbody>
-          </table>
-        </div>
       </section>
     </section>
 
-    <hr class="chapter-sep" aria-hidden="true" />
-
-    <div id="oracleMetricsRoot">
-      <p id="oracleMetricsEmpty" class="metrics-empty" hidden>
-        3·4장 숫자를 불러오려면, 같은 폴더에 <code>btcusdt_12h.csv</code>를 두고 <code>python emit_metrics_data_js.py</code>로
-        <code>metrics_data.js</code>를 만든 뒤 페이지를 새로 열어 주세요.
-      </p>
-
-      <section class="chapter" aria-labelledby="ch3-heading">
-        <h2 id="ch3-heading" class="chapter-heading">
-          <span class="chapter-num">제3장</span>
-          <span class="chapter-title">K-Value (최대효율투자비중값)</span>
-        </h2>
-
-        <div class="ch-intro" aria-label="K-value 서문">
-          <p class="lead" style="margin: 0">
-            “지나간 장을 다시 돌아보면, 가속 페달을 얼마나 밟았어야 내 돈이 가장 크게 불었을까?”
-          </p>
-          <p style="margin: 0.65rem 0 0">
-            <strong>K-value</strong>는 그 질문에 숫자로 답해 줘요. 이전 거래 기록을 토대로, <strong>총자산 중 몇 %를 넣었을 때 복리가 가장 컸는지</strong>를
-            찾습니다. 현재 인공지능 설정값은 <strong style="color: #e2e8f0; font-weight: 600">k=0.5</strong> 입니다 (시드 절반 진입).
-          </p>
-          <p style="margin: 0.65rem 0 0">
-            숫자가 크면 “더 공격적으로 투자했으면 더 큰 수익이 나왔을 것”, 작으면 “더 적은 비중으로 자산을 지키면서 거래를 했어야 한다”는 뜻입니다.
-          </p>
-          <div class="ch-principle">
-            <strong>원리:</strong> 로그 효용을 키우는 켈리(Kelly) 아이디어를 빌려, 거래마다 수익률
-            <span style="font-style: italic">r</span><sub>i</sub>가 있을 때 복리 성장
-            <span class="ch-math">f(k) = ∏<sub>i</sub>(1 + 2k·<span style="font-style: italic">r</span><sub>i</sub>)</span>
-            를 크게 만드는 <span style="font-style: italic">k</span>를 <strong>이분법</strong>으로 찾습니다. (구현·제약은 데이터 파이프라인에 따름)
-          </div>
-        </div>
-      </section>
-
-      <div id="oracleMetricsFilled" hidden>
-        <div class="oracle-month-toolbar" aria-label="제3장 기간 선택 (누적)">
-          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh3">기간 선택 (누적)</span>
-          <div
-            id="oracleMonthButtonsCh3"
-            class="oracle-month-buttons"
-            role="group"
-            aria-labelledby="oracleMonthToolbarLabelCh3"></div>
-        </div>
-
-        <div id="ch3Dynamic">
-            <div class="oracle-metrics-chart-pair" aria-label="K-value 월별 추이 및 선택 월 복리 곡선">
-              <section class="chart-card" aria-label="월별 K-value">
-                <div class="chart-head ch2-chart-head-ruled">
-                  <h2 class="ch2-chart-plain">월별 K-value 추이</h2>
-                </div>
-                <p class="ch2-chart-blurb">궁금한 시점의 그래프를 터치해 보세요.</p>
-                <div class="chart-wrap chart-wrap--mid">
-                  <canvas id="ch3KHistoryChart"></canvas>
-                </div>
-              </section>
-
-              <section class="chart-card" aria-label="K-곡선">
-                <div class="chart-head ch2-chart-head-ruled">
-                  <h2 class="ch2-chart-plain">얼마를 넣었어야 수익이 가장 컸을까?</h2>
-                </div>
-                <p class="ch2-chart-blurb">
-                  세로축은 K-Value를 바꿨을 때의 복리 결과(%)입니다. 기본 설정(k=0.5), 적용 K값, 이론상 최적 K를 점으로 표시합니다. 곡선이 높다고 안전해지는 것은 아닙니다.
-                </p>
-                <div class="chart-wrap">
-                  <canvas id="ch3KCurveChart"></canvas>
-                </div>
-              </section>
-            </div>
-
-            <div class="ch2-key-summary ch3-k-dashboard" id="ch3DetailCards" aria-label="K값 요약, 수익률 비교, 분석 메타"></div>
-            <p id="ch3PartialHint" class="ch-partial-hint" hidden></p>
-
-            <div class="ch-band" aria-label="K-value 구간 해석">
-              <h3>가속 페달, 이 정도면 이렇게 읽으면 돼요</h3>
-              <ul class="ch-band-grid">
-                <li><strong>0.25 미만</strong> — 데이터가 조금만 틀어져도 위험할 수 있었던 아주 보수적인 장.</li>
-                <li><strong>0.25 ~ 0.50</strong> — 현재 기준(50% 투입)보다 비중을 줄이는 게 안전했던 구간.</li>
-                <li><strong>0.50 ~ 0.75</strong> — 현재보다 조금 더 공격적으로 배팅했어도 좋았던 구간.</li>
-                <li><strong>0.75 ~ 1.00</strong> — 가속 페달을 꽉 밟아도 좋았던 강력한 상승/하락 추세 구간.</li>
-                <li><strong>1.00 초과</strong> — 시스템 최대 한도(1.0)를 초과한 수치로, 한도 내에서 잘라서 적용합니다.</li>
-              </ul>
-              <p class="ch-partial-hint" style="margin-top: 0.65rem">
-                페달을 세게 밟았다고 해서 <strong>판단이 좋았다</strong>는 뜻은 아니에요. “그때 그 거래 줄에선 더 넣어도 버텼다”에 가깝습니다. 앞으로도 그럴지는
-                따로 봐야 해요.
-              </p>
-            </div>
-
-            <section class="table-section" aria-labelledby="ch3TableHeading">
-              <h3 id="ch3TableHeading">투입 비중(K) 요약 표</h3>
-              <p class="table-hint">
-                한 줄마다 그 시점까지 <strong>쌓인 거래</strong>를 기준으로 K를 구해요. ‘해당 달 거래’는 그달에만 체결된 횟수(참고)예요.
-              </p>
-              <div class="table-scroll">
-                <table class="data-table" id="ch3SummaryTable">
-                  <thead>
-                    <tr>
-                      <th scope="col">월</th>
-                      <th scope="col">해당 달 거래 횟수</th>
-                      <th scope="col">누적 거래 횟수</th>
-                      <th scope="col">실제 적용 K</th>
-                      <th scope="col">이론상 최적(Uncapped)</th>
-                      <th scope="col">제한된 최적(Capped)</th>
-                      <th scope="col">기본 설정 기준 복리(%)</th>
-                      <th scope="col">적용 K값 기준 복리(%)</th>
-                    </tr>
-                  </thead>
-                  <tbody id="ch3SummaryTableBody"></tbody>
-                </table>
-              </div>
-            </section>
-          </div>
-
-        <hr class="chapter-sep" aria-hidden="true" />
-
-        <section class="chapter" aria-labelledby="ch4-heading">
-          <h2 id="ch4-heading" class="chapter-heading">
-            <span class="chapter-num">제4장</span>
-            <span class="chapter-title">Imperfect Truth Index ( 성과 희귀성 )</span>
-          </h2>
-
-          <div class="ch-intro" aria-label="ITI 서문">
-            <p class="lead" style="margin: 0">“지금 이 수익, 그냥 운인지 아닌지 어떻게 알지?”</p>
-            <p style="margin: 0.65rem 0 0">
-              <strong>Imperfect Truth Index (ITI)</strong>는 그 질문에 숫자로 답하려는 지표예요. 내 거래와 같은 규칙으로, 가격만 무작위로 돌린 비교군을 많이 만들어 봅니다.
-            </p>
-            <p style="margin: 0.65rem 0 0">
-              그중에서 <strong>나보다 수익이 더 나온 경우가 얼마나 되는지</strong>를 퍼센트로 보여 줘요. 낮을수록 “그냥 운으로 치기엔 드문 쪽”에 가깝게 읽을 수
-              있어요.
-            </p>
-            <div class="ch-principle">
-              <strong>원리:</strong> 몬테카를로 시뮬레이션 방식으로, 실제 거래와 모든 조건을 동일하게 설정하고 무작위 거래를 10만 번 이상 돌린 뒤,
-              <strong>실제 수익이 분포에서 상위 몇 %에 해당하는지</strong>를 <strong>확률적 희귀도</strong>(p-value에 가까운 해석)로 봅니다.
-            </div>
-          </div>
-
-        <div class="oracle-month-toolbar" aria-label="제4장 기간 선택 (누적)">
-          <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh4">기간 선택 (누적)</span>
-          <div
-            id="oracleMonthButtonsCh4"
-            class="oracle-month-buttons"
-            role="group"
-            aria-labelledby="oracleMonthToolbarLabelCh4"></div>
-        </div>
-
-          <div id="ch4Dynamic">
-            <div class="oracle-metrics-chart-pair" aria-label="ITI 월별 추이 및 Monte Carlo 수렴">
-              <section class="chart-card ch4-iti-chart-card" aria-label="월별 ITI">
-                <div class="chart-head ch2-chart-head-ruled">
-                  <h2 class="ch2-chart-plain">월별 ITI 추이</h2>
-                </div>
-                <p class="ch2-chart-blurb">
-                  첫 거래부터 해당 월까지 누적된 내 성과가, 무작위의 시장에서 <strong>얼마나 나오기 힘든 결과인지</strong>(%)를 보여줍니다.
-                </p>
-                <div class="chart-wrap chart-wrap--mid ch4-iti-chart-wrap">
-                  <canvas id="ch4ItiHistoryChart"></canvas>
-                </div>
-                <button type="button" class="btn-table ch4-iti-table-btn" id="btnGenerateCh4Table">표 생성</button>
-              </section>
-
-              <section class="table-section ch4-table-nested" id="ch4TableSection" hidden aria-labelledby="ch4TableHeading">
-                <h3 id="ch4TableHeading">ITI 요약 표</h3>
-                <p class="table-hint">
-                  실제 복리·ITI·비교 요약은 첫 달부터 해당 월까지 <strong>누적 거래</strong> 기준입니다. ‘해당 달’ 열은 그달 거래 횟수(참고)입니다. 제3장 K와 같은 줄을 씁니다.
-                </p>
-                <div class="table-scroll">
-                  <table class="data-table" id="ch4SummaryTable">
-                    <thead>
-                      <tr>
-                        <th scope="col">월</th>
-                        <th scope="col">해당 달 거래 횟수</th>
-                        <th scope="col">누적 거래 횟수</th>
-                        <th scope="col">실제 수익률 %</th>
-                        <th scope="col">Imperfect Truth Index ( 성과희귀도 ) (%)</th>
-                        <th scope="col">비교 반복 횟수</th>
-                        <th scope="col">평균 포지션 보유 시간</th>
-                        <th scope="col">평균 포지션 관망 시간</th>
-                        <th scope="col">레버리지</th>
-                      </tr>
-                    </thead>
-                    <tbody id="ch4SummaryTableBody"></tbody>
-                  </table>
-                </div>
-              </section>
-
-              <section class="chart-card" aria-label="Monte Carlo 수렴">
-                <div class="chart-head ch2-chart-head-ruled">
-                  <h2 class="ch2-chart-plain">신뢰도 검증 (Monte Carlo 수렴)</h2>
-                </div>
-                <p class="ch2-chart-blurb">
-                  시뮬레이션 횟수를 늘려가며, 큰 수의 법칙을 따르는지 검증합니다.
-                </p>
-                <div class="chart-wrap chart-wrap--mid">
-                  <canvas id="ch4ConvergenceChart"></canvas>
-                </div>
-              </section>
-            </div>
-
-            <div class="ch2-key-summary" id="ch4DetailCards" aria-label="기준월 ITI 상세"></div>
-            <p id="ch4PartialHint" class="ch-partial-hint" hidden></p>
-
-            <div class="ch-band" aria-label="ITI 구간 해석">
-              <h3>ITI, 이렇게 보면 돼요</h3>
-              <ul class="ch-band-grid">
-                <li>
-                  <strong>1% 미만</strong> — 무작위로 비슷한 걸 많이 돌려도 이만큼 나오기 어려운 편. 운으로 치기엔 아깝다 쪽.
-                </li>
-                <li>
-                  <strong>1% ~ 5%</strong> — 꽤 드문 편. 전략이 도움이 됐을 수 있다는 쪽으로 읽을 여지가 있어요.
-                </li>
-                <li>
-                  <strong>5% ~ 15%</strong> — 그럭저럭 흔한 편과 드문 편 사이. 비교 조건을 바꾸면 숫자도 꽤 움직여요.
-                </li>
-                <li>
-                  <strong>15% 이상</strong> — 꽤 흔하게 나올 수 있는 구간. 이 숫자만으로 “대박 전략”이라고 말하긴 어려워요.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-
     <footer class="site-footer" role="contentinfo" aria-label="사이트 정보">
       <div class="site-footer__inner">
-        <p class="site-footer__credit" lang="en">Built by The Architect - The Oraculum</p>
-        <p class="site-footer__legal">© 2026 The Oraculum. All rights reserved.</p>
+        <p class="site-footer__caveat">
+          이 보고서는 슬리피지·세금·시장 충격·전략 변경·런타임 장애를 반영하지 않습니다. 모든 수치는 과거 거래 기록 기반의 사후 분석이며 미래의 보장은 아닙니다.
+        </p>
+        <p class="site-footer__credit" lang="en">Built by The Architect — The Oraculum</p>
+        <p class="site-footer__contact">
+          Contact (Telegram):
+          <a href="https://t.me/ZOROX_owner" rel="noopener noreferrer" target="_blank">@ZOROX_owner</a>
+        </p>
+        <p class="site-footer__legal">© 2026 The Oraculum.</p>
       </div>
     </footer>
   </div>
@@ -2317,7 +2624,6 @@
   <!-- 배경음 오디오 독: 마크업·로직은 차트 스크립트와 분리 (class audio-dock / id bgm 접두) -->
   <audio id="bgmAudio" preload="metadata" playsinline loop autoplay>
     <source src="https://archive.org/download/main_20260419/main.mp3" type="audio/mpeg" />
-    <source src="main.mp3" type="audio/mpeg" />
   </audio>
   <div id="bgmAudioDock" class="audio-dock" role="region" aria-label="Background music">
     <div class="audio-panel" role="group" aria-labelledby="bgmVolControlLabel">
@@ -2359,7 +2665,7 @@
     </button>
   </div>
 
-  <script src="metrics_data.js"></script>
+  <script src="data/metrics_data.js"></script>
   <script>
     const MONTHLY_RATE = 0.3;
     const WON_PER_MAN = 10000;
@@ -2410,7 +2716,7 @@
     const ch2FirstLiqTableSection = document.getElementById("ch2FirstLiqTableSection");
     const ch2FirstLiqDataTableBody = document.getElementById("ch2FirstLiqDataTableBody");
 
-    /** 제3·4장: emit_metrics_data_js.py → metrics_data.js */
+    /** 제1·2장 (ITI · K-value): scripts/build_metrics.py → data/metrics_data.js */
     const oracleMetricsEmptyEl = document.getElementById("oracleMetricsEmpty");
     const oracleMetricsFilledEl = document.getElementById("oracleMetricsFilled");
     const ch3DetailCardsEl = document.getElementById("ch3DetailCards");
@@ -2499,50 +2805,64 @@
       const ku = kv.valueUncapped;
       const kc = kv.valueCapped;
       const used = kv.valueUsed;
-      if (used == null || !Number.isFinite(Number(used))) return "실제 적용 K(Final)가 비어 있어요. 데이터를 확인해 주세요.";
+      if (used == null || !Number.isFinite(Number(used))) return "실제 적용 K값이 비어 있습니다. 데이터를 확인해 주십시오.";
       const uOk = ku != null && Number.isFinite(Number(ku));
       const cOk = kc != null && Number.isFinite(Number(kc));
-      if (!uOk || !cOk) return "이론값이나 한도 적용값을 아직 못 구했어요.";
+      if (!uOk || !cOk) return "이론상 최적값 또는 한도 적용값을 아직 산출하지 못했습니다.";
       const u = Number(ku);
       const c = Number(kc);
       const f = Number(used);
       const near = (a, b) => Math.abs(a - b) < 1e-4;
       if (near(u, c) && near(c, f)) {
-        return "세 값이 같아요. 이론상 최적이 한도(1.0) 안에 있고, 그대로 실제에도 쓰는 설정이에요.";
+        return "세 값이 동일합니다. 이론상 최적이 한도(1.0) 안에 있어 그대로 실제 운영에 적용됩니다.";
       }
       if (u > 1 + 1e-5 && near(c, f)) {
-        return "이론상 최적(Uncapped)은 1.0을 넘어요. 그래서 한도(Capped)로 잘라 쓰고, 실제 적용(Final)도 그에 맞춰져요.";
+        return "이론상 최적은 1.0을 초과합니다. 한도 적용으로 잘라 사용하며, 실제 적용값도 그에 맞춰집니다.";
       }
       if (!near(u, c) && near(c, f)) {
-        return "이론값과 한도 적용값이 달라요. ‘1.0 안에서만’ 쓸 때 잘린 값이 따로 나옵니다. 실제 적용은 그 잘린 값을 따라가요.";
+        return "이론값과 한도 적용값이 다릅니다. 1.0 안에서만 운영할 때 잘린 값을 따로 산출하며, 실제 적용은 그 값을 따릅니다.";
       }
       if (!near(c, f)) {
-        return "한도 적용값과 실제 적용값이 조금 달라요. 반올림·운용 규칙 때문에 맞춰진 경우가 있어요.";
+        return "한도 적용값과 실제 적용값에 약간의 차이가 있습니다. 반올림·운용 규칙으로 인해 조정된 경우입니다.";
       }
-      return "이론(Uncapped) → 한도 반영(Capped) → 실제 적용(Final) 순으로 좁혀진 값이에요.";
+      return "이론값 → 한도 반영 → 실제 적용 순서로 좁혀진 값입니다.";
     }
 
-    function formatItiValidityBlock(iti) {
+    function formatItiVerdict(iti) {
       const p = iti.percent != null ? Number(iti.percent) : NaN;
       if (!Number.isFinite(p)) {
-        return '<span class="iti-validity-badge">[유효성 판단: 확인 불가]</span><p style="margin:0.4rem 0 0;font-size:0.88rem;color:#94a3b8">ITI 숫자가 비어 있어요.</p>';
+        return {
+          tier: "unknown",
+          headline: "결론을 내릴 수 없습니다.",
+          detail: "ITI 값이 비어 있습니다.",
+        };
       }
-      let badge;
-      let line;
       if (p < 1) {
-        badge = "신뢰도 높음";
-        line = "무작위로 비슷한 조건을 많이 돌려도, 이만큼 나오긴 꽤 어려운 편이에요. 운으로만 치기엔 아깝다 쪽.";
-      } else if (p < 5) {
-        badge = "신뢰도 보통";
-        line = "꽤 드문 편이에요. 전략이 도움이 됐을 수 있다고 여유 있게 읽을 수 있어요.";
-      } else if (p < 15) {
-        badge = "신뢰도 낮음";
-        line = "흔한 편과 드문 편 사이. 비교 조건을 바꾸면 숫자도 꽤 움직여요.";
-      } else {
-        badge = "판단 유보";
-        line = "꽤 흔하게 나올 수 있는 구간이에요. 이 숫자만으로 ‘대박’이라고 말하긴 어려워요.";
+        return {
+          tier: "strong",
+          headline: "운으로 설명하기 거의 불가능합니다.",
+          detail: "동일 조건의 무작위 시장 100개 중 1개에서도 이만한 결과가 잘 나오지 않습니다.",
+        };
       }
-      return `<span class="iti-validity-badge">[유효성 판단: ${badge}]</span><p style="margin:0.45rem 0 0;font-size:0.88rem;font-weight:500;color:#e2e8f0;line-height:1.5">${line}</p>`;
+      if (p < 5) {
+        return {
+          tier: "moderate",
+          headline: "운으로 보긴 어렵습니다.",
+          detail: "동일 조건 무작위 시장 100개 중 5개 미만에서만 같은 결과가 재현됩니다.",
+        };
+      }
+      if (p < 15) {
+        return {
+          tier: "ambiguous",
+          headline: "운인지 실력인지 단정하기 어렵습니다.",
+          detail: "비교 조건을 약간만 바꿔도 결과가 흔들리는 구간입니다.",
+        };
+      }
+      return {
+        tier: "weak",
+        headline: "운으로도 흔히 나오는 결과입니다.",
+        detail: "이 수치만으로 실력의 증거로 삼기 어렵습니다.",
+      };
     }
 
     function renderCh3DetailCards() {
@@ -2608,11 +2928,11 @@
       ) {
         const d = Number(optPct) - Number(basePct);
         if (Math.abs(d) < 0.005) {
-          deltaBlock = `<p class="ch3-compare-delta">두 설정의 복리 수익률은 거의 같습니다.</p>`;
+          deltaBlock = `<p class="ch3-compare-delta">두 설정의 복리 수익률은 거의 동일합니다.</p>`;
         } else if (d > 0) {
-          deltaBlock = `<p class="ch3-compare-delta">🔥 최적 설정이 약 ${d.toFixed(2)}%p 더 높은 복리 — 같은 기간에 더 벌 수 있었던 여지가 있었어요.</p>`;
+          deltaBlock = `<p class="ch3-compare-delta">사후 최적 설정이 약 ${d.toFixed(2)}%p 더 높은 복리를 기록했습니다. 같은 기간에 추가 수익 여지가 있었음을 의미합니다.</p>`;
         } else {
-          deltaBlock = `<p class="ch3-compare-delta">기본 설정이 약 ${Math.abs(d).toFixed(2)}%p 더 높은 복리로 나왔어요. (역사적 시뮬 기준)</p>`;
+          deltaBlock = `<p class="ch3-compare-delta">기본 설정이 약 ${Math.abs(d).toFixed(2)}%p 더 높은 복리를 기록했습니다 (역사적 시뮬레이션 기준).</p>`;
         }
       }
 
@@ -2621,55 +2941,55 @@
       const allocSubSolo =
         alloc == null
           ? ""
-          : `<p class="ch3-k-hero-sub">내 자산의 약 ${fmtOrDash(alloc, 1)}% 투입</p>`;
+          : `<p class="ch3-k-hero-sub">총자산의 약 ${fmtOrDash(alloc, 1)}% 투입</p>`;
 
       const kHeroHtml = showKTriad
         ? `<div class="ch3-k-hero-card">
             <div class="ch3-k-triad-grid">
               <article>
-                <span class="ch2-key-label">가장 이상적이었을 K값</span>
+                <span class="ch2-key-label">이론상 최적 K (한도 미적용)</span>
                 <span class="ch2-key-value">${ku == null || !Number.isFinite(Number(ku)) ? "—" : fmtOrDash(ku, 4)}</span>
               </article>
               <article>
-                <span class="ch2-key-label">최대 한도(1.0) 적용 값</span>
+                <span class="ch2-key-label">한도 적용 최적 K</span>
                 <span class="ch2-key-value">${capped == null || !Number.isFinite(Number(capped)) ? "—" : fmtOrDash(capped, 4)}</span>
               </article>
               <article>
-                <span class="ch2-key-label">최종 적용 K값</span>
+                <span class="ch2-key-label">실제 적용 K</span>
                 <span class="ch2-key-value">${fmtOrDash(used, 4)}</span>
               </article>
             </div>
             <p class="ch-k-triad-note">${escHtml(triadNote)}</p>
           </div>`
         : `<div class="ch3-k-hero-card ch3-k-hero-card--solo">
-            <p class="ch3-k-hero-title">과거 최적의 투자 비중 (K값)</p>
+            <p class="ch3-k-hero-title">사후 최적 투자 비중 (K값)</p>
             <div class="ch3-k-hero-value">${fmtOrDash(used, 4)}</div>
             ${allocSubSolo}
           </div>`;
 
       const parts = [];
       if (interpRaw) {
-        parts.push(`<aside class="ch3-insight-banner" role="note">💡 한줄 요약: ${escHtml(interpRaw)}</aside>`);
+        parts.push(`<aside class="ch3-insight-banner" role="note">한줄 요약 — ${escHtml(interpRaw)}</aside>`);
       }
       parts.push(`<div class="ch3-k-hero-row">
         ${kHeroHtml}
         <div class="ch3-feas-card">
-          <p class="ch3-k-hero-title">파산하지 않을 최대 한계선</p>
+          <p class="ch3-k-hero-title">파산하지 않는 K 한계선</p>
           <div class="ch3-k-hero-value">${feasStr}</div>
         </div>
       </div>`);
       parts.push(`<section class="ch3-compare-strip" aria-label="수익률 비교">
         <h4>수익률 비교</h4>
         <div class="ch3-compare-grid">
-          <p class="ch3-compare-line is-secondary"><strong>현재 내 설정</strong> (k=${fmtOrDash(baselineK, 2)}, 투입 약 ${baseAlloc}%) → 복리 <strong>${fmtPctFlexible(basePct)}</strong></p>
-          <p class="ch3-compare-line is-primary"><strong>최적의 설정</strong> (k=${fmtOrDash(used, 4)}, 투입 약 ${allocDisp}) → 복리 <strong>${fmtPctFlexible(optPct)}</strong></p>
+          <p class="ch3-compare-line is-secondary"><strong>기본 설정</strong> (k=${fmtOrDash(baselineK, 2)}, 시드의 약 ${baseAlloc}% 진입) → 복리 <strong>${fmtPctFlexible(basePct)}</strong></p>
+          <p class="ch3-compare-line is-primary"><strong>사후 최적</strong> (k=${fmtOrDash(used, 4)}, 시드의 약 ${allocDisp} 진입) → 복리 <strong>${fmtPctFlexible(optPct)}</strong></p>
         </div>
         ${deltaBlock}
       </section>`);
       parts.push(
-        `<p class="ch3-meta-foot">* 분석 데이터: ${escHtml(row.label || "—")} · 누적 거래 ${
+        `<p class="ch3-meta-foot">분석 기준: ${escHtml(row.label || "—")} · 누적 거래 ${
           kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"
-        }건 · 당월 ${monthTrades != null ? monthTrades : "—"}건</p>`
+        }건 · 해당 달 거래 ${monthTrades != null ? monthTrades : "—"}건</p>`
       );
 
       ch3DetailCardsEl.innerHTML = parts.join("");
@@ -2686,52 +3006,67 @@
       }
       const iti = row.imperfectTruthIndex || {};
       const nm = iti.nullModelSummary || {};
-      const holdH = nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 1) : "51.8";
-      const flatH = nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 1) : "6.2";
-      const ctrlLine = `10배 레버리지, 시드 절반 진입, 수수료 무시, 평균 포지션 보유 시간 ${holdH}시간, 평균 포지션 관망 시간 ${flatH}시간`;
+      const holdH = nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 1) : "—";
+      const flatH = nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 1) : "—";
+      const monthTrades = row.tradeCount != null ? row.tradeCount : null;
+      const cumTrades =
+        iti.cumulativeTradeCount != null
+          ? iti.cumulativeTradeCount
+          : nm.tradeCount != null
+            ? nm.tradeCount
+            : null;
+      const simCount =
+        iti.simulationCount != null
+          ? Number(iti.simulationCount)
+          : nm.simulationCount != null
+            ? Number(nm.simulationCount)
+            : null;
+
       const hint = [];
-      if (iti.probability == null) hint.push("ITI 숫자가 비어 있습니다.");
+      if (iti.percent == null) hint.push("ITI 숫자가 비어 있습니다.");
       if (!Array.isArray(iti.convergence) || !iti.convergence.length) hint.push("아래 추정 곡선을 그릴 데이터가 없습니다.");
       if (ch4PartialHintEl) {
         ch4PartialHintEl.hidden = hint.length === 0;
         ch4PartialHintEl.textContent = hint.join(" ");
       }
 
+      const escHtml = (s) =>
+        String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+
+      const verdict = formatItiVerdict(iti);
+      const monthLabel = row.label || "—";
+      const monthTradesStr = monthTrades != null ? `${monthTrades}건` : "—";
+      const cumTradesStr = cumTrades != null ? `${cumTrades}건` : "—";
+      const simStr =
+        simCount != null && Number.isFinite(simCount) ? `${simCount.toLocaleString()}회` : "—";
+
       ch4DetailCardsEl.innerHTML = `
-        <article class="ch2-key-article-prob">
-          <span class="ch2-key-label">기준월</span>
-          <span class="ch2-key-value">${row.label || "—"}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">Imperfect Truth Index ( 성과희귀도 ) (%)</span>
-          <span class="ch2-key-value">${fmtPctFlexible(iti.percent)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">실제 수익률 (누적 기준)</span>
-          <span class="ch2-key-value">${fmtPctFlexible(iti.actualReturnPercent)}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">해당 달 거래 횟수</span>
-          <span class="ch2-key-value">${row.tradeCount != null ? row.tradeCount : "—"}</span>
-        </article>
-        <article>
-          <span class="ch2-key-label">누적 거래 횟수</span>
-          <span class="ch2-key-value">${
-            iti.cumulativeTradeCount != null
-              ? iti.cumulativeTradeCount
-              : iti.nullModelSummary && iti.nullModelSummary.tradeCount != null
-                ? iti.nullModelSummary.tradeCount
-                : "—"
-          }</span>
-        </article>
-        <article style="grid-column: 1 / -1">
-          <span class="ch2-key-label">거래 조건</span>
-          <span class="ch2-key-value" style="font-size: 0.88rem; font-weight: 500">${ctrlLine}</span>
-        </article>
-        <article style="grid-column: 1 / -1">
-          <span class="ch2-key-label">운 vs 실력, 감 잡기</span>
-          <span class="ch2-key-value" style="font-size: 0.92rem; font-weight: 500">${formatItiValidityBlock(iti)}</span>
-        </article>
+        <aside class="ch4-verdict ch4-verdict--${verdict.tier}" role="note" aria-label="기준월 결론">
+          <p class="ch4-verdict__headline">${escHtml(verdict.headline)}</p>
+          <p class="ch4-verdict__detail">${escHtml(verdict.detail)}</p>
+        </aside>
+        <div class="ch4-hero-row">
+          <article class="ch4-hero-card ch4-hero-card--primary">
+            <span class="ch4-hero-label">우연으로 같은 결과가 나올 확률</span>
+            <span class="ch4-hero-value">${fmtPctFlexible(iti.percent)}</span>
+            <span class="ch4-hero-sub">${escHtml(monthLabel)} 누적 기준</span>
+          </article>
+          <article class="ch4-hero-card">
+            <span class="ch4-hero-label">실 누적 수익률</span>
+            <span class="ch4-hero-value">${fmtPctFlexible(iti.actualReturnPercent)}</span>
+            <span class="ch4-hero-sub">동일 기간 실거래</span>
+          </article>
+        </div>
+        <dl class="ch4-stat-grid">
+          <div><dt>해당 달 거래</dt><dd>${monthTradesStr}</dd></div>
+          <div><dt>누적 거래</dt><dd>${cumTradesStr}</dd></div>
+          <div><dt>비교 표본</dt><dd>${simStr}</dd></div>
+        </dl>
+        <p class="ch4-meta-foot">10× 레버리지 · 시드 50% 진입(k=0.5) · 평균 보유 ${holdH}h · 평균 관망 ${flatH}h · 수수료 미반영</p>
       `;
     }
 
@@ -2832,12 +3167,12 @@
           fill: false,
         },
       ];
-      const mk = mkScatter("기본 설정 k=0.5", 0.5, "rgba(148, 163, 184, 0.95)");
-      const u = mkScatter("실제 적용 (Final)", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
+      const mk = mkScatter("기본 설정 (k=0.5)", 0.5, "rgba(148, 163, 184, 0.95)");
+      const u = mkScatter("실제 적용 K", kv.valueUsed, `hsl(${h}, 95%, 62%)`);
       const ku = kv.valueUncapped;
       const kc = kv.valueCapped;
-      const unc = mkScatter("이론상 최적 (Uncapped)", ku, "rgba(251, 191, 36, 0.95)");
-      const cap = mkScatter("제한된 최적 (Capped)", kc, "rgba(167, 139, 250, 0.95)");
+      const unc = mkScatter("이론상 최적 K (한도 미적용)", ku, "rgba(251, 191, 36, 0.95)");
+      const cap = mkScatter("한도 적용 최적 K", kc, "rgba(167, 139, 250, 0.95)");
       [mk, u].forEach((x) => {
         if (x) ds.push(x);
       });
@@ -2995,10 +3330,10 @@
                     const row = months[i];
                     const kv = row.kValue || {};
                     return [
-                      `실제 적용(Final): ${fmtOrDash(kv.valueUsed, 4)}`,
-                      `이론상(Uncapped): ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
-                      `한도 반영(Capped): ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
-                      `투입 비중(대략): ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
+                      `실제 적용 K: ${fmtOrDash(kv.valueUsed, 4)}`,
+                      `이론상 최적 K: ${kv.valueUncapped == null ? "—" : fmtOrDash(kv.valueUncapped, 4)}`,
+                      `한도 적용 최적 K: ${kv.valueCapped == null ? "—" : fmtOrDash(kv.valueCapped, 4)}`,
+                      `시드 진입 비중: ${kv.valueUsed != null ? fmtOrDash(Number(kv.valueUsed) * 100, 2) + "%" : "—"}`,
                       `기본 설정 복리: ${fmtPctFlexible(kv.baselineResultPercent)}`,
                       `누적 거래: ${kv.cumulativeTradeCount != null ? kv.cumulativeTradeCount : "—"}`,
                       `해당 달 거래: ${row.tradeCount != null ? row.tradeCount : "—"}`,
@@ -3016,9 +3351,12 @@
               y: {
                 position: "right",
                 min: 0,
-                max: 1,
-                ticks: { color: "#94a3b8" },
-                title: { display: true, text: "K", color: "#94a3b8" },
+                max: 1.1,
+                ticks: {
+                  color: "#94a3b8",
+                  stepSize: 0.2,
+                  callback: (v) => (Number(v) > 1.005 ? "" : v),
+                },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
             },
@@ -3047,7 +3385,7 @@
                     const k = ctx.parsed.x;
                     const ap = k != null && Number.isFinite(k) ? k * 100 : null;
                     const y = ctx.parsed.y;
-                    return [`k: ${fmtOrDash(k, 3)}`, `자산 투입 비중(대략): ${ap == null ? "—" : fmtOrDash(ap, 2)}%`, `복리 결과: ${fmtOrDash(y, 4)}%`];
+                    return [`k: ${fmtOrDash(k, 3)}`, `시드 진입 비중: ${ap == null ? "—" : fmtOrDash(ap, 2)}%`, `복리 결과: ${fmtOrDash(y, 4)}%`];
                   },
                 },
               },
@@ -3058,7 +3396,7 @@
                 min: 0,
                 max: 1,
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "k", color: "#94a3b8" },
+                title: { display: true, text: "진입 비중 (k)", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
               y: {
@@ -3243,7 +3581,14 @@
       renderCh4DetailCards();
       renderCh3Table();
       if (ch4SummaryTableBody) ch4SummaryTableBody.textContent = "";
-      if (ch4TableSection) ch4TableSection.hidden = true;
+      if (ch4TableSection) {
+        ch4TableSection.classList.remove("is-open");
+        const ch4Btn = document.getElementById("btnGenerateCh4Table");
+        if (ch4Btn) {
+          ch4Btn.textContent = "표 펼치기";
+          ch4Btn.setAttribute("aria-expanded", "false");
+        }
+      }
       initOracleCharts();
     }
 
@@ -3644,7 +3989,7 @@
     let ch2FirstLiqChart;
 
     /**
-     * 제2장: 자본 경로 모델(합성 월복리→거래당 인자)과 확률 모델(거래당 베르누이)을 분리.
+     * 제4장 (청산): 자본 경로 모델(합성 월복리→거래당 인자)과 확률 모델(거래당 베르누이)을 분리.
      * 나중에 growthPerTrade·샘플링만 바꿔 실거래 분포/부트스트랩으로 교체 가능하도록 렌더링과 분리.
      */
 
@@ -3665,7 +4010,7 @@
       return Math.pow(1 + monthlyRate, 1 / tradesPerMonth);
     }
 
-    /** 매달 납입은 제1장 값; 월 30% 복리 누적(무청산). */
+    /** 매달 납입은 제3장 값; 월 30% 복리 누적(무청산). */
     function buildCh2NoLiquidationPath(months, monthlyWon, monthlyRate) {
       const path = new Array(months + 1);
       let balance = monthlyWon;
@@ -3677,7 +4022,7 @@
       return path;
     }
 
-    /** 제1장과 동일 월납입만 선형 누적(이자·복리 없음). path[m] = 월납입 × (m+1). */
+    /** 제3장과 동일 월납입만 선형 누적(이자·복리 없음). path[m] = 월납입 × (m+1). */
     function buildSimpleDepositOnlyPath(months, monthlyWon) {
       const path = new Array(months + 1);
       for (let m = 0; m <= months; m++) {
@@ -3879,12 +4224,11 @@
       return Number.isFinite(s) ? clamp(s, 1, 60) : 24;
     }
 
-    function parseCh2NarrativeMonthsRobust(horizonMonths) {
-      const cap = clamp(horizonMonths, 1, 60);
+    function parseCh2NarrativeMonthsRobust() {
       const n = parseInt(String(ch2NarrativeMonthInput && ch2NarrativeMonthInput.value).trim(), 10);
-      if (Number.isFinite(n)) return clamp(n, 1, cap);
+      if (Number.isFinite(n)) return clamp(n, 0, 60);
       const s = parseInt(String(ch2NarrativeMonthSlider && ch2NarrativeMonthSlider.value), 10);
-      return Number.isFinite(s) ? clamp(s, 1, cap) : clamp(12, 1, cap);
+      return Number.isFinite(s) ? clamp(s, 0, 60) : 12;
     }
 
     function getCh2State() {
@@ -3893,7 +4237,7 @@
       const d = CH2_DEFAULT_DAYS_PER_TRADE;
       const monthlyWon = getMonthlyPaymentWonNormalized();
       const months = parseCh2MonthsRobust();
-      const narrativeMonths = parseCh2NarrativeMonthsRobust(months);
+      const narrativeMonths = parseCh2NarrativeMonthsRobust();
       const tradesPerMonth = getTradesPerMonth(d);
       const growthPerTrade = getGrowthPerTrade(MONTHLY_RATE, tradesPerMonth);
       return { p, pPercent, d, monthlyWon, months, narrativeMonths, tradesPerMonth, growthPerTrade };
@@ -3974,13 +4318,13 @@
 
       let refHtml = "";
       if (!Number.isFinite(tpm) || tpm <= 0) {
-        refHtml = `💡 <strong>참고:</strong> 거래 빈도(번/월)를 계산할 수 없어요.`;
+        refHtml = `<strong>참고:</strong> 거래 빈도(회/월)를 계산할 수 없습니다.`;
       } else if (N <= 0) {
-        refHtml = `💡 <strong>참고:</strong> 참고용 개월 수를 확인해 주세요.`;
+        refHtml = `<strong>참고:</strong> 참고용 개월 수를 확인해 주십시오.`;
       } else if (!Number.isFinite(refPctFromInv)) {
-        refHtml = `💡 <strong>참고:</strong> 확률을 계산할 수 없어요.`;
+        refHtml = `<strong>참고:</strong> 확률을 계산할 수 없습니다.`;
       } else {
-        refHtml = `💡 <strong>참고:</strong> 현재 인공지능의 거래 빈도 (<strong>${tpmFmt}번/월</strong>)가 유지된다면, <strong>${N}개월</strong>이 지난 후 청산이 1회 발생할 확률은 <strong>${refPctFromInv.toFixed(2)}%</strong>입니다.`;
+        refHtml = `<strong>참고:</strong> 현재 거래 빈도 (<strong>${tpmFmt}회/월</strong>)가 유지된다면, <strong>${N}개월</strong> 후 청산이 1회 이상 발생할 확률은 <strong>${refPctFromInv.toFixed(2)}%</strong> 입니다.`;
       }
 
       ch2KeyContext.innerHTML = refHtml;
@@ -4314,16 +4658,21 @@
       const state = getCh2State();
       const liqStr = formatLiqInputValue(state.pPercent);
       liqProbSlider.value = liqStr;
-      liqProbInput.value = liqStr;
+      if (document.activeElement !== liqProbInput) {
+        liqProbInput.value = liqStr;
+      }
       liqProbLabel.textContent = formatLiqPercentLabel(state.pPercent);
       ch2MonthSlider.value = String(state.months);
-      ch2MonthInput.value = String(state.months);
+      if (document.activeElement !== ch2MonthInput) {
+        ch2MonthInput.value = String(state.months);
+      }
       ch2MonthLabel.textContent = `${state.months}개월`;
       if (ch2NarrativeMonthSlider && ch2NarrativeMonthInput) {
-        ch2NarrativeMonthSlider.max = String(state.months);
-        ch2NarrativeMonthInput.max = String(state.months);
-        ch2NarrativeMonthSlider.value = String(state.narrativeMonths);
-        ch2NarrativeMonthInput.value = String(state.narrativeMonths);
+        const sliderVisual = clamp(state.narrativeMonths, 0, 12);
+        ch2NarrativeMonthSlider.value = String(sliderVisual);
+        if (document.activeElement !== ch2NarrativeMonthInput) {
+          ch2NarrativeMonthInput.value = String(state.narrativeMonths);
+        }
         if (ch2NarrativeMonthLabel) ch2NarrativeMonthLabel.textContent = `${state.narrativeMonths}개월`;
       }
 
@@ -4560,8 +4909,10 @@
 
     function syncCh2NarrativeControlsFromSlider() {
       if (!ch2NarrativeMonthSlider || !ch2NarrativeMonthInput) return;
-      ch2NarrativeMonthInput.value = ch2NarrativeMonthSlider.value;
-      if (ch2NarrativeMonthLabel) ch2NarrativeMonthLabel.textContent = `${ch2NarrativeMonthSlider.value}개월`;
+      const v = parseInt(ch2NarrativeMonthSlider.value, 10);
+      if (!Number.isFinite(v)) return;
+      ch2NarrativeMonthInput.value = String(v);
+      if (ch2NarrativeMonthLabel) ch2NarrativeMonthLabel.textContent = `${v}개월`;
     }
     if (ch2NarrativeMonthSlider) {
       ch2NarrativeMonthSlider.addEventListener("input", () => {
@@ -4576,40 +4927,57 @@
 
     if (showCh2McBand) showCh2McBand.addEventListener("change", redrawCh2);
 
-    btnGenerateTable.addEventListener("click", () => {
+    /**
+     * 표 펼치기/접기 공통 토글: 박스 안에서 부드럽게 펼쳐지는 동기화 애니메이션.
+     * 인라인 형식의 .table-section--inline 은 .is-open 클래스로 max-height 전환.
+     */
+    function bindTableToggle(btn, section, renderFn) {
+      if (!btn || !section) return;
+      const inline = section.classList.contains("table-section--inline");
+
+      const isOpen = () =>
+        inline ? section.classList.contains("is-open") : !section.hidden;
+
+      const setLabel = (open) => {
+        btn.textContent = open ? "표 접기" : "표 펼치기";
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      };
+
+      if (inline) {
+        section.removeAttribute("hidden");
+      }
+      setLabel(isOpen());
+
+      btn.addEventListener("click", () => {
+        const willOpen = !isOpen();
+        if (willOpen && typeof renderFn === "function") {
+          if (renderFn() === false) return;
+        }
+        if (inline) {
+          section.classList.toggle("is-open", willOpen);
+        } else {
+          section.hidden = !willOpen;
+        }
+        setLabel(willOpen);
+      });
+    }
+
+    bindTableToggle(btnGenerateTable, tableSection, () => {
       renderDataTable();
-      tableSection.hidden = false;
-      tableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
 
-    if (btnGenerateCh2MainTable) {
-      btnGenerateCh2MainTable.addEventListener("click", () => {
-        renderCh2MainDataTable(getCh2State());
-        if (ch2MainTableSection) {
-          ch2MainTableSection.hidden = false;
-          ch2MainTableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-      });
-    }
+    bindTableToggle(btnGenerateCh2MainTable, ch2MainTableSection, () => {
+      renderCh2MainDataTable(getCh2State());
+    });
 
-    if (btnGenerateCh2FirstLiqTable) {
-      btnGenerateCh2FirstLiqTable.addEventListener("click", () => {
-        renderCh2FirstLiqDataTable(getCh2State());
-        if (ch2FirstLiqTableSection) {
-          ch2FirstLiqTableSection.hidden = false;
-          ch2FirstLiqTableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        }
-      });
-    }
+    bindTableToggle(btnGenerateCh2FirstLiqTable, ch2FirstLiqTableSection, () => {
+      renderCh2FirstLiqDataTable(getCh2State());
+    });
 
-    if (btnGenerateCh4Table && ch4TableSection) {
-      btnGenerateCh4Table.addEventListener("click", () => {
-        if (!oracleState.months || !oracleState.months.length) return;
-        renderCh4Table();
-        ch4TableSection.hidden = false;
-        ch4TableSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      });
-    }
+    bindTableToggle(btnGenerateCh4Table, ch4TableSection, () => {
+      if (!oracleState.months || !oracleState.months.length) return false;
+      renderCh4Table();
+    });
 
     initChart();
     initCh2Charts();
@@ -4828,79 +5196,201 @@
     })();
   </script>
   <script>
+    /**
+     * Matrix rain — ported from "260402 Oraculum / apps/desktop intro.html".
+     *
+     *  · destination-out 합성 모드로 매 프레임 모든 픽셀의 alpha를 살짝 깎아
+     *    트레일을 자연스럽게 페이드 아웃 (검정을 깔지 않음 → body radial이 비침).
+     *  · 컬럼은 px/sec 기반 연속 낙하, 셀 경계를 넘는 순간만 새 글자 1회 그리기
+     *    → 같은 자리 누적/플리커 없음.
+     *  · 매 프레임 캔버스 1/60 슬라이스의 stuck alpha (8/255 미만) 강제 클리어
+     *    → 8-bit 양자화로 잔상이 LED처럼 박히는 현상 제거.
+     *  · 컬럼 별 랜덤 속도(90~320 px/sec) + 화면 이탈 후 0.4~3.0초 cooldown
+     *    → 모든 컬럼이 일제히 떨어지는 "물결" 패턴 방지.
+     */
     (function () {
       const canvas = document.getElementById("matrix-bg");
       if (!canvas || !(canvas instanceof HTMLCanvasElement)) return;
       const context = canvas.getContext("2d");
       if (!context) return;
 
-      const glyphs = "ORACULUMDRAGONALPHABETARCANEUM";
+      const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
       const fontSize = 22;
+      const spacingMultiplier = 1.7;
+      const matrixFadeAlpha = 0.10;
+      const matrixStuckAlphaThreshold = 8;
+      const matrixStuckSliceCount = 60;
+      const matrixSpeedMin = 90;
+      const matrixSpeedMax = 320;
+
       let columns = [];
-      let columnSpeeds = [];
+      let animationFrame = 0;
       let viewWidth = window.innerWidth;
       let viewHeight = window.innerHeight;
       let matrixDpr = 1;
-      let animationFrame = 0;
+      let lastMatrixTime = 0;
+      let matrixStuckSliceIdx = 0;
+
+      function pickGlyph() {
+        return glyphs.charAt(Math.floor(Math.random() * glyphs.length));
+      }
+
+      function randomMatrixSpeed() {
+        return matrixSpeedMin + Math.random() * (matrixSpeedMax - matrixSpeedMin);
+      }
+
+      function makeMatrixColumn(index, initial) {
+        const speed = randomMatrixSpeed();
+        const initialY = initial
+          ? Math.random() * (viewHeight + fontSize * 6) - fontSize * 4
+          : -fontSize * (4 + Math.random() * 22);
+        return {
+          x: Math.round(index * (fontSize * spacingMultiplier) + fontSize * 0.5),
+          y: initialY,
+          speed,
+          lastCell: Math.floor(initialY / fontSize),
+          headColor: 0.82 + Math.random() * 0.16,
+          cooldown: 0,
+        };
+      }
 
       function prefersReducedMotion() {
         return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       }
 
       function paintReducedMotionFallback() {
-        context.fillStyle = "rgba(2, 8, 18, 0.55)";
-        context.fillRect(0, 0, viewWidth, viewHeight);
+        context.clearRect(0, 0, viewWidth, viewHeight);
       }
 
-      function resize() {
+      function resizeMatrix() {
         viewWidth = window.innerWidth;
         viewHeight = window.innerHeight;
-        matrixDpr = Math.min(window.devicePixelRatio || 1, 2.5);
-        const bufW = Math.max(1, Math.floor(viewWidth * matrixDpr));
-        const bufH = Math.max(1, Math.floor(viewHeight * matrixDpr));
-        canvas.width = bufW;
-        canvas.height = bufH;
+        matrixDpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(viewWidth * matrixDpr);
+        canvas.height = Math.floor(viewHeight * matrixDpr);
         canvas.style.width = viewWidth + "px";
         canvas.style.height = viewHeight + "px";
-        context.setTransform(1, 0, 0, 1, 0, 0);
-        context.scale(matrixDpr, matrixDpr);
-        const count = Math.max(24, Math.floor(viewWidth / fontSize));
-        columns = Array.from({ length: count }, function () {
-          return Math.random() * viewHeight * -1;
+        context.setTransform(matrixDpr, 0, 0, matrixDpr, 0, 0);
+        if (typeof context.imageSmoothingEnabled === "boolean") {
+          context.imageSmoothingEnabled = false;
+        }
+        context.clearRect(0, 0, viewWidth, viewHeight);
+        const columnCount = Math.ceil(viewWidth / (fontSize * spacingMultiplier)) + 2;
+        columns = Array.from({ length: columnCount }, function (_, index) {
+          return makeMatrixColumn(index, true);
         });
-        columnSpeeds = Array.from({ length: count }, function () {
-          return fontSize * (0.08 + Math.random() * 0.07);
-        });
+        lastMatrixTime = performance.now();
+        matrixStuckSliceIdx = 0;
       }
 
-      function draw() {
-        context.fillStyle = "rgba(2, 8, 18, 0.48)";
-        context.fillRect(0, 0, viewWidth, viewHeight);
-        context.font = fontSize + 'px "DragonAlphabet"';
-        context.textBaseline = "alphabetic";
-        for (let i = 0; i < columns.length; i += 1) {
-          const text = glyphs[Math.floor(Math.random() * glyphs.length)];
-          const x = i * fontSize;
-          const y = columns[i];
-          context.fillStyle = i % 4 === 0 ? "#9ec9ff" : "#5a9fff";
-          context.fillText(text, x, y);
-          columns[i] =
-            y > viewHeight + Math.random() * 120 ? Math.random() * -240 : y + columnSpeeds[i];
+      function bustStuckMatrixPixelsSlice() {
+        const w = canvas.width;
+        const h = canvas.height;
+        if (w === 0 || h === 0) return;
+        const sliceHeight = Math.max(1, Math.ceil(h / matrixStuckSliceCount));
+        const y0 = matrixStuckSliceIdx * sliceHeight;
+        if (y0 >= h) {
+          matrixStuckSliceIdx = 0;
+          return;
         }
-        animationFrame = window.requestAnimationFrame(draw);
+        const sliceH = Math.min(sliceHeight, h - y0);
+        let id;
+        try {
+          id = context.getImageData(0, y0, w, sliceH);
+        } catch (_e) {
+          return;
+        }
+        const data = id.data;
+        const t = matrixStuckAlphaThreshold;
+        for (let i = 3; i < data.length; i += 4) {
+          const a = data[i];
+          if (a !== 0 && a < t) {
+            data[i] = 0;
+            data[i - 1] = 0;
+            data[i - 2] = 0;
+            data[i - 3] = 0;
+          }
+        }
+        context.putImageData(id, 0, y0);
+        matrixStuckSliceIdx = (matrixStuckSliceIdx + 1) % matrixStuckSliceCount;
+      }
+
+      function drawMatrix(now) {
+        if (typeof now !== "number") now = performance.now();
+        const rawDt = (now - lastMatrixTime) / 1000;
+        const dt = Math.min(Math.max(rawDt, 0), 1 / 30);
+        lastMatrixTime = now;
+
+        context.globalCompositeOperation = "destination-out";
+        context.fillStyle = "rgba(0, 0, 0, " + matrixFadeAlpha + ")";
+        context.fillRect(0, 0, viewWidth, viewHeight);
+        context.globalCompositeOperation = "source-over";
+
+        bustStuckMatrixPixelsSlice();
+
+        context.font = fontSize + 'px "DragonAlphabet", Consolas, monospace';
+        context.textAlign = "center";
+        context.textBaseline = "top";
+        context.shadowBlur = 0;
+
+        for (let i = 0; i < columns.length; i += 1) {
+          const column = columns[i];
+
+          if (column.cooldown > 0) {
+            column.cooldown -= dt;
+            continue;
+          }
+
+          column.y += column.speed * dt;
+          const cell = Math.floor(column.y / fontSize);
+
+          if (cell !== column.lastCell) {
+            const drewCells = Math.min(cell - column.lastCell, 6);
+            for (let g = drewCells - 1; g >= 0; g -= 1) {
+              const drawY = (cell - g) * fontSize;
+              if (drawY < -fontSize || drawY > viewHeight + fontSize) continue;
+              const glyph = pickGlyph();
+              const isHead = g === 0;
+              if (isHead) {
+                context.fillStyle = "rgba(238, 248, 255, " + column.headColor + ")";
+                context.fillText(glyph, column.x, drawY);
+                context.fillStyle = "rgba(140, 200, 255, " + (column.headColor * 0.32) + ")";
+                context.fillText(glyph, column.x, drawY);
+              } else {
+                const trailAlpha = column.headColor * (0.55 - g * 0.07);
+                if (trailAlpha > 0.04) {
+                  context.fillStyle = "rgba(220, 238, 255, " + trailAlpha + ")";
+                  context.fillText(glyph, column.x, drawY);
+                }
+              }
+            }
+            column.lastCell = cell;
+          }
+
+          if (column.y > viewHeight + fontSize * 2) {
+            column.cooldown = 0.4 + Math.random() * 2.6;
+            column.y = -fontSize * (3 + Math.random() * 22);
+            column.speed = randomMatrixSpeed();
+            column.headColor = 0.82 + Math.random() * 0.16;
+            column.lastCell = Math.floor(column.y / fontSize);
+          }
+        }
+
+        animationFrame = window.requestAnimationFrame(drawMatrix);
       }
 
       function start() {
         function onResize() {
-          resize();
+          resizeMatrix();
           if (prefersReducedMotion()) paintReducedMotionFallback();
         }
         onResize();
         window.addEventListener("resize", onResize);
         if (prefersReducedMotion()) return;
-        document.fonts.load(fontSize + 'px "DragonAlphabet"').finally(function () {
-          draw();
-        });
+        if (document.fonts && document.fonts.load) {
+          document.fonts.load(fontSize + 'px "DragonAlphabet"').catch(function () {});
+        }
+        drawMatrix();
       }
 
       start();

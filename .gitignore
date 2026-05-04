@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+Thumbs.db
+
+# Local-only build inputs/outputs (not needed by deployed site)
+assets/*.mp3
+data/*.csv
+data/*.txt
+scripts/
