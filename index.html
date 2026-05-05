@@ -142,31 +142,56 @@
     .wrap {
       max-width: 1080px;
       margin: 0 auto;
-      padding: 2rem 1.25rem 3rem;
+      padding: 2rem 1.25rem 0;
       position: relative;
       z-index: 4;
     }
 
     .site-footer {
-      margin-top: 3rem;
-      padding: 2rem 1rem 0;
-      border-top: 1px solid var(--accent-border);
+      margin-top: -10.5rem;
+      padding: 0 1rem 0;
+      border-top: 0;
       text-align: center;
+      position: relative;
+      z-index: 6;
+    }
+
+    .page-tail-bg {
+      margin-top: 3.2rem;
+      min-height: 104vh;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      background-image: url("./assets/Gemini_Generated_Image_.png");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     .site-footer__inner {
       max-width: 42rem;
       margin: 0 auto;
-      padding-bottom: 0.5rem;
+      padding: 1.2rem 1.35rem 1.3rem;
+      border-radius: 16px;
+      border: 1px solid hsla(var(--hue), 90%, 62%, 0.32);
+      background: linear-gradient(180deg, rgba(7, 11, 20, 0.74), rgba(5, 8, 16, 0.68));
+      box-shadow:
+        0 12px 42px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 24px hsla(var(--hue), 95%, 55%, 0.16);
     }
 
     .site-footer__credit {
-      margin: 0 0 0.85rem;
-      font-size: 0.92rem;
-      font-weight: 500;
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 700;
       color: #e2e8f0;
       line-height: 1.55;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.01em;
     }
 
     .site-footer__contact {
@@ -183,20 +208,31 @@
       padding-bottom: 1px;
     }
 
+    .site-footer__credit a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dotted hsla(var(--hue), 90%, 60%, 0.55);
+      padding-bottom: 1px;
+    }
+
+    .site-footer__contact-inline {
+      font-size: 0.82rem;
+    }
+
     .site-footer__contact a:hover {
       color: hsl(var(--hue), 100%, 78%);
       border-bottom-color: hsl(var(--hue), 100%, 70%);
     }
 
     .site-footer__legal {
-      margin: 0;
-      font-size: 0.78rem;
+      margin: 0 0 1.05rem;
+      font-size: 0.9rem;
       letter-spacing: 0.04em;
       color: rgba(148, 163, 184, 0.85);
     }
 
     .site-footer__caveat {
-      margin: 0 0 1.1rem;
+      margin: 0 0 1.05rem;
       font-size: 0.82rem;
       line-height: 1.65;
       color: rgba(203, 213, 225, 0.75);
@@ -204,6 +240,23 @@
       max-width: 36rem;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .site-footer__credit-line {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      .site-footer {
+        margin-top: -7.5rem;
+      }
+      .site-footer__inner {
+        padding: 1rem 1rem 1.1rem;
+      }
+      .site-footer__credit-line {
+        white-space: normal;
+      }
     }
 
     header {
@@ -2166,9 +2219,9 @@
               이 지수의 시간에 따른 변화 추이를 확인해서 오라클 엔진 <span class="ch-intro__abbr" lang="la">(Ars de Oracle)</span> 의 실존 여부를 간접적으로 느껴보세요.
             </p>
             <details class="ch-principle-fold">
-              <summary>불완전 진실 지수 공식 (클릭으로 펼치기)</summary>
+              <summary>불완전 진실 지수 공식</summary>
               <div class="ch-principle-body">
-                <span class="ch-math">ITI = \lim_{N \to \infty}\frac{1}{N}\sum_{i=1}^{N}\mathbf{1}\!\left(R_i^{rand} \ge R^{AI}\right)</span>
+                <span class="ch-math">ITI = lim<sub>N→∞</sub> [ (1/N) · Σ<sub>i=1..N</sub> 𝟙(R<sub>i</sub><sup>rand</sup> ≥ R<sup>AI</sup>) ]</span>
               </div>
             </details>
           </div>
@@ -2263,7 +2316,7 @@
           </h2>
 
           <div class="ch-intro" aria-label="제2장 서문">
-            <p class="lead">"운이 아니라면, 이번엔 얼마를 들어가야 했을까."</p>
+            <p class="lead">"지금까지의 수익, 운일까 실력일까 ?"</p>
             <p>
               <strong>K-Value</strong>(<strong>최적 진입 비율</strong>)은 한 거래에 시드의 몇 %를 넣는 것이 유리했는지 보여주는 값입니다.
             </p>
@@ -2276,7 +2329,7 @@
             <details class="ch-principle-fold">
               <summary>K-Value의 수학적 정의</summary>
               <div class="ch-principle-body">
-                <span class="ch-math">K^* = \arg\max_{0 \le k \le 1}\ \prod_{i=1}^{n}(1 + k r_i)</span>
+                <span class="ch-math">K<sup>*</sup> = arg max<sub>0 ≤ k ≤ 1</sub> Π<sub>i=1..n</sub>(1 + k·r<sub>i</sub>)</span>
               </div>
             </details>
           </div>
@@ -2612,17 +2665,23 @@
       </section>
     </section>
 
+    <section class="page-tail-bg" aria-hidden="true"></section>
+
     <footer class="site-footer" role="contentinfo" aria-label="사이트 정보">
       <div class="site-footer__inner">
         <p class="site-footer__caveat">
-          여기 적힌 숫자는 모두 지난 거래를 돌려본 결과입니다. 앞으로도 똑같이 된다는 보장은 아닙니다.
+          과거의 기록일 뿐입니다. 미래가 보장되진 않습니다.
         </p>
-        <p class="site-footer__credit" lang="en">Built by The Architect — The Oraculum</p>
-        <p class="site-footer__contact">
-          Contact (Telegram):
-          <a href="https://t.me/ZOROX_owner" rel="noopener noreferrer" target="_blank">@ZOROX_owner</a>
+        <p class="site-footer__legal">2026, The Oraculum</p>
+        <p class="site-footer__credit" lang="en">
+          <span class="site-footer__credit-line"
+            >Built by The Architect &nbsp;|&nbsp;
+            <span class="site-footer__contact-inline"
+              >Contact (Telegram):
+              <a href="https://t.me/Architect_Oraculum" rel="noopener noreferrer" target="_blank">@Architect_Oraculum</a></span
+            ></span
+          >
         </p>
-        <p class="site-footer__legal">© 2026 The Oraculum.</p>
       </div>
     </footer>
   </div>
