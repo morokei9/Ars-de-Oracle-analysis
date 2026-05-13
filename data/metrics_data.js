@@ -1,5 +1,5 @@
 window.ORACLE_METRICS_DATA = {
-  "generatedAt": "2026-05-04T17:11:21Z",
+  "generatedAt": "2026-05-13T10:29:04Z",
   "source": {
     "engine": "scripts/engine.py + scripts/build_metrics.py",
     "leverage": 10,
@@ -1777,19 +1777,19 @@ window.ORACLE_METRICS_DATA = {
       "key": "month_4",
       "label": "4개월차",
       "periodStart": "2026-02-25T20:17:03Z",
-      "periodEnd": "2026-05-04T15:01:02Z",
-      "tradeCount": 1,
+      "periodEnd": "2026-05-13T10:13:53Z",
+      "tradeCount": 2,
       "kValue": {
         "valueUsed": 1.0,
-        "valueUncapped": 1.0363818487960943,
+        "valueUncapped": 1.0619200545872172,
         "valueCapped": 1.0,
         "baselineK": 0.5,
         "baselineAllocationPercent": 50,
         "feasibleUpper": 2.3501762632197414,
-        "baselineResultPercent": 141.829263,
-        "resultAtUsedPercent": 242.678749,
-        "cumulativeTradeCount": 28,
-        "monthBucketTradeCount": 1,
+        "baselineResultPercent": 151.018775,
+        "resultAtUsedPercent": 268.722334,
+        "cumulativeTradeCount": 29,
+        "monthBucketTradeCount": 2,
         "interpretation": "기본값보다 더 걸었어야 복리가 컸습니다. (사후 최적이 한도에 닿아 한도로 잘렸습니다.)",
         "note": "자세한 식·한도는 본 장 서문과 표를 참고하세요. 수수료·펀딩은 반영되지 않았으므로 실값은 다를 수 있습니다.",
         "curve": [
@@ -1801,562 +1801,562 @@ window.ORACLE_METRICS_DATA = {
           {
             "k": 0.01,
             "allocationPercent": 1.0,
-            "yPercent": 2.296214
+            "yPercent": 2.373959
           },
           {
             "k": 0.02,
             "allocationPercent": 2.0,
-            "yPercent": 4.623308
+            "yPercent": 4.782335
           },
           {
             "k": 0.03,
             "allocationPercent": 3.0,
-            "yPercent": 6.981041
+            "yPercent": 7.224958
           },
           {
             "k": 0.04,
             "allocationPercent": 4.0,
-            "yPercent": 9.369151
+            "yPercent": 9.701633
           },
           {
             "k": 0.05,
             "allocationPercent": 5.0,
-            "yPercent": 11.787348
+            "yPercent": 12.21214
           },
           {
             "k": 0.06,
             "allocationPercent": 6.0,
-            "yPercent": 14.235321
+            "yPercent": 14.756234
           },
           {
             "k": 0.07,
             "allocationPercent": 7.0,
-            "yPercent": 16.71273
+            "yPercent": 17.333642
           },
           {
             "k": 0.08,
             "allocationPercent": 8.0,
-            "yPercent": 19.219214
+            "yPercent": 19.944067
           },
           {
             "k": 0.09,
             "allocationPercent": 9.0,
-            "yPercent": 21.754383
+            "yPercent": 22.587183
           },
           {
             "k": 0.1,
             "allocationPercent": 10.0,
-            "yPercent": 24.317822
+            "yPercent": 25.262637
           },
           {
             "k": 0.11,
             "allocationPercent": 11.0,
-            "yPercent": 26.90909
+            "yPercent": 27.97005
           },
           {
             "k": 0.12,
             "allocationPercent": 12.0,
-            "yPercent": 29.527718
+            "yPercent": 30.709011
           },
           {
             "k": 0.13,
             "allocationPercent": 13.0,
-            "yPercent": 32.173211
+            "yPercent": 33.479083
           },
           {
             "k": 0.14,
             "allocationPercent": 14.0,
-            "yPercent": 34.845048
+            "yPercent": 36.279799
           },
           {
             "k": 0.15,
             "allocationPercent": 15.0,
-            "yPercent": 37.542677
+            "yPercent": 39.110663
           },
           {
             "k": 0.16,
             "allocationPercent": 16.0,
-            "yPercent": 40.265521
+            "yPercent": 41.97115
           },
           {
             "k": 0.17,
             "allocationPercent": 17.0,
-            "yPercent": 43.012974
+            "yPercent": 44.860702
           },
           {
             "k": 0.18,
             "allocationPercent": 18.0,
-            "yPercent": 45.784403
+            "yPercent": 47.778733
           },
           {
             "k": 0.19,
             "allocationPercent": 19.0,
-            "yPercent": 48.579144
+            "yPercent": 50.724627
           },
           {
             "k": 0.2,
             "allocationPercent": 20.0,
-            "yPercent": 51.396506
+            "yPercent": 53.697733
           },
           {
             "k": 0.21,
             "allocationPercent": 21.0,
-            "yPercent": 54.235771
+            "yPercent": 56.697374
           },
           {
             "k": 0.22,
             "allocationPercent": 22.0,
-            "yPercent": 57.096188
+            "yPercent": 59.722836
           },
           {
             "k": 0.23,
             "allocationPercent": 23.0,
-            "yPercent": 59.976981
+            "yPercent": 62.773378
           },
           {
             "k": 0.24,
             "allocationPercent": 24.0,
-            "yPercent": 62.877342
+            "yPercent": 65.848225
           },
           {
             "k": 0.25,
             "allocationPercent": 25.0,
-            "yPercent": 65.796437
+            "yPercent": 68.946569
           },
           {
             "k": 0.26,
             "allocationPercent": 26.0,
-            "yPercent": 68.733399
+            "yPercent": 72.067571
           },
           {
             "k": 0.27,
             "allocationPercent": 27.0,
-            "yPercent": 71.687335
+            "yPercent": 75.210359
           },
           {
             "k": 0.28,
             "allocationPercent": 28.0,
-            "yPercent": 74.657322
+            "yPercent": 78.37403
           },
           {
             "k": 0.29,
             "allocationPercent": 29.0,
-            "yPercent": 77.642407
+            "yPercent": 81.557645
           },
           {
             "k": 0.3,
             "allocationPercent": 30.0,
-            "yPercent": 80.641608
+            "yPercent": 84.760237
           },
           {
             "k": 0.31,
             "allocationPercent": 31.0,
-            "yPercent": 83.653916
+            "yPercent": 87.980803
           },
           {
             "k": 0.32,
             "allocationPercent": 32.0,
-            "yPercent": 86.678291
+            "yPercent": 91.218307
           },
           {
             "k": 0.33,
             "allocationPercent": 33.0,
-            "yPercent": 89.713666
+            "yPercent": 94.471684
           },
           {
             "k": 0.34,
             "allocationPercent": 34.0,
-            "yPercent": 92.758943
+            "yPercent": 97.739834
           },
           {
             "k": 0.35,
             "allocationPercent": 35.0,
-            "yPercent": 95.812998
+            "yPercent": 101.021624
           },
           {
             "k": 0.36,
             "allocationPercent": 36.0,
-            "yPercent": 98.874678
+            "yPercent": 104.31589
           },
           {
             "k": 0.37,
             "allocationPercent": 37.0,
-            "yPercent": 101.942803
+            "yPercent": 107.621435
           },
           {
             "k": 0.38,
             "allocationPercent": 38.0,
-            "yPercent": 105.016165
+            "yPercent": 110.937032
           },
           {
             "k": 0.39,
             "allocationPercent": 39.0,
-            "yPercent": 108.093527
+            "yPercent": 114.26142
           },
           {
             "k": 0.4,
             "allocationPercent": 40.0,
-            "yPercent": 111.173629
+            "yPercent": 117.593307
           },
           {
             "k": 0.41,
             "allocationPercent": 41.0,
-            "yPercent": 114.25518
+            "yPercent": 120.931372
           },
           {
             "k": 0.42,
             "allocationPercent": 42.0,
-            "yPercent": 117.336867
+            "yPercent": 124.27426
           },
           {
             "k": 0.43,
             "allocationPercent": 43.0,
-            "yPercent": 120.417349
+            "yPercent": 127.620588
           },
           {
             "k": 0.44,
             "allocationPercent": 44.0,
-            "yPercent": 123.495261
+            "yPercent": 130.968943
           },
           {
             "k": 0.45,
             "allocationPercent": 45.0,
-            "yPercent": 126.569213
+            "yPercent": 134.31788
           },
           {
             "k": 0.46,
             "allocationPercent": 46.0,
-            "yPercent": 129.63779
+            "yPercent": 137.665927
           },
           {
             "k": 0.47,
             "allocationPercent": 47.0,
-            "yPercent": 132.699555
+            "yPercent": 141.011583
           },
           {
             "k": 0.48,
             "allocationPercent": 48.0,
-            "yPercent": 135.753047
+            "yPercent": 144.353318
           },
           {
             "k": 0.49,
             "allocationPercent": 49.0,
-            "yPercent": 138.796785
+            "yPercent": 147.689577
           },
           {
             "k": 0.5,
             "allocationPercent": 50.0,
-            "yPercent": 141.829263
+            "yPercent": 151.018775
           },
           {
             "k": 0.51,
             "allocationPercent": 51.0,
-            "yPercent": 144.848957
+            "yPercent": 154.339303
           },
           {
             "k": 0.52,
             "allocationPercent": 52.0,
-            "yPercent": 147.854323
+            "yPercent": 157.649525
           },
           {
             "k": 0.53,
             "allocationPercent": 53.0,
-            "yPercent": 150.843794
+            "yPercent": 160.947782
           },
           {
             "k": 0.54,
             "allocationPercent": 54.0,
-            "yPercent": 153.81579
+            "yPercent": 164.23239
           },
           {
             "k": 0.55,
             "allocationPercent": 55.0,
-            "yPercent": 156.76871
+            "yPercent": 167.501642
           },
           {
             "k": 0.56,
             "allocationPercent": 56.0,
-            "yPercent": 159.700936
+            "yPercent": 170.753808
           },
           {
             "k": 0.57,
             "allocationPercent": 57.0,
-            "yPercent": 162.610836
+            "yPercent": 173.987138
           },
           {
             "k": 0.58,
             "allocationPercent": 58.0,
-            "yPercent": 165.496763
+            "yPercent": 177.19986
           },
           {
             "k": 0.59,
             "allocationPercent": 59.0,
-            "yPercent": 168.357054
+            "yPercent": 180.390184
           },
           {
             "k": 0.6,
             "allocationPercent": 60.0,
-            "yPercent": 171.190036
+            "yPercent": 183.556302
           },
           {
             "k": 0.61,
             "allocationPercent": 61.0,
-            "yPercent": 173.994023
+            "yPercent": 186.696386
           },
           {
             "k": 0.62,
             "allocationPercent": 62.0,
-            "yPercent": 176.767318
+            "yPercent": 189.808594
           },
           {
             "k": 0.63,
             "allocationPercent": 63.0,
-            "yPercent": 179.508215
+            "yPercent": 192.891068
           },
           {
             "k": 0.64,
             "allocationPercent": 64.0,
-            "yPercent": 182.215
+            "yPercent": 195.941937
           },
           {
             "k": 0.65,
             "allocationPercent": 65.0,
-            "yPercent": 184.88595
+            "yPercent": 198.959316
           },
           {
             "k": 0.66,
             "allocationPercent": 66.0,
-            "yPercent": 187.519338
+            "yPercent": 201.941308
           },
           {
             "k": 0.67,
             "allocationPercent": 67.0,
-            "yPercent": 190.113432
+            "yPercent": 204.886008
           },
           {
             "k": 0.68,
             "allocationPercent": 68.0,
-            "yPercent": 192.666495
+            "yPercent": 207.7915
           },
           {
             "k": 0.69,
             "allocationPercent": 69.0,
-            "yPercent": 195.176791
+            "yPercent": 210.655862
           },
           {
             "k": 0.7,
             "allocationPercent": 70.0,
-            "yPercent": 197.64258
+            "yPercent": 213.477165
           },
           {
             "k": 0.71,
             "allocationPercent": 71.0,
-            "yPercent": 200.062124
+            "yPercent": 216.253476
           },
           {
             "k": 0.72,
             "allocationPercent": 72.0,
-            "yPercent": 202.433686
+            "yPercent": 218.982858
           },
           {
             "k": 0.73,
             "allocationPercent": 73.0,
-            "yPercent": 204.755535
+            "yPercent": 221.663372
           },
           {
             "k": 0.74,
             "allocationPercent": 74.0,
-            "yPercent": 207.025943
+            "yPercent": 224.293082
           },
           {
             "k": 0.75,
             "allocationPercent": 75.0,
-            "yPercent": 209.243187
+            "yPercent": 226.870049
           },
           {
             "k": 0.76,
             "allocationPercent": 76.0,
-            "yPercent": 211.405554
+            "yPercent": 229.392339
           },
           {
             "k": 0.77,
             "allocationPercent": 77.0,
-            "yPercent": 213.511341
+            "yPercent": 231.858025
           },
           {
             "k": 0.78,
             "allocationPercent": 78.0,
-            "yPercent": 215.558853
+            "yPercent": 234.265182
           },
           {
             "k": 0.79,
             "allocationPercent": 79.0,
-            "yPercent": 217.54641
+            "yPercent": 236.611897
           },
           {
             "k": 0.8,
             "allocationPercent": 80.0,
-            "yPercent": 219.472345
+            "yPercent": 238.896264
           },
           {
             "k": 0.81,
             "allocationPercent": 81.0,
-            "yPercent": 221.335007
+            "yPercent": 241.11639
           },
           {
             "k": 0.82,
             "allocationPercent": 82.0,
-            "yPercent": 223.132763
+            "yPercent": 243.270397
           },
           {
             "k": 0.83,
             "allocationPercent": 83.0,
-            "yPercent": 224.863997
+            "yPercent": 245.356418
           },
           {
             "k": 0.84,
             "allocationPercent": 84.0,
-            "yPercent": 226.527115
+            "yPercent": 247.372607
           },
           {
             "k": 0.85,
             "allocationPercent": 85.0,
-            "yPercent": 228.120547
+            "yPercent": 249.317134
           },
           {
             "k": 0.86,
             "allocationPercent": 86.0,
-            "yPercent": 229.642742
+            "yPercent": 251.188192
           },
           {
             "k": 0.87,
             "allocationPercent": 87.0,
-            "yPercent": 231.092181
+            "yPercent": 252.983996
           },
           {
             "k": 0.88,
             "allocationPercent": 88.0,
-            "yPercent": 232.467367
+            "yPercent": 254.702785
           },
           {
             "k": 0.89,
             "allocationPercent": 89.0,
-            "yPercent": 233.766836
+            "yPercent": 256.342824
           },
           {
             "k": 0.9,
             "allocationPercent": 90.0,
-            "yPercent": 234.989151
+            "yPercent": 257.902409
           },
           {
             "k": 0.91,
             "allocationPercent": 91.0,
-            "yPercent": 236.132912
+            "yPercent": 259.379865
           },
           {
             "k": 0.92,
             "allocationPercent": 92.0,
-            "yPercent": 237.19675
+            "yPercent": 260.773547
           },
           {
             "k": 0.93,
             "allocationPercent": 93.0,
-            "yPercent": 238.179333
+            "yPercent": 262.081849
           },
           {
             "k": 0.94,
             "allocationPercent": 94.0,
-            "yPercent": 239.079367
+            "yPercent": 263.303197
           },
           {
             "k": 0.95,
             "allocationPercent": 95.0,
-            "yPercent": 239.895597
+            "yPercent": 264.436059
           },
           {
             "k": 0.96,
             "allocationPercent": 96.0,
-            "yPercent": 240.62681
+            "yPercent": 265.478942
           },
           {
             "k": 0.97,
             "allocationPercent": 97.0,
-            "yPercent": 241.271834
+            "yPercent": 266.430393
           },
           {
             "k": 0.98,
             "allocationPercent": 98.0,
-            "yPercent": 241.829544
+            "yPercent": 267.289008
           },
           {
             "k": 0.99,
             "allocationPercent": 99.0,
-            "yPercent": 242.298859
+            "yPercent": 268.053426
           },
           {
             "k": 1.0,
             "allocationPercent": 100.0,
-            "yPercent": 242.678749
+            "yPercent": 268.722334
           }
         ]
       },
       "imperfectTruthIndex": {
-        "probability": 0.03664,
-        "percent": 3.664,
-        "actualReturnPercent": 346.92314,
-        "cumulativeTradeCount": 28,
-        "monthBucketTradeCount": 1,
+        "probability": 0.03199,
+        "percent": 3.199,
+        "actualReturnPercent": 383.085764,
+        "cumulativeTradeCount": 29,
+        "monthBucketTradeCount": 2,
         "simulationCount": 100000,
         "interpretation": "운이라기엔 드문 결과입니다.",
         "note": "거래 수·보유 시간·휴지 시간·롱숏 순서·레버리지를 실제와 동일하게 두고, 가격만 무작위로 추출해 비교합니다 (12시간 봉). 무작위 경로 표본은 모두 동일 횟수로 고정합니다.",
         "convergence": [
           {
             "simulationCount": 100,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 1000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 5000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 10000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 25000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 50000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 75000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           },
           {
             "simulationCount": 100000,
-            "estimate": 0.03664,
-            "estimatePercent": 3.664
+            "estimate": 0.03199,
+            "estimatePercent": 3.199
           }
         ],
         "nullModelSummary": {
           "leverage": 10.0,
           "feePerTrade": 0.0,
-          "tradeCount": 28,
-          "avgHoldHours": 55.043621,
-          "avgFlatHours": 8.737984,
+          "tradeCount": 29,
+          "avgHoldHours": 60.428659,
+          "avgFlatHours": 8.426071,
           "longShortSequencePreserved": true
         }
       }
