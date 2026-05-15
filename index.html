@@ -1256,7 +1256,7 @@
       height: min(34vh, 280px);
     }
 
-    /* 제1·2장 (ITI · K-value): 월별 추이 + 바로 이어지는 그래프(복리/수렴)를 한 화면에 가깝게 */
+    /* 제1·2장 (ITI · K-value): 월별 추이와 이어지는 보조 차트를 한 화면에 가깝게 */
     .oracle-metrics-chart-pair {
       display: flex;
       flex-direction: column;
@@ -1284,28 +1284,120 @@
       }
     }
 
-    .ch4-iti-chart-card {
+    .ch1-iti-chart-card {
       position: relative;
     }
 
-    /* 보조 검증 차트(예: Monte Carlo 수렴) — 본 차트보다 강등된 시각 가중치 */
+    .ch1-intro-v6 .ch1-intro-foot {
+      margin: 0.75rem 0 0;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: rgba(148, 163, 184, 0.92);
+    }
+
+    .ch1-technical-principles {
+      margin: 0 0 1rem;
+    }
+
+    .ch1-technical-table-wrap {
+      margin: 0.85rem 0 1rem;
+    }
+
+    .ch1-nested-technical {
+      margin-top: 0.75rem;
+    }
+
+    .ch1-convergence-chart-wrap {
+      margin-top: 0.5rem;
+    }
+
+    .ch1-step-score-card {
+      margin: 0 0 1rem;
+      padding: 1rem 1.15rem 1.1rem;
+      border-radius: 16px;
+      border: 1px solid var(--accent-border-strong);
+      background: linear-gradient(160deg, hsla(var(--hue), 46%, 18%, 0.72), rgba(8, 8, 14, 0.76));
+      box-shadow: var(--glow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .ch1-step-score-card .ch1-step-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: rgba(226, 232, 240, 0.9);
+      margin-bottom: 0.45rem;
+    }
+
+    .ch1-step-score-card .ch1-step-score-value {
+      font-size: clamp(2rem, 5.5vw, 2.85rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #f8fafc;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ch1-step-score-card .ch1-verdict {
+      margin: 0.85rem 0 0;
+    }
+
+    .ch1-ruler-step {
+      margin: 0 0 1rem;
+    }
+
+    .ch1-ruler-step-title {
+      margin: 0 0 0.55rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .ch1-probability-step {
+      margin: 0 0 1rem;
+      padding: 0.95rem 1.1rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(10, 10, 14, 0.45);
+    }
+
+    .ch1-probability-step p {
+      margin: 0 0 0.45rem;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    .ch1-probability-step p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ch1-context-line {
+      margin: 0.75rem 0 0;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: rgba(148, 163, 184, 0.88);
+    }
+
+    /* 보조 검증 차트 — 본 차트보다 낮은 시각 가중치 */
     .chart-card--secondary {
       background: rgba(10, 10, 14, 0.4);
       border-color: rgba(255, 255, 255, 0.08);
     }
-    .chart-card--secondary .chart-head .ch2-chart-plain {
+    .chart-card--secondary .chart-head .ch2-chart-plain,
+    .chart-card--secondary .chart-head .ch1-chart-plain {
       font-size: 0.92rem;
       font-weight: 500;
       color: rgba(226, 232, 240, 0.78);
     }
-    .chart-card--secondary .chart-head .ch2-chart-plain::before {
+    .chart-card--secondary .chart-head .ch2-chart-plain::before,
+    .chart-card--secondary .chart-head .ch1-chart-plain::before {
       content: "보조 검증 · ";
       color: rgba(148, 163, 184, 0.75);
       font-size: 0.72rem;
       letter-spacing: 0.04em;
       font-weight: 600;
     }
-    .chart-card--secondary .ch2-chart-blurb {
+    .chart-card--secondary .ch2-chart-blurb,
+    .chart-card--secondary .ch1-chart-blurb {
       font-size: 0.74rem;
       color: rgba(148, 163, 184, 0.72);
     }
@@ -1412,13 +1504,13 @@
     }
 
     /* 제1장 ITI 결론 카드 (verdict-first) */
-    .ch4-detail-stack {
+    .ch1-detail-stack {
       display: flex;
       flex-direction: column;
       gap: 0;
       margin: 0 0 1.1rem;
     }
-    .ch4-verdict {
+    .ch1-verdict {
       margin: 0 0 0.9rem;
       padding: 1rem 1.2rem 1.05rem;
       border-radius: 14px;
@@ -1426,7 +1518,7 @@
       background: linear-gradient(180deg, hsla(var(--hue), 55%, 22%, 0.55), hsla(var(--hue), 35%, 14%, 0.4));
       box-shadow: var(--glow);
     }
-    .ch4-verdict__headline {
+    .ch1-verdict__headline {
       margin: 0 0 0.32rem;
       font-size: 1.1rem;
       font-weight: 700;
@@ -1434,34 +1526,37 @@
       letter-spacing: -0.01em;
       line-height: 1.4;
     }
-    .ch4-verdict__detail {
+    .ch1-verdict__detail {
       margin: 0;
       font-size: 0.82rem;
       line-height: 1.6;
       color: rgba(203, 213, 225, 0.85);
     }
-    .ch4-verdict--strong {
+    .ch1-verdict--strong {
       border-color: hsla(var(--hue), 90%, 60%, 0.55);
     }
-    .ch4-verdict--ambiguous {
+    .ch1-verdict--moderate {
+      border-color: hsla(var(--hue), 75%, 52%, 0.42);
+    }
+    .ch1-verdict--ambiguous {
       border-color: rgba(212, 175, 55, 0.4);
       background: linear-gradient(180deg, rgba(60, 50, 20, 0.45), rgba(35, 30, 14, 0.35));
     }
-    .ch4-verdict--weak {
+    .ch1-verdict--weak {
       border-color: rgba(180, 90, 90, 0.35);
       background: linear-gradient(180deg, rgba(60, 24, 24, 0.42), rgba(35, 14, 14, 0.32));
     }
-    .ch4-verdict--unknown {
+    .ch1-verdict--unknown {
       border-color: rgba(255, 255, 255, 0.1);
       background: rgba(14, 14, 20, 0.5);
     }
-    .ch4-hero-row {
+    .ch1-hero-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 0.75rem;
       margin: 0 0 0.85rem;
     }
-    .ch4-hero-card {
+    .ch1-hero-card {
       padding: 0.95rem 1.1rem 1.05rem;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1470,58 +1565,353 @@
       flex-direction: column;
       gap: 0.3rem;
     }
-    .ch4-hero-card--primary {
+    .ch1-hero-card--primary {
       border-color: hsla(var(--hue), 65%, 50%, 0.45);
       background: linear-gradient(160deg, hsla(var(--hue), 50%, 18%, 0.65), rgba(10, 10, 14, 0.5));
     }
-    .ch4-hero-label {
+    .ch1-hero-label {
       font-size: 0.76rem;
       color: rgba(148, 163, 184, 0.95);
       letter-spacing: -0.01em;
       line-height: 1.4;
     }
-    .ch4-hero-value {
+    .ch1-hero-value {
       font-size: 1.95rem;
       font-weight: 700;
       color: #f1f5f9;
       line-height: 1.05;
       font-variant-numeric: tabular-nums;
     }
-    .ch4-hero-sub {
+    .ch1-hero-sub {
       font-size: 0.74rem;
       color: rgba(148, 163, 184, 0.7);
     }
-    .ch4-stat-grid {
+    .ch1-stat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 0.55rem;
       margin: 0 0 0.6rem;
       padding: 0;
     }
-    .ch4-stat-grid > div {
+    .ch1-stat-grid > div {
       padding: 0.6rem 0.85rem 0.7rem;
       border-radius: 10px;
       background: rgba(10, 10, 14, 0.42);
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .ch4-stat-grid dt {
+    .ch1-stat-grid dt {
       font-size: 0.72rem;
       color: rgba(148, 163, 184, 0.85);
       margin-bottom: 0.25rem;
     }
-    .ch4-stat-grid dd {
+    .ch1-stat-grid dd {
       margin: 0;
       font-size: 0.98rem;
       font-weight: 600;
       color: #e2e8f0;
       font-variant-numeric: tabular-nums;
     }
-    .ch4-meta-foot {
+    .ch1-meta-foot {
       margin: 0;
       padding: 0.4rem 0.2rem 0;
       font-size: 0.74rem;
       line-height: 1.5;
       color: rgba(148, 163, 184, 0.65);
+    }
+
+    /* 제1장: ITI 상세(지수·눈금·확률·해석·메타)를 한 카드로 묶음 */
+    .ch1-detail-bundle {
+      margin: 0 0 1.1rem;
+      padding: 1rem 1.2rem 1.15rem;
+      border-radius: 16px;
+      border: 1px solid var(--accent-border-strong);
+      background: linear-gradient(160deg, hsla(var(--hue), 46%, 18%, 0.72), rgba(8, 8, 14, 0.76));
+      box-shadow: var(--glow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .ch1-detail-bundle > * + * {
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .ch1-detail-bundle .ch1-step-score-card,
+    .ch1-detail-bundle .ch1-ruler-step,
+    .ch1-detail-bundle .ch1-probability-step {
+      margin: 0;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .ch1-detail-bundle .ch1-step-score-card {
+      padding: 0;
+    }
+
+    .ch1-detail-bundle .ch1-ruler-step-title {
+      margin-top: 0;
+    }
+
+    .ch1-detail-bundle .ch1-probability-step {
+      padding: 0;
+    }
+
+    .ch1-detail-bundle .ch1-verdict {
+      margin: 0;
+      padding: 0;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none;
+    }
+
+    .ch1-detail-bundle .ch1-context-line {
+      margin: 0;
+    }
+
+    .ch1-detail-bundle .ch1-meta-foot {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 제1장: ITI 지수·변환기·확률 읽기 UI */
+    .ch1-intro-v6 .lead {
+      margin-bottom: 0.65rem;
+      font-size: 1.02rem;
+      color: #f1f5f9;
+    }
+
+    .ch1-intro-v6 .ch1-intro-subtitle {
+      margin: 0 0 0.55rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      letter-spacing: -0.01em;
+    }
+
+    .ch1-ruler-card {
+      margin: 0 0 1rem;
+      padding: 1rem 1.15rem 1.1rem;
+      border-radius: 16px;
+      border: 1px solid var(--accent-border-strong);
+      background: linear-gradient(160deg, hsla(var(--hue), 46%, 18%, 0.72), rgba(8, 8, 14, 0.76));
+      box-shadow: var(--glow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .ch1-ruler-card__top {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: minmax(145px, 0.72fr) minmax(220px, 1.6fr);
+      align-items: stretch;
+    }
+
+    @media (max-width: 760px) {
+      .ch1-ruler-card__top {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ch1-iti-score-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.24);
+    }
+
+    .ch1-iti-score-box .label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .ch1-iti-score-box .score {
+      margin-top: 0.1rem;
+      font-size: clamp(2.1rem, 6vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: #f8fafc;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 24px hsla(var(--hue), 95%, 60%, 0.3);
+    }
+
+    .ch1-iti-score-box .score-sub {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .ch1-ruler-readout {
+      margin: 0 0 0.85rem;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: #e2e8f0;
+    }
+
+    .ch1-ruler-readout strong {
+      color: #f8fafc;
+      font-weight: 700;
+    }
+
+    .ch1-iti-ruler {
+      position: relative;
+      padding: 1.45rem 0.35rem 1.45rem;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .ch1-iti-ruler__track {
+      position: relative;
+      height: 0.42rem;
+      margin: 2.6rem 0.8rem 2.9rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.28), hsla(var(--hue), 90%, 60%, 0.5), rgba(248, 250, 252, 0.78));
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.55), 0 0 18px hsla(var(--hue), 90%, 55%, 0.12);
+    }
+
+    .ch1-iti-ruler__tick {
+      position: absolute;
+      top: 50%;
+      width: 1px;
+      height: 1.4rem;
+      transform: translate(-50%, -50%);
+      background: rgba(226, 232, 240, 0.55);
+    }
+
+    .ch1-iti-ruler__tick .score-label,
+    .ch1-iti-ruler__tick .prob-label {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.68rem;
+      line-height: 1.2;
+      color: rgba(203, 213, 225, 0.85);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ch1-iti-ruler__tick .score-label {
+      bottom: 1.35rem;
+      color: rgba(226, 232, 240, 0.92);
+    }
+
+    .ch1-iti-ruler__tick .prob-label {
+      top: 1.35rem;
+      color: rgba(148, 163, 184, 0.92);
+    }
+
+    .ch1-iti-ruler__marker {
+      position: absolute;
+      top: 50%;
+      width: 1.1rem;
+      height: 1.1rem;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: radial-gradient(circle at 35% 35%, #ffffff, hsl(var(--hue), 95%, 70%) 55%, hsl(var(--hue), 95%, 45%));
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 14px hsla(var(--hue), 95%, 65%, 0.55), 0 0 32px hsla(var(--hue), 95%, 65%, 0.22);
+      z-index: 2;
+    }
+
+    .ch1-iti-ruler__tick.ch1-iti-ruler__tick--minor {
+      height: 0.72rem;
+      background: rgba(226, 232, 240, 0.22);
+    }
+
+    .ch1-iti-ruler__marker-label {
+      position: absolute;
+      left: 50%;
+      bottom: 1.55rem;
+      transform: translateX(-50%);
+      padding: 0.28rem 0.5rem 0.32rem;
+      border-radius: 10px;
+      background: rgba(248, 250, 252, 0.92);
+      color: #020617;
+      font-size: 0.68rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.12rem;
+      line-height: 1.15;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .ch1-iti-ruler__marker-pct {
+      font-size: 0.66rem;
+      font-weight: 700;
+      color: #0f172a;
+      opacity: 0.92;
+    }
+
+    .ch1-iti-ruler__ends {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 0.85rem;
+      margin-top: -0.8rem;
+      font-size: 0.72rem;
+      color: rgba(148, 163, 184, 0.85);
+    }
+
+    .ch1-ruler-card__foot {
+      margin: 0.85rem 0 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.55rem;
+    }
+
+    .ch1-mini-stat {
+      padding: 0.65rem 0.75rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ch1-mini-stat .k {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .ch1-mini-stat .v {
+      display: block;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ch1-chart-head-ruled {
+      padding-bottom: 0.65rem;
+      margin-bottom: 0.45rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .ch1-chart-plain {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .ch1-chart-blurb {
+      margin: 0;
+      padding: 0 0.75rem 0.45rem;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #cbd5e1;
+      position: relative;
+      z-index: 1;
     }
 
     .ch-k-triad {
@@ -1784,6 +2174,319 @@
       color: var(--muted);
       position: relative;
       z-index: 1;
+    }
+
+    /* Historical note: ch5-* styles were originally “Chapter 5 liquidation shadow”; they render inside 제4장. */
+    .ch4-part-heading {
+      margin: 1.35rem 0 0.65rem;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: -0.02em;
+    }
+
+    .ch4-part-heading:first-of-type {
+      margin-top: 0.35rem;
+    }
+
+    .ch4-bridge-note {
+      margin: 0 0 0.85rem;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+    }
+
+    .ch4-flow-conclusion {
+      margin: 1.35rem 0 0;
+      padding: 1rem 1.1rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid hsla(var(--hue), 55%, 52%, 0.28);
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .ch4-flow-conclusion p {
+      margin: 0;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+    }
+
+    .ch2-liq-source-notes {
+      margin: 0.35rem 0 0.5rem;
+    }
+
+    .ch2-liq-hint {
+      margin: 0 0 0.28rem;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+
+    .ch2-liq-hint--warn {
+      color: #fcd34d;
+    }
+
+    .ch2-liq-reset {
+      margin: 0.2rem 0 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: hsl(var(--hue), 95%, 72%);
+      font: inherit;
+      font-size: 0.74rem;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .ch2-liq-reset:hover {
+      color: #e0f2fe;
+    }
+
+    .ch5-chart-plain {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 650;
+      color: #f8fafc;
+    }
+
+    .ch5-risk-hero {
+      margin: 0 0 1rem;
+      padding: 1.05rem 1.2rem 1.15rem;
+      border-radius: 16px;
+      border: 1px solid hsla(var(--hue), 85%, 58%, 0.42);
+      background: linear-gradient(160deg, hsla(var(--hue), 48%, 18%, 0.72), rgba(8, 8, 12, 0.72));
+      box-shadow: var(--glow-strong), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .ch5-risk-hero__lead {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #f8fafc;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .ch5-risk-hero__plain {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+    }
+
+    .ch5-result-board {
+      margin: 1rem 0 0;
+      padding: 1rem 1.1rem 1.15rem;
+      border-radius: 16px;
+      border: 1px solid hsla(var(--hue), 85%, 58%, 0.34);
+      background: linear-gradient(160deg, hsla(var(--hue), 42%, 16%, 0.62), rgba(8, 8, 12, 0.68));
+      box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .ch5-result-board__title {
+      margin: 0 0 0.45rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: -0.02em;
+    }
+
+    .ch5-result-board__lead {
+      margin: 0;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+    }
+
+    .ch5-risk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 0.65rem;
+      margin: 0.95rem 0 0;
+    }
+
+    .ch5-risk-tile {
+      padding: 0.78rem 0.85rem 0.85rem;
+      border-radius: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.22);
+      min-height: 94px;
+    }
+
+    .ch5-risk-tile--primary {
+      border-color: hsla(var(--hue), 95%, 62%, 0.52);
+      background: hsla(var(--hue), 55%, 20%, 0.55);
+      box-shadow: 0 0 20px hsla(var(--hue), 95%, 55%, 0.12);
+    }
+
+    .ch5-risk-tile__label {
+      display: block;
+      margin-bottom: 0.32rem;
+      font-size: 0.72rem;
+      line-height: 1.4;
+      color: #94a3b8;
+      letter-spacing: -0.01em;
+    }
+
+    .ch5-risk-tile__value {
+      display: block;
+      font-size: 1.42rem;
+      line-height: 1.1;
+      color: #f8fafc;
+      font-weight: 750;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+    }
+
+    .ch5-risk-tile__hint {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 0.7rem;
+      line-height: 1.45;
+      color: rgba(203, 213, 225, 0.72);
+    }
+
+    .ch5-two-lenses {
+      margin: 0 0 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .ch5-lens-card {
+      padding: 0.75rem 0.85rem 0.8rem;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .ch5-lens-card strong {
+      display: block;
+      margin-bottom: 0.32rem;
+      color: hsl(var(--hue), 95%, 82%);
+      font-size: 0.86rem;
+    }
+
+    .ch5-lens-card p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .ch5-threshold-panel {
+      margin: 0.9rem 0 0;
+      padding: 0.85rem 0.95rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid hsla(var(--hue), 60%, 55%, 0.28);
+      background: rgba(0, 0, 0, 0.24);
+    }
+
+    .ch5-threshold-panel__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-bottom: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .ch5-threshold-panel__title {
+      font-size: 0.86rem;
+      font-weight: 650;
+      color: #e2e8f0;
+    }
+
+    .ch5-threshold-panel__value {
+      font-size: 0.92rem;
+      color: hsl(var(--hue), 95%, 82%);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ch5-threshold-result {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.7rem;
+    }
+
+    .ch5-threshold-result div {
+      padding: 0.55rem 0.65rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.035);
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+
+    .ch5-equal-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 900px) {
+      .ch5-equal-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+
+    .ch5-chart-readout {
+      margin: 0.2rem 0.75rem 0;
+      padding: 0.68rem 0.8rem;
+      border-radius: 11px;
+      border: 1px solid hsla(var(--hue), 70%, 55%, 0.28);
+      background: hsla(var(--hue), 35%, 16%, 0.42);
+      color: #e2e8f0;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ch5-chart-readout strong {
+      color: #f8fafc;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ch5-chart-caption-main {
+      margin: 0;
+      padding: 0 0.75rem 0.55rem;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ch5-chart-caption-sub {
+      margin: 0;
+      padding: 0 0.75rem 0.65rem;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      color: #94a3b8;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ch5-calc-fold {
+      margin: 1rem 0 0;
+    }
+
+    .ch5-calc-fold .ch-math {
+      color: #cbd5e1;
+      background: rgba(0, 0, 0, 0.22);
+      border-radius: 8px;
+      padding: 0.28rem 0.4rem;
     }
 
     .report-preamble {
@@ -2165,9 +2868,9 @@
       </p>
       <ul class="report-preamble__roadmap" role="list">
         <li>
-          <a class="report-preamble__roadmap-link" href="#ch4-heading">
+          <a class="report-preamble__roadmap-link" href="#ch1-heading">
             <span class="report-preamble__ch-num">1장</span>
-            <span class="report-preamble__ch-title">오라클 엔진: Ars de Oracle 의 출사표</span>
+            <span class="report-preamble__ch-title">운일까 실력일까?</span>
           </a>
         </li>
         <li>
@@ -2177,7 +2880,7 @@
           </a>
         </li>
         <li>
-          <a class="report-preamble__roadmap-link" href="#ch1-heading">
+          <a class="report-preamble__roadmap-link" href="#ch-portfolio-heading">
             <span class="report-preamble__ch-num">3장</span>
             <span class="report-preamble__ch-title">그래서 얼마가 되는가</span>
           </a>
@@ -2195,115 +2898,147 @@
       <div id="oracleMetricsEmpty" class="metrics-empty" hidden>
         <p class="metrics-empty__lead">제1·2장 데이터를 불러올 수 없습니다.</p>
         <p class="metrics-empty__hint">잠시 후 새로 고침해 주십시오.</p>
-        <!-- 개발자: data/btcusdt_12h.csv 갱신 후 `python scripts/build_metrics.py` 실행 후 새로고침 -->
+        <!-- 개발자: data/btcusdt_12h.csv 갱신 후 `python scripts/build_metrics.py` 실행 후 새로고침. 제4장 분포: `python bullshit/build_ch5.py` -->
       </div>
 
       <div id="oracleMetricsFilled" hidden>
 
-        <section class="chapter" aria-labelledby="ch4-heading">
-          <h2 id="ch4-heading" class="chapter-heading">
+        <section class="chapter" aria-labelledby="ch1-heading">
+          <h2 id="ch1-heading" class="chapter-heading">
             <span class="chapter-num">제1장</span>
-            <span class="chapter-title">오라클 엔진: Ars de Oracle 의 출사표</span>
+            <span class="chapter-title">운일까 실력일까?</span>
           </h2>
 
-          <div class="ch-intro" aria-label="제1장 서문">
+          <div class="ch-intro ch1-intro-v6" aria-label="제1장 서문">
+            <p class="lead">이 성과가 그냥 운으로도 나올 수 있었는가?</p>
+            <p class="ch1-intro-subtitle">ITI — 불완전 진실 지수</p>
             <p>
-              <strong>Imperfect Truth Index (ITI)</strong>, <strong>불완전 진실 지수</strong>는 인공지능의 실제 매매 기록과 같은 시각에 무작위로 거래한 결과들 중,
-              인공지능의 실거래 수익률 이상이 나올 확률이 얼마인지 나타내는 지표입니다.
+              <strong>ITI</strong>는 ‘같은 조건에서 운에만 맡겨 돌렸을 때, 지금만큼 혹은 더 잘 나올 <strong>확률</strong>’을 숫자로 줄인 값입니다.
+              읽는 순서는 세 가지입니다. 화면의 <strong>ITI 지수</strong>를 본 뒤, 아래 <strong>눈금자</strong>에서 그 위치를 찾고, 거기에 맞는 <strong>확률</strong>을 읽으면 됩니다.
+              지수가 클수록 ‘그냥 운’으로는 따라오기 어려운 결과에 가깝다는 뜻입니다.
             </p>
             <p>
-              이 값은 베이지안 사후 확률 계산이 불가능하기 때문에 <strong>인공지능이 실제 실력이 있을 확률</strong>은 정성적으로만 표현됩니다.
-              그러나 <strong>이 인공지능이 그냥 아무렇게나 거래했는데 운이 좋아서 수익이 났을 확률</strong>은 정량적으로 보여줍니다.
+              큰 눈금만 기억해도 됩니다. 지수 <strong>10</strong> 근처는 대략 <strong>10%</strong>, <strong>20</strong>은 <strong>1%</strong>, <strong>30</strong>은 <strong>0.1%</strong> 정도로 보면 됩니다.
+              그 사이 숫자는 눈금 사이를 가늠해서 읽으면 됩니다.
             </p>
-            <p>
-              이 지수의 시간에 따른 변화 추이를 확인해서 오라클 엔진 <span class="ch-intro__abbr" lang="la">(Ars de Oracle)</span> 의 실존 여부를 간접적으로 느껴보세요.
+            <p class="ch1-intro-foot">
+              계산 세부 조건은 <strong>「ITI의 수학적 정의」</strong>에서 확인할 수 있습니다.
             </p>
-            <details class="ch-principle-fold">
-              <summary>불완전 진실 지수 공식</summary>
-              <div class="ch-principle-body">
-                <span class="ch-math">ITI = lim<sub>N→∞</sub> [ (1/N) · Σ<sub>i=1..N</sub> 𝟙(R<sub>i</sub><sup>rand</sup> ≥ R<sup>AI</sup>) ]</span>
-              </div>
-            </details>
           </div>
+
+          <details class="ch-principle-fold ch1-technical-principles" id="ch1TechnicalPrinciples">
+            <summary>ITI의 수학적 정의</summary>
+            <div class="ch-principle-body">
+              <p>
+                이 수식은 화면의 눈금자를 만들기 위한 내부 계산식입니다. 본문에서는 이 수식을 몰라도
+                <strong>지수 → 눈금 → 확률</strong> 순서로 읽으면 됩니다.
+              </p>
+              <p>
+                여기서 비교 대상은 같은 기간·같은 거래 횟수·같은 보유 리듬에서 <strong>운에 맡겨 사고팔았을 때</strong>의 결과입니다.
+              </p>
+              <span class="ch-math">p = P(운에 맡긴 매매 결과 ≥ 실제 오라큘럼 결과)</span>
+              <span class="ch-math">ITI = −10 × log<sub>10</sub>(p)</span>
+              <p>
+                ITI 지수가 10 오를 때마다 p는 10분의 1이 됩니다. 예를 들어 지수 10 부근에서 대략 10%, 20 부근에서 대략 1%,
+                30 부근에서 대략 0.1%에 해당합니다.
+              </p>
+              <p>
+                <strong>주의:</strong> ITI는 ‘모델이 진짜일 확률’이 아닙니다. 운에 맡긴 매매와 비교했을 때,
+                이번 성과가 얼마나 드문지를 나타내는 지수입니다.
+              </p>
+              <p>
+                <strong>계산에 쓴 가정(요약):</strong> 10× 레버리지, 시드 50% 진입(k=0.5), 수수료 미반영입니다.
+                평균 보유·관망 시간과 반복 비교 횟수는 아래 표를 참고하세요.
+              </p>
+
+              <div class="table-section ch1-technical-table-wrap">
+                <p class="table-hint">월별 <strong>숫자 검증용</strong> 세부 항목입니다.</p>
+                <div class="table-scroll">
+                  <table class="data-table" id="ch1TechnicalMetaTable" aria-label="ITI 산출 세부 수치">
+                    <thead>
+                      <tr>
+                        <th scope="col">월</th>
+                        <th scope="col">비교 반복 횟수</th>
+                        <th scope="col">평균 보유 시간</th>
+                        <th scope="col">평균 관망 시간</th>
+                        <th scope="col">레버리지</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ch1TechnicalMetaTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <p>
+                Monte Carlo 방법으로 무작위 비교를 많이 돌려 p를 추정합니다. 반복을 늘릴수록 추정이 안정되는지는
+                아래 그래프로 확인합니다.
+              </p>
+
+              <details class="ch-principle-fold ch1-nested-technical">
+                <summary>검증용 세부 그래프 보기</summary>
+                <div class="ch-principle-body">
+                  <p>가로축은 비교를 늘린 횟수, 세로축은 운으로도 이길 확률의 추정값(%)입니다.</p>
+                  <div class="chart-wrap chart-wrap--mid ch1-convergence-chart-wrap">
+                    <canvas id="ch1ConvergenceChart"></canvas>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </details>
 
           <div class="oracle-month-toolbar" aria-label="제1장 기간 선택 (누적)">
-            <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh4">기간 선택 (누적)</span>
+            <span class="oracle-month-toolbar-label" id="oracleMonthToolbarLabelCh1">기간 선택 (누적)</span>
             <div
-              id="oracleMonthButtonsCh4"
+              id="oracleMonthButtonsCh1"
               class="oracle-month-buttons"
               role="group"
-              aria-labelledby="oracleMonthToolbarLabelCh4"></div>
+              aria-labelledby="oracleMonthToolbarLabelCh1"></div>
           </div>
 
-          <div id="ch4Dynamic">
-            <div class="oracle-metrics-chart-pair" aria-label="ITI 월별 추이 및 Monte Carlo 수렴">
-              <section class="chart-card ch4-iti-chart-card" aria-label="월별 ITI">
-                <div class="chart-head ch2-chart-head-ruled">
-                  <h3 class="ch2-chart-plain">월별 ITI 추이</h3>
+          <div id="ch1Dynamic">
+            <div class="ch1-detail-stack" id="ch1DetailCards" aria-label="선택 기간 ITI 안내"></div>
+            <p id="ch1PartialHint" class="ch-partial-hint" hidden></p>
+
+            <div class="oracle-metrics-chart-pair oracle-metrics-chart-pair--single" aria-label="월별 ITI 확률">
+              <section class="chart-card ch1-iti-chart-card" aria-label="월별 ITI 확률">
+                <div class="chart-head ch1-chart-head-ruled">
+                  <h3 class="ch1-chart-plain">월별 ITI 확률 추이</h3>
                 </div>
-                <p class="ch2-chart-blurb">
-                  첫 거래부터 해당 월까지 누적된 성과가 무작위 시장에서 <strong>얼마나 나오기 힘든 결과인지</strong>(%)를 보여줍니다. 낮을수록 희귀합니다.
+                <p class="ch1-chart-blurb">
+                  달마다 따로 구한 <strong>운으로도 이길 확률</strong>(%)을 막대로 나타냅니다. 막대가 <strong>낮을수록</strong> 같은 조건을 운에만 맡겼을 때 지금만큼 좋게 나오기 어렵다는 뜻입니다.
                 </p>
-                <div class="chart-wrap chart-wrap--mid ch4-iti-chart-wrap">
-                  <canvas id="ch4ItiHistoryChart"></canvas>
+                <div class="chart-wrap chart-wrap--mid ch1-iti-chart-wrap">
+                  <canvas id="ch1ItiHistoryChart"></canvas>
                 </div>
                 <div class="chart-footer">
-                  <button type="button" class="btn-table" id="btnGenerateCh4Table" aria-expanded="false">표 펼치기</button>
+                  <button type="button" class="btn-table" id="btnGenerateCh1Table" aria-expanded="false">표 펼치기</button>
                 </div>
-                <div class="table-section table-section--inline" id="ch4TableSection" hidden aria-labelledby="ch4TableHeading">
+                <div class="table-section table-section--inline" id="ch1TableSection" hidden aria-labelledby="ch1TableHeading">
                   <div class="table-section-head">
-                    <h3 id="ch4TableHeading">월별 ITI 요약 표</h3>
+                    <h3 id="ch1TableHeading">월별 ITI 요약 표</h3>
                   </div>
                   <p class="table-hint">
-                    첫 달부터 해당 월까지 <strong>누적 거래</strong> 기준의 실제 복리·ITI·비교 요약입니다. ‘해당 달 거래’ 열은 그달의 거래 횟수입니다.
+                    차트는 월별 확률(%)입니다. 표에서는 ITI 지수·확률·‘말로 바꾸면’ 열을 함께 읽으면 됩니다.
                   </p>
                   <div class="table-scroll">
-                    <table class="data-table" id="ch4SummaryTable">
+                    <table class="data-table" id="ch1SummaryTable">
                       <thead>
                         <tr>
                           <th scope="col">월</th>
-                          <th scope="col">해당 달 거래 횟수</th>
-                          <th scope="col">누적 거래 횟수</th>
-                          <th scope="col">실제 수익률 (%)</th>
-                          <th scope="col">ITI (%)</th>
-                          <th scope="col">비교 반복 횟수</th>
-                          <th scope="col">평균 포지션 보유 시간</th>
-                          <th scope="col">평균 포지션 관망 시간</th>
-                          <th scope="col">레버리지</th>
+                          <th scope="col">해당 달 거래</th>
+                          <th scope="col">누적 거래</th>
+                          <th scope="col">실제 수익률</th>
+                          <th scope="col">ITI 지수</th>
+                          <th scope="col">눈금으로 읽은 확률</th>
+                          <th scope="col">말로 바꾸면</th>
                         </tr>
                       </thead>
-                      <tbody id="ch4SummaryTableBody"></tbody>
+                      <tbody id="ch1SummaryTableBody"></tbody>
                     </table>
                   </div>
                 </div>
               </section>
-
-              <section class="chart-card chart-card--secondary" aria-label="ITI 시뮬 안정성 (Monte Carlo 수렴)">
-                <div class="chart-head ch2-chart-head-ruled">
-                  <h3 class="ch2-chart-plain">시뮬 결과의 안정성</h3>
-                </div>
-                <p class="ch2-chart-blurb">
-                  시뮬을 더 돌려도 위 ITI 값이 흔들리지 않는지 자체 점검합니다.
-                </p>
-                <div class="chart-wrap chart-wrap--mid">
-                  <canvas id="ch4ConvergenceChart"></canvas>
-                </div>
-              </section>
             </div>
-
-            <div class="ch4-detail-stack" id="ch4DetailCards" aria-label="기준월 ITI 상세"></div>
-            <p id="ch4PartialHint" class="ch-partial-hint" hidden></p>
-
-            <div class="ch-band" aria-label="ITI 구간 해석">
-              <h3>이 수치, 이렇게 읽습니다</h3>
-              <ul class="ch-band-grid">
-                <li><strong>1% 미만</strong> — 우연으로는 거의 나오지 않습니다. 강한 신호.</li>
-                <li><strong>1% ~ 5%</strong> — 우연이라기엔 드뭅니다. 잠정 신호.</li>
-                <li><strong>5% ~ 15%</strong> — 운이라 단정하기도, 실력이라 단정하기도 어렵습니다.</li>
-                <li><strong>15% 이상</strong> — 우연으로도 흔히 나옵니다. 신호로 보기 어렵습니다.</li>
-              </ul>
-            </div>
-
           </div>
         </section>
 
@@ -2417,8 +3152,8 @@
 
     <hr class="chapter-sep" aria-hidden="true" />
 
-    <section class="chapter" aria-labelledby="ch1-heading">
-      <h2 id="ch1-heading" class="chapter-heading">
+    <section class="chapter" aria-labelledby="ch-portfolio-heading">
+      <h2 id="ch-portfolio-heading" class="chapter-heading">
         <span class="chapter-num">제3장</span>
         <span class="chapter-title">그래서 얼마가 되는가</span>
       </h2>
@@ -2494,18 +3229,143 @@
     <section class="chapter" aria-labelledby="ch2-heading">
       <h2 id="ch2-heading" class="chapter-heading">
         <span class="chapter-num">제4장</span>
-        <span class="chapter-title">청산 가능성</span>
+        <span class="chapter-title">청산 가능성: 실제 0건, 그래도 장기 생존은 안전한가</span>
       </h2>
       <div class="ch-intro" aria-label="제4장 서문">
-        <p class="lead">"청산 확률이 수익 구조를 결정합니다."</p>
+        <p class="lead">실제 청산 0건은 위험 0%가 아닙니다.</p>
         <p>
-          지금까지는 청산이 한 번도 없었습니다. 다만 그건 관측된 기간의 사실일 뿐, 앞으로도 없다는 뜻은 아닙니다.
-        </p>
-        <p>
-          그래서 이 장에서는 해당 기간에 청산이 없었을 확률을 직접 보고, 같은 청산 확률로 거래를 계속했을 때 기대수익이 얼마나 줄어드는지 확인합니다.
-          청산이 발생하면 프로젝트는 그 시점에서 실제로 종료됩니다.
+          지금까지 실제 청산은 0건입니다. 하지만 0건은 위험이 0%라는 뜻이 아닙니다. 이 장은 먼저 과거 거래가 청산선에 얼마나 가까웠는지 보고, 그 분포에서 거래당 간접 청산 확률을 구합니다. 그 다음 이 확률을 미래 계산기에 넣어 장기 잔고와 생존 가능성을 확인합니다.
         </p>
       </div>
+
+      <h3 class="ch4-part-heading" id="ch4-part1-heading">① 실제 거래에서 거래당 간접 청산 확률 구하기</h3>
+
+      <section class="ch5-risk-hero" aria-label="제4장 1부 안내">
+        <p class="ch5-risk-hero__lead">
+          먼저 과거 거래가 청산선에 얼마나 가까웠는지 보고, 거기서 거래당 간접 청산 확률을 뽑습니다.
+        </p>
+        <p class="ch5-risk-hero__plain">
+          아래 두 그래프는 같은 위험을 두 각도에서 봅니다. 왼쪽은 <strong>거래별로 한 번에 잡히는 최악 손실</strong>이고, 오른쪽은 <strong>보유 중 5분마다 찍힌 평가손익률 전체</strong>입니다. 숫자판의 첫 줄 값이 뒤쪽 미래 계산기의 기본 입력입니다.
+        </p>
+      </section>
+
+      <section class="ch5-two-lenses" aria-label="두 가지 읽기">
+        <div class="ch5-lens-card">
+          <strong>① 거래별 최악 손실</strong>
+          <p>거래 하나마다 보유 중 가장 깊게 밀린 지점 하나를 뽑습니다. “거래를 열었을 때 한 번이라도 청산선에 가까워졌는가”를 보는 지표입니다.</p>
+        </div>
+        <div class="ch5-lens-card">
+          <strong>② 5분 평가손익률 전체</strong>
+          <p>포지션이 열려 있는 동안 5분마다 평가손익률을 전부 기록합니다. “전략이 평소 어떤 위험 구간에 머물렀는가”를 보는 보조 지표입니다.</p>
+        </div>
+      </section>
+
+      <details class="ch-principle-fold ch5-calc-fold" id="ch4LiquidationMathDetails">
+        <summary>수식과 산출 기준</summary>
+        <div class="ch-principle-body">
+          <p>
+            거래 기록은 Gate에서 내려받은 체결·시간 정보를 쓰고, 시세는 BTCUSDT 5분봉(예: <code>data/btcusdt_5m.csv</code> 또는 빌드 스크립트가 읽는 경로)을 씁니다. 거래 시각은 브리즈번 현지시를 UTC로 맞춘 뒤 캔들과 겹칩니다. 기본 가격은 5분봉 <strong>종가(close)</strong>입니다.
+          </p>
+          <p>
+            롱 평가손익률: <span class="ch-math">ROI₅ₘ = (close − entry) / entry × leverage × 100</span>
+            · 숏 평가손익률: <span class="ch-math">ROI₅ₘ = (entry − close) / entry × leverage × 100</span>
+          </p>
+          <p>
+            거래별 최악 손실(보유 구간 안의 ROI₅ₘ 최솟값) 분포에서 <strong>−100% 청산선</strong> 이하 꼬리를 적분해 거래당 간접 청산 가능성을 추정합니다. 5분 전체 샘플 분포도 같은 방식으로 꼬리를 읽되, 질문이 “보유 중 잠깐잠깐 위험 구간에 머물렀는가”에 가깝습니다.
+          </p>
+          <p>
+            막대 위의 곡선은 같은 표본 평균·표준편차로 맞춘 <strong>정규 근사 곡선</strong>이며, 꼬리는 필요 시 <strong>부드러운 밀도(KDE)</strong>로도 읽습니다. 이 값들은 거래소 청산 엔진을 그대로 재현한 것이 아니라 <strong>과거 데이터 기반 추정</strong>입니다.
+          </p>
+          <p><strong>한계(요약):</strong></p>
+          <ul style="margin: 0.35rem 0 0; padding-left: 1.15rem; line-height: 1.55">
+            <li>5분 종가만 쓰면 같은 봉 안의 고가·저가 움직임을 전부 담지 못할 수 있습니다.</li>
+            <li>틱 단위 데이터가 아니므로 순간 체결가·갭을 완전히 반영하지 못합니다.</li>
+            <li>거래소의 청산 가격 산정, 유지증거금, 수수료·펀딩·슬리피지는 단순화했습니다.</li>
+            <li>여기서 나온 확률은 <strong>간접 청산 가능성</strong>이며 미래를 보장하지 않습니다.</li>
+          </ul>
+        </div>
+      </details>
+
+      <p id="ch5DataMissing" class="ch-partial-hint" hidden>
+        분포 데이터를 불러오지 못했습니다. <code>python bullshit/build_ch5.py</code> 실행 후 새로고침하십시오.
+      </p>
+
+      <div class="ch5-equal-grid" aria-label="청산선 접근 분포">
+        <section class="chart-card" aria-label="거래별 최악 손실 분포">
+          <div class="chart-head ch2-chart-head-ruled">
+            <h3 class="ch5-chart-plain">거래별 최악 손실 분포</h3>
+          </div>
+          <p class="ch5-chart-caption-main">거래 하나가 보유 중 최악으로 몇 %까지 밀렸는지 보여줍니다.</p>
+          <p class="ch5-chart-caption-sub">질문: “거래를 하나 열면, 그 거래가 청산선에 얼마나 가까워질 수 있는가?”</p>
+          <div class="chart-wrap chart-wrap--mid">
+            <canvas id="ch5Mae5mChart"></canvas>
+          </div>
+          <p class="ch5-chart-readout" id="ch5TradeTailReadout" aria-live="polite">거래별 최악 손실 꼬리: —</p>
+        </section>
+
+        <section class="chart-card" aria-label="5분 평가손익률 전체 분포">
+          <div class="chart-head ch2-chart-head-ruled">
+            <h3 class="ch5-chart-plain">5분 평가손익률 분포</h3>
+          </div>
+          <p class="ch5-chart-caption-main">포지션이 열려 있는 동안 5분마다 찍힌 평가손익률을 모두 모은 분포입니다.</p>
+          <p class="ch5-chart-caption-sub">질문: “전략은 보유 중 대부분의 시간을 어느 위험 구간에서 보냈는가?”</p>
+          <div class="chart-wrap chart-wrap--mid">
+            <canvas id="ch5Sample5mChart"></canvas>
+          </div>
+          <p class="ch5-chart-readout" id="ch5SampleTailReadout" aria-live="polite">5분 평가손익률 꼬리: —</p>
+        </section>
+      </div>
+
+      <section class="ch5-result-board" aria-label="분포에서 읽은 핵심 수치">
+        <h3 class="ch5-result-board__title">분포에서 읽은 핵심 수치</h3>
+        <p class="ch5-result-board__lead" id="ch5PlainVerdict" aria-live="polite">
+          데이터를 불러오면 이곳에 청산선 −100% 기준 요약이 표시됩니다.
+        </p>
+        <div class="ch5-risk-grid" aria-label="청산 위험 핵심 수치">
+          <article class="ch5-risk-tile ch5-risk-tile--primary">
+            <span class="ch5-risk-tile__label">거래당 간접 청산 확률</span>
+            <span class="ch5-risk-tile__value" id="ch5MainKdeProbability">—</span>
+            <span class="ch5-risk-tile__hint">거래별 최악 손실 분포에서 −100% 청산선 이하 꼬리를 읽은 값입니다. 아래 미래 계산기의 기본 입력값으로 사용됩니다.</span>
+          </article>
+          <article class="ch5-risk-tile">
+            <span class="ch5-risk-tile__label">실제 관측 청산</span>
+            <span class="ch5-risk-tile__value" id="ch5ObservedLiquidation">—</span>
+            <span class="ch5-risk-tile__hint">실제 청산 0건은 위험 0%라는 뜻이 아닙니다.</span>
+          </article>
+          <article class="ch5-risk-tile">
+            <span class="ch5-risk-tile__label">5분 평가손익률 꼬리</span>
+            <span class="ch5-risk-tile__value" id="ch5SampleKdeProbability">—</span>
+            <span class="ch5-risk-tile__hint">이 값은 거래당 청산 확률이 아니라, 보유 중 5분 단위 평가손익률이 위험 구간에 머문 정도를 보는 보조 지표입니다.</span>
+          </article>
+          <article class="ch5-risk-tile">
+            <span class="ch5-risk-tile__label">가장 깊었던 지점</span>
+            <span class="ch5-risk-tile__value" id="ch5WorstMaeHero">—</span>
+            <span class="ch5-risk-tile__hint">거래 하나가 보유 중 가장 많이 밀린 값</span>
+          </article>
+          <article class="ch5-risk-tile">
+            <span class="ch5-risk-tile__label">5분 평가 샘플</span>
+            <span class="ch5-risk-tile__value" id="ch5SampleCountHero">—</span>
+            <span class="ch5-risk-tile__hint">보유 중 5분마다 찍은 평가손익률 개수</span>
+          </article>
+        </div>
+
+        <section class="ch5-threshold-panel" aria-label="위험선 인터랙티브 확인">
+          <div class="ch5-threshold-panel__head">
+            <span class="ch5-threshold-panel__title">위험선을 움직여서 보기</span>
+            <span class="ch5-threshold-panel__value" id="ch5RiskThresholdValue">−100%</span>
+          </div>
+          <input id="ch5RiskThresholdSlider" type="range" min="-100" max="0" value="-100" step="5" aria-label="위험선 퍼센트" />
+          <div class="ch5-threshold-result" aria-live="polite">
+            <div id="ch5TradeBelowThreshold">거래별 최악 손실: —</div>
+            <div id="ch5SampleBelowThreshold">5분 평가손익률 전체: —</div>
+          </div>
+        </section>
+      </section>
+
+      <h3 class="ch4-part-heading" id="ch4-part2-heading">② 산출된 확률로 미래 잔고와 생존 확률 계산하기</h3>
+      <p class="ch4-bridge-note">
+        위에서 산출한 거래당 간접 청산 확률을 기본값으로 넣어, 앞으로 몇 개월 동안 잔고와 생존 확률이 어떻게 변하는지 계산합니다.
+      </p>
 
       <div class="ch2-metrics-wrap">
         <section class="control-card ch2-input-card" aria-label="청산 리스크 및 분석 기간">
@@ -2513,6 +3373,16 @@
             <div class="ch2-input-partition">
               <div class="field ch2-input-pane ch2-input-pane--liq">
                 <label for="liqProbSlider">거래당 청산 확률 (%)</label>
+                <p id="liqProbFallbackNote" class="ch-partial-hint" hidden>
+                  실제 거래 기반 청산 확률 데이터를 불러오지 못해 기본 시나리오 값을 사용 중입니다.
+                </p>
+                <div id="liqProbSourceNotes" class="ch2-liq-source-notes" hidden>
+                  <p id="liqProbDataHint" class="ch2-liq-hint">기본값: 실제 거래 분포에서 산출한 거래당 간접 청산 확률</p>
+                  <p id="liqProbScenarioNote" class="ch2-liq-hint ch2-liq-hint--warn" hidden>
+                    수동 시나리오 값입니다. 기본값은 실제 거래 분포에서 산출한 값입니다.
+                  </p>
+                  <button type="button" class="ch2-liq-reset" id="liqProbResetToData">실제 거래 기반 기본값으로 되돌리기</button>
+                </div>
                 <div class="slider-row ch2-liq-slider-row">
                   <input type="range" id="liqProbSlider" min="0" max="5" step="0.001" value="1" />
                   <span class="pill" id="liqProbLabel">1%</span>
@@ -2547,7 +3417,7 @@
             <div class="ch2-mc-row">
               <label class="toggle-row" for="showCh2McBand">
                 <input type="checkbox" id="showCh2McBand" />
-                Monte Carlo 예측 밴드 보기
+                낙관·비관 밴드(무작위 반복) 보기
               </label>
             </div>
           </div>
@@ -2663,6 +3533,12 @@
           </div>
         </section>
       </section>
+
+      <div class="ch4-flow-conclusion" aria-label="제4장 마무리 해석">
+        <p>
+          이 결과는 미래를 보장하지 않습니다. 다만 과거 거래의 청산선 접근 정도를 바탕으로 거래당 간접 청산 확률을 잡고, 그 확률이 장기 복리 구조를 얼마나 깎는지 보여줍니다. 실제 청산은 0건이었지만, 청산 위험을 0%로 두면 장기 생존 가능성을 과대평가할 수 있습니다.
+        </p>
+      </div>
     </section>
 
     <section class="page-tail-bg" aria-hidden="true"></section>
@@ -2670,7 +3546,7 @@
     <footer class="site-footer" role="contentinfo" aria-label="사이트 정보">
       <div class="site-footer__inner">
         <p class="site-footer__caveat">
-          과거의 기록일 뿐입니다. 미래가 보장되지는 않습니다.
+          「Acceptability」
         </p>
         <p class="site-footer__legal">2026, The Oraculum</p>
         <p class="site-footer__credit" lang="en">
@@ -2731,6 +3607,7 @@
   </div>
 
   <script src="data/metrics_data.js"></script>
+  <script src="bullshit/ch5_distribution_data.js"></script>
   <script>
     const MONTHLY_RATE = 0.3;
     const WON_PER_MAN = 10000;
@@ -2785,13 +3662,13 @@
     const oracleMetricsEmptyEl = document.getElementById("oracleMetricsEmpty");
     const oracleMetricsFilledEl = document.getElementById("oracleMetricsFilled");
     const ch3DetailCardsEl = document.getElementById("ch3DetailCards");
-    const ch4DetailCardsEl = document.getElementById("ch4DetailCards");
+    const ch1DetailCardsEl = document.getElementById("ch1DetailCards");
     const ch3PartialHintEl = document.getElementById("ch3PartialHint");
-    const ch4PartialHintEl = document.getElementById("ch4PartialHint");
+    const ch1PartialHintEl = document.getElementById("ch1PartialHint");
     const ch3SummaryTableBody = document.getElementById("ch3SummaryTableBody");
-    const ch4SummaryTableBody = document.getElementById("ch4SummaryTableBody");
-    const btnGenerateCh4Table = document.getElementById("btnGenerateCh4Table");
-    const ch4TableSection = document.getElementById("ch4TableSection");
+    const ch1SummaryTableBody = document.getElementById("ch1SummaryTableBody");
+    const btnGenerateCh1Table = document.getElementById("btnGenerateCh1Table");
+    const ch1TableSection = document.getElementById("ch1TableSection");
 
     let oracleCharts = {
       kHist: null,
@@ -2893,40 +3770,134 @@
       return "이론값 → 한도 반영 → 실제 적용 순서로 좁혀진 값입니다.";
     }
 
+    function itiProbabilityPercent(iti) {
+      if (!iti || iti.percent == null) return null;
+      const p = Number(iti.percent);
+      return Number.isFinite(p) && p > 0 ? p : null;
+    }
+
+    function itiScoreFromPercentValue(pct) {
+      const p = Number(pct);
+      if (!Number.isFinite(p) || p <= 0) return null;
+      return -10 * Math.log10(p / 100);
+    }
+
+    function itiScoreFromPercent(iti) {
+      const p = itiProbabilityPercent(iti);
+      return p == null ? null : itiScoreFromPercentValue(p);
+    }
+
+    function fmtItiScore(score) {
+      return score != null && Number.isFinite(Number(score)) ? Number(score).toFixed(1) + " 지수" : "—";
+    }
+
+    function fmtItiFrequency(pct) {
+      const p = Number(pct);
+      if (!Number.isFinite(p) || p <= 0) return "—";
+      const n = Math.round(100 / p);
+      if (!Number.isFinite(n) || n < 1) return "—";
+      return `약 ${n.toLocaleString()}번 중 1번`;
+    }
+
+    function itiScoreRulerHtml(score, pct) {
+      const escHtml = (s) =>
+        String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;");
+      const minScore = 0;
+      const maxScore = 40;
+      const posOf = (v) => Math.max(0, Math.min(100, ((Number(v) - minScore) / (maxScore - minScore)) * 100));
+      const majors = [
+        { score: 10.0, prob: "10%" },
+        { score: 20.0, prob: "1%" },
+        { score: 30.0, prob: "0.1%" },
+      ];
+      const majorHtml = majors
+        .map(
+          (t) => `
+            <span class="ch1-iti-ruler__tick ch1-iti-ruler__tick--major" style="left:${posOf(t.score).toFixed(3)}%">
+              <span class="score-label">${t.score.toFixed(0)}</span>
+              <span class="prob-label">${escHtml(t.prob)}</span>
+            </span>`
+        )
+        .join("");
+      const segments = [
+        [0, 10],
+        [10, 20],
+        [20, 30],
+        [30, 40],
+      ];
+      const minorParts = [];
+      for (const [a, b] of segments) {
+        for (let k = 1; k <= 10; k++) {
+          const ms = a + ((b - a) * k) / 11;
+          if (majors.some((m) => Math.abs(ms - m.score) < 0.02)) continue;
+          minorParts.push(
+            `<span class="ch1-iti-ruler__tick ch1-iti-ruler__tick--minor" style="left:${posOf(ms).toFixed(3)}%" aria-hidden="true"></span>`
+          );
+        }
+      }
+      const minorHtml = minorParts.join("");
+      const markerPos = score != null && Number.isFinite(score) ? posOf(score) : 0;
+      const scoreLine =
+        score != null && Number.isFinite(Number(score)) ? `${Number(score).toFixed(1)} 지수` : "—";
+      const pctLine = pct != null && Number.isFinite(Number(pct)) ? fmtPctFlexible(pct) : "—";
+      return `
+        <div class="ch1-iti-ruler" aria-label="ITI 확률 변환기">
+          <div class="ch1-iti-ruler__track">
+            ${majorHtml}
+            ${minorHtml}
+            <span class="ch1-iti-ruler__marker" style="left:${markerPos.toFixed(3)}%">
+              <span class="ch1-iti-ruler__marker-label">
+                <span class="ch1-iti-ruler__marker-score">${escHtml(scoreLine)}</span>
+                <span class="ch1-iti-ruler__marker-pct">${escHtml(pctLine)}</span>
+              </span>
+            </span>
+          </div>
+          <div class="ch1-iti-ruler__ends">
+            <span>운으로도 자주 나옴</span>
+            <span>운으로 나오기 어려움</span>
+          </div>
+        </div>`;
+    }
+
     function formatItiVerdict(iti) {
-      const p = iti.percent != null ? Number(iti.percent) : NaN;
-      if (!Number.isFinite(p)) {
+      const p = itiProbabilityPercent(iti);
+      const score = itiScoreFromPercent(iti);
+      if (p == null || score == null) {
         return {
           tier: "unknown",
-          headline: "결론을 내릴 수 없습니다.",
-          detail: "ITI 값이 비어 있습니다.",
+          headline: "ITI 지수를 읽을 수 없습니다.",
+          detail: "운으로도 이길 확률 데이터가 비어 있습니다.",
         };
       }
       if (p < 1) {
         return {
           tier: "strong",
-          headline: "운으로 설명하기 거의 불가능합니다.",
-          detail: "동일 조건의 무작위 시장 100개 중 1개에서도 이만한 결과가 잘 나오지 않습니다.",
+          headline: "운으로 나오기 매우 어려운 구간입니다.",
+          detail: "앞에서 눈금으로 읽은 확률이 매우 작다는 뜻입니다.",
         };
       }
       if (p < 5) {
         return {
           tier: "moderate",
-          headline: "운으로 보긴 어렵습니다.",
-          detail: "동일 조건 무작위 시장 100개 중 5개 미만에서만 같은 결과가 재현됩니다.",
+          headline: "운으로만 보기엔 드문 구간입니다.",
+          detail: "운으로 흔히 나오는 편은 아니라는 뜻입니다.",
         };
       }
       if (p < 15) {
         return {
           tier: "ambiguous",
-          headline: "운인지 실력인지 단정하기 어렵습니다.",
-          detail: "비교 조건을 약간만 바꿔도 결과가 흔들리는 구간입니다.",
+          headline: "운과 실력을 아직 단정하기 어려운 구간입니다.",
+          detail: "확률만으로는 어느 쪽으로도 단정하기 어렵습니다.",
         };
       }
       return {
         tier: "weak",
-        headline: "운으로도 흔히 나오는 결과입니다.",
-        detail: "이 수치만으로 실력의 증거로 삼기 어렵습니다.",
+        headline: "운으로도 비교적 자주 나오는 구간입니다.",
+        detail: "운으로도 비슷하게 나올 여지가 남아 있다는 뜻입니다.",
       };
     }
 
@@ -3060,19 +4031,19 @@
       ch3DetailCardsEl.innerHTML = parts.join("");
     }
 
-    function renderCh4DetailCards() {
-      if (!ch4DetailCardsEl) return;
+    function renderCh1DetailCards() {
+      if (!ch1DetailCardsEl) return;
       const months = oracleState.months;
       const i = oracleState.selectedIdx;
       const row = months[i];
       if (!row) {
-        ch4DetailCardsEl.innerHTML = "";
+        ch1DetailCardsEl.innerHTML = "";
         return;
       }
       const iti = row.imperfectTruthIndex || {};
       const nm = iti.nullModelSummary || {};
-      const holdH = nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 1) : "—";
-      const flatH = nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 1) : "—";
+      const p = itiProbabilityPercent(iti);
+      const score = itiScoreFromPercent(iti);
       const monthTrades = row.tradeCount != null ? row.tradeCount : null;
       const cumTrades =
         iti.cumulativeTradeCount != null
@@ -3080,19 +4051,12 @@
           : nm.tradeCount != null
             ? nm.tradeCount
             : null;
-      const simCount =
-        iti.simulationCount != null
-          ? Number(iti.simulationCount)
-          : nm.simulationCount != null
-            ? Number(nm.simulationCount)
-            : null;
 
       const hint = [];
-      if (iti.percent == null) hint.push("ITI 숫자가 비어 있습니다.");
-      if (!Array.isArray(iti.convergence) || !iti.convergence.length) hint.push("아래 추정 곡선을 그릴 데이터가 없습니다.");
-      if (ch4PartialHintEl) {
-        ch4PartialHintEl.hidden = hint.length === 0;
-        ch4PartialHintEl.textContent = hint.join(" ");
+      if (p == null) hint.push("운으로도 이길 확률 데이터가 비어 있습니다.");
+      if (ch1PartialHintEl) {
+        ch1PartialHintEl.hidden = hint.length === 0;
+        ch1PartialHintEl.textContent = hint.join(" ");
       }
 
       const escHtml = (s) =>
@@ -3100,38 +4064,43 @@
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;");
+          .replace(/\"/g, "&quot;");
 
       const verdict = formatItiVerdict(iti);
       const monthLabel = row.label || "—";
       const monthTradesStr = monthTrades != null ? `${monthTrades}건` : "—";
       const cumTradesStr = cumTrades != null ? `${cumTrades}건` : "—";
-      const simStr =
-        simCount != null && Number.isFinite(simCount) ? `${simCount.toLocaleString()}회` : "—";
+      const freq = p != null ? fmtItiFrequency(p) : "—";
 
-      ch4DetailCardsEl.innerHTML = `
-        <aside class="ch4-verdict ch4-verdict--${verdict.tier}" role="note" aria-label="기준월 결론">
-          <p class="ch4-verdict__headline">${escHtml(verdict.headline)}</p>
-          <p class="ch4-verdict__detail">${escHtml(verdict.detail)}</p>
-        </aside>
-        <div class="ch4-hero-row">
-          <article class="ch4-hero-card ch4-hero-card--primary">
-            <span class="ch4-hero-label">우연으로 같은 결과가 나올 확률</span>
-            <span class="ch4-hero-value">${fmtPctFlexible(iti.percent)}</span>
-            <span class="ch4-hero-sub">${escHtml(monthLabel)} 누적 기준</span>
-          </article>
-          <article class="ch4-hero-card">
-            <span class="ch4-hero-label">실 누적 수익률</span>
-            <span class="ch4-hero-value">${fmtPctFlexible(iti.actualReturnPercent)}</span>
-            <span class="ch4-hero-sub">동일 기간 실거래</span>
-          </article>
-        </div>
-        <dl class="ch4-stat-grid">
-          <div><dt>해당 달 거래</dt><dd>${monthTradesStr}</dd></div>
-          <div><dt>누적 거래</dt><dd>${cumTradesStr}</dd></div>
-          <div><dt>비교 표본</dt><dd>${simStr}</dd></div>
-        </dl>
-        <p class="ch4-meta-foot">10× 레버리지 · 시드 50% 진입(k=0.5) · 평균 보유 ${holdH}h · 평균 관망 ${flatH}h · 수수료 미반영</p>
+      ch1DetailCardsEl.innerHTML = `
+        <section class="ch1-detail-bundle" aria-label="선택 기간 ITI 요약">
+          <section class="ch1-step-score-card" aria-label="선택한 기간의 ITI 지수">
+            <span class="ch1-step-label">선택한 기간의 ITI 지수</span>
+            <div class="ch1-step-score-value">${score != null && Number.isFinite(Number(score)) ? `${Number(score).toFixed(1)}` : "—"}</div>
+          </section>
+
+          <section class="ch1-ruler-step" aria-label="ITI 확률 변환기">
+            <h3 class="ch1-ruler-step-title">ITI 확률 변환기</h3>
+            ${itiScoreRulerHtml(score, p)}
+          </section>
+
+          <section class="ch1-probability-step" aria-label="눈금으로 읽은 확률">
+            <p>
+              눈금에서 이 지수까지 내려가 읽으면, <strong>운에 맡겨 같은 조건으로만 돌렸을 때 지금 성과 이상이 나올 확률은 ${escHtml(fmtPctFlexible(p))}</strong>입니다.
+            </p>
+            <p>말로 옮기면 <strong>${escHtml(freq)}</strong> 나올 만큼 드문 편입니다.</p>
+          </section>
+
+          <aside class="ch1-verdict ch1-verdict--${verdict.tier}" role="note" aria-label="해석">
+            <p class="ch1-verdict__headline">${escHtml(verdict.headline)}</p>
+            <p class="ch1-verdict__detail">${escHtml(verdict.detail)}</p>
+          </aside>
+
+          <p class="ch1-context-line">
+            ${escHtml(monthLabel)} · 해당 달 거래 ${monthTradesStr} · 누적 거래 ${cumTradesStr} · 실제 누적 수익률 ${escHtml(fmtPctFlexible(iti.actualReturnPercent))}
+          </p>
+          <p class="ch1-meta-foot">계산 세부 조건은 ‘ITI의 수학적 정의’에서 확인할 수 있습니다.</p>
+        </section>
       `;
     }
 
@@ -3165,27 +4134,30 @@
       ch3SummaryTableBody.appendChild(frag);
     }
 
-    function renderCh4Table() {
-      if (!ch4SummaryTableBody) return;
+    function renderCh1Table() {
+      if (!ch1SummaryTableBody) return;
       const months = oracleState.months;
-      ch4SummaryTableBody.textContent = "";
+      ch1SummaryTableBody.textContent = "";
       const frag = document.createDocumentFragment();
       for (const row of months) {
         const iti = row.imperfectTruthIndex || {};
-        const nm = iti.nullModelSummary || {};
+        const p = itiProbabilityPercent(iti);
+        const score = itiScoreFromPercent(iti);
         const cumN =
-          iti.cumulativeTradeCount != null ? iti.cumulativeTradeCount : nm.tradeCount != null ? nm.tradeCount : "—";
+          iti.cumulativeTradeCount != null
+            ? iti.cumulativeTradeCount
+            : iti.nullModelSummary && iti.nullModelSummary.tradeCount != null
+              ? iti.nullModelSummary.tradeCount
+              : "—";
         const tr = document.createElement("tr");
         const cells = [
           row.label || "—",
           row.tradeCount != null ? String(row.tradeCount) : "—",
           cumN !== "—" ? String(cumN) : "—",
           fmtPctFlexible(iti.actualReturnPercent),
-          fmtPctFlexible(iti.percent),
-          iti.simulationCount != null ? String(iti.simulationCount) : "—",
-          nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 2) : "—",
-          nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 2) : "—",
-          nm.leverage != null ? String(nm.leverage) : "—",
+          fmtItiScore(score),
+          fmtPctFlexible(p),
+          fmtItiFrequency(p),
         ];
         cells.forEach((txt) => {
           const td = document.createElement("td");
@@ -3194,7 +4166,41 @@
         });
         frag.appendChild(tr);
       }
-      ch4SummaryTableBody.appendChild(frag);
+      ch1SummaryTableBody.appendChild(frag);
+    }
+
+    function renderCh1TechnicalMetaTable() {
+      const body = document.getElementById("ch1TechnicalMetaTableBody");
+      if (!body) return;
+      const months = oracleState.months;
+      body.textContent = "";
+      const frag = document.createDocumentFragment();
+      for (const row of months) {
+        const iti = row.imperfectTruthIndex || {};
+        const nm = iti.nullModelSummary || {};
+        const simCount =
+          iti.simulationCount != null
+            ? Number(iti.simulationCount)
+            : nm.simulationCount != null
+              ? Number(nm.simulationCount)
+              : null;
+        const simStr =
+          simCount != null && Number.isFinite(simCount) ? String(simCount) : "—";
+        const tr = document.createElement("tr");
+        [
+          row.label || "—",
+          simStr,
+          nm.avgHoldHours != null ? fmtOrDash(nm.avgHoldHours, 2) : "—",
+          nm.avgFlatHours != null ? fmtOrDash(nm.avgFlatHours, 2) : "—",
+          nm.leverage != null ? String(nm.leverage) : "—",
+        ].forEach((txt) => {
+          const td = document.createElement("td");
+          td.textContent = txt;
+          tr.appendChild(td);
+        });
+        frag.appendChild(tr);
+      }
+      body.appendChild(frag);
     }
 
     function buildKCurveDatasets(monthRow) {
@@ -3258,7 +4264,7 @@
 
     function syncOracleMonthButtons() {
       const idx = oracleState.selectedIdx;
-      ["oracleMonthButtonsCh3", "oracleMonthButtonsCh4"].forEach((id) => {
+      ["oracleMonthButtonsCh3", "oracleMonthButtonsCh1"].forEach((id) => {
         const container = document.getElementById(id);
         if (!container) return;
         container.querySelectorAll(".oracle-month-btn").forEach((btn, i) => {
@@ -3269,7 +4275,7 @@
 
     function populateOracleMonthButtons() {
       const months = oracleState.months;
-      ["oracleMonthButtonsCh3", "oracleMonthButtonsCh4"].forEach((id) => {
+      ["oracleMonthButtonsCh3", "oracleMonthButtonsCh1"].forEach((id) => {
         const container = document.getElementById(id);
         if (!container) return;
         container.innerHTML = "";
@@ -3295,7 +4301,7 @@
       oracleState.selectedIdx = n;
       syncOracleMonthButtons();
       renderCh3DetailCards();
-      renderCh4DetailCards();
+      renderCh1DetailCards();
       updateOracleSelectionStyles();
       const m = months[n];
       if (m) redrawOracleKCurve(m);
@@ -3341,8 +4347,8 @@
 
       const ch3El = document.getElementById("ch3KHistoryChart");
       const ch3cEl = document.getElementById("ch3KCurveChart");
-      const ch4El = document.getElementById("ch4ItiHistoryChart");
-      const ch4cEl = document.getElementById("ch4ConvergenceChart");
+      const ch1El = document.getElementById("ch1ItiHistoryChart");
+      const ch1cEl = document.getElementById("ch1ConvergenceChart");
 
       destroyOracleChart("kHist");
       destroyOracleChart("kCurve");
@@ -3475,15 +4481,15 @@
         });
       }
 
-      if (ch4El) {
+      if (ch1El) {
         const h = currentHueValue;
-        oracleCharts.itiHist = new Chart(ch4El.getContext("2d"), {
+        oracleCharts.itiHist = new Chart(ch1El.getContext("2d"), {
           type: "line",
           data: {
             labels,
             datasets: [
               {
-                label: "ITI (%)",
+                label: "운으로도 이길 확률(%)",
                 data: itiPcts.map((p) => (p == null ? null : p)),
                 borderColor: `hsl(${h}, 95%, 68%)`,
                 backgroundColor: `hsla(${h}, 90%, 52%, 0.12)`,
@@ -3525,7 +4531,8 @@
                         ? iti.cumulativeTradeCount
                         : iti.nullModelSummary && iti.nullModelSummary.tradeCount;
                     return [
-                      `ITI: ${fmtPctFlexible(iti.percent)}`,
+                      `운으로도 이길 확률: ${fmtPctFlexible(iti.percent)}`,
+                      `ITI 지수: ${itiScoreFromPercent(iti) == null ? "—" : Number(itiScoreFromPercent(iti)).toFixed(1)}`,
                       `실제 수익률: ${fmtPctFlexible(iti.actualReturnPercent)}`,
                       `누적 거래: ${nCum != null ? nCum : "—"}`,
                       `해당 달 거래: ${row.tradeCount != null ? row.tradeCount : "—"}`,
@@ -3544,7 +4551,7 @@
                 position: "right",
                 min: 0,
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "ITI (%)", color: "#94a3b8" },
+                title: { display: true, text: "확률(%)", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
             },
@@ -3552,7 +4559,7 @@
         });
       }
 
-      if (ch4cEl) {
+      if (ch1cEl) {
         const sel = months[oracleState.selectedIdx] || months[0];
         const iti = sel.imperfectTruthIndex || {};
         const conv = Array.isArray(iti.convergence) ? iti.convergence : [];
@@ -3560,12 +4567,12 @@
           .filter((c) => c && Number.isFinite(Number(c.simulationCount)) && c.estimatePercent != null)
           .map((c) => ({ x: Number(c.simulationCount), y: Number(c.estimatePercent) }));
 
-        oracleCharts.conv = new Chart(ch4cEl.getContext("2d"), {
+        oracleCharts.conv = new Chart(ch1cEl.getContext("2d"), {
           type: "line",
           data: {
             datasets: [
               {
-                label: "ITI 추정(%)",
+                label: "운으로도 이길 확률 추정(%)",
                 data: convData,
                 parsing: false,
                 borderColor: `hsl(${currentHueValue}, 95%, 68%)`,
@@ -3584,7 +4591,7 @@
               tooltip: {
                 callbacks: {
                   title: (items) => `비교 ${items[0]?.parsed.x}회까지`,
-                  label: (ctx) => `ITI 추정: ${fmtOrDash(ctx.parsed.y, 4)}%`,
+                  label: (ctx) => `확률 추정: ${fmtOrDash(ctx.parsed.y, 4)}%`,
                 },
               },
             },
@@ -3599,7 +4606,7 @@
                 position: "right",
                 min: 0,
                 ticks: { color: "#94a3b8" },
-                title: { display: true, text: "ITI (%)", color: "#94a3b8" },
+                title: { display: true, text: "확률(%)", color: "#94a3b8" },
                 grid: { color: "rgba(255,255,255,0.06)" },
               },
             },
@@ -3643,18 +4650,299 @@
 
       populateOracleMonthButtons();
       renderCh3DetailCards();
-      renderCh4DetailCards();
+      renderCh1DetailCards();
       renderCh3Table();
-      if (ch4SummaryTableBody) ch4SummaryTableBody.textContent = "";
-      if (ch4TableSection) {
-        ch4TableSection.classList.remove("is-open");
-        const ch4Btn = document.getElementById("btnGenerateCh4Table");
-        if (ch4Btn) {
-          ch4Btn.textContent = "표 펼치기";
-          ch4Btn.setAttribute("aria-expanded", "false");
+      renderCh1TechnicalMetaTable();
+      if (ch1SummaryTableBody) ch1SummaryTableBody.textContent = "";
+      if (ch1TableSection) {
+        ch1TableSection.classList.remove("is-open");
+        const ch1Btn = document.getElementById("btnGenerateCh1Table");
+        if (ch1Btn) {
+          ch1Btn.textContent = "표 펼치기";
+          ch1Btn.setAttribute("aria-expanded", "false");
         }
       }
       initOracleCharts();
+    }
+
+    /**
+     * Historical note: this module was originally built as Chapter 5,
+     * but it is now displayed inside Chapter 4 as the empirical
+     * liquidation-probability generator.
+     */
+    let ch5Mae5mChart = null;
+    let ch5Sample5mChart = null;
+
+    function destroyCh5Charts() {
+      if (ch5Mae5mChart) {
+        ch5Mae5mChart.destroy();
+        ch5Mae5mChart = null;
+      }
+      if (ch5Sample5mChart) {
+        ch5Sample5mChart.destroy();
+        ch5Sample5mChart = null;
+      }
+    }
+
+    function initCh5Charts() {
+      const missEl = document.getElementById("ch5DataMissing");
+      const data = typeof window !== "undefined" ? window.CH5_DISTRIBUTION_DATA : null;
+      if (!data || typeof Chart === "undefined") {
+        if (missEl) missEl.hidden = false;
+        return;
+      }
+      if (missEl) missEl.hidden = true;
+      destroyCh5Charts();
+      const h = currentHueValue;
+
+      const maeBlock = data.mae5mApproxWorstRoiPct || null;
+      const sampleBlock = data.roi5mHoldingSamplesClosePct || data.roi5mHoldingSamplesOpenPct || null;
+
+      function setText(id, text) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+
+      function fmtPct(v, digits = 2) {
+        const n = Number(v);
+        return Number.isFinite(n) ? `${n.toFixed(digits)}%` : "—";
+      }
+
+      function probPct(v, digits = 4) {
+        const n = Number(v);
+        if (!Number.isFinite(n)) return "—";
+        return `${(n * 100).toFixed(digits)}%`;
+      }
+
+      function fmtInt(v) {
+        const n = Number(v);
+        return Number.isFinite(n) ? Math.round(n).toLocaleString("ko-KR") : "—";
+      }
+
+      function valuesOf(block) {
+        return Array.isArray(block?.values) ? block.values.map(Number).filter(Number.isFinite) : [];
+      }
+
+      function countBelow(values, threshold) {
+        return values.reduce((acc, v) => acc + (v <= threshold ? 1 : 0), 0);
+      }
+
+      const maeValues = valuesOf(maeBlock);
+      const sampleValues = valuesOf(sampleBlock);
+      const tradeTailRaw =
+        data.summary?.estimatedTradeLiquidationProbabilityKde ??
+        maeBlock?.estimatedLiquidationProbabilityKde ??
+        maeBlock?.bankruptcyPct ??
+        maeBlock?.tailAtMinus100?.kdeProbability;
+      const tradeTail = Number.isFinite(Number(tradeTailRaw)) ? Number(tradeTailRaw) : NaN;
+
+      const sampleTailRaw =
+        sampleBlock?.tailAtMinus100?.kdeProbability ?? data.summary?.estimatedSampleTailProbabilityKde ?? null;
+      const sampleTail = Number.isFinite(Number(sampleTailRaw)) ? Number(sampleTailRaw) : NaN;
+
+      const observedLiq = Number(maeBlock?.observedLiquidationCount ?? countBelow(maeValues, -100));
+      const worstMae = maeBlock?.stats?.min;
+      const sampleCount = sampleBlock?.sampleCount ?? sampleBlock?.stats?.n;
+      const sampleMin = sampleBlock?.stats?.min;
+      const sampleMedian = sampleBlock?.stats?.median;
+
+      setText("ch5ObservedLiquidation", `${fmtInt(observedLiq)}건`);
+      setText("ch5MainKdeProbability", probPct(tradeTail));
+      setText("ch5SampleKdeProbability", probPct(sampleTail));
+      setText("ch5WorstMaeHero", fmtPct(worstMae));
+      setText("ch5SampleCountHero", `${fmtInt(sampleCount)}개`);
+
+      const tradePctDisp = probPct(tradeTail);
+      const samplePctDisp = probPct(sampleTail);
+      setText(
+        "ch5PlainVerdict",
+        `청산선 −100% 기준으로 실제 관측 청산은 ${fmtInt(observedLiq)}건입니다. 거래별 최악 손실에서 읽은 간접 확률은 ${tradePctDisp}, ` +
+          `5분 평가손익률 전체에서 읽은 꼬리는 ${samplePctDisp}입니다. 가장 깊었던 관측값은 ${fmtPct(worstMae)}였습니다.`
+      );
+
+      function updateThresholdReadout() {
+        const slider = document.getElementById("ch5RiskThresholdSlider");
+        const threshold = Number(slider?.value ?? -100);
+        setText("ch5RiskThresholdValue", `${threshold}%`);
+        const tradeCnt = countBelow(maeValues, threshold);
+        const sampleCnt = countBelow(sampleValues, threshold);
+        const tradeRate = maeValues.length ? (tradeCnt / maeValues.length) * 100 : NaN;
+        const sampleRate = sampleValues.length ? (sampleCnt / sampleValues.length) * 100 : NaN;
+        setText(
+          "ch5TradeBelowThreshold",
+          `거래별 최악 손실: ${fmtInt(tradeCnt)} / ${fmtInt(maeValues.length)}건 (${Number.isFinite(tradeRate) ? tradeRate.toFixed(2) : "—"}%)`
+        );
+        setText(
+          "ch5SampleBelowThreshold",
+          `5분 평가손익률 전체: ${fmtInt(sampleCnt)} / ${fmtInt(sampleValues.length)}개 (${Number.isFinite(sampleRate) ? sampleRate.toFixed(2) : "—"}%)`
+        );
+      }
+
+      const riskSlider = document.getElementById("ch5RiskThresholdSlider");
+      if (riskSlider && !riskSlider.dataset.ch5ThresholdBound) {
+        riskSlider.dataset.ch5ThresholdBound = "1";
+        riskSlider.addEventListener("input", updateThresholdReadout);
+      }
+      updateThresholdReadout();
+
+      function ch5HistOptions(yAxisLabel) {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: {
+              display: true,
+              labels: { color: "#94a3b8", boxWidth: 12 },
+            },
+            tooltip: {
+              callbacks: {
+                title: (items) => (items[0] && items[0].label) || "",
+                label: (ctx) => {
+                  const v = ctx.parsed && ctx.parsed.y != null ? ctx.parsed.y : ctx.raw;
+                  return `${ctx.dataset.label}: ${typeof v === "number" ? v.toFixed(2) : v}`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              offset: true,
+              ticks: { color: "#94a3b8", maxRotation: 60, minRotation: 45, font: { size: 9 } },
+              title: { display: true, text: "손익률 구간", color: "#94a3b8", font: { size: 11 } },
+              grid: { color: "rgba(255,255,255,0.06)" },
+            },
+            y: {
+              position: "right",
+              beginAtZero: true,
+              ticks: { color: "#94a3b8" },
+              title: { display: true, text: yAxisLabel, color: "#94a3b8", font: { size: 11 } },
+              grid: { color: "rgba(255,255,255,0.06)" },
+            },
+          },
+        };
+      }
+
+      function makeHistChart(canvasId, block, yAxisLabel, barLabel) {
+        const el = document.getElementById(canvasId);
+        if (!el || !el.getContext) return null;
+        const hist = block && block.histogram;
+        if (!hist || !Array.isArray(hist.counts)) return null;
+        const showNorm =
+          Boolean(hist.showNormalOverlay) &&
+          Array.isArray(hist.normalCounts) &&
+          hist.normalCounts.length === hist.counts.length;
+        const datasets = [
+          {
+            type: "bar",
+            label: barLabel,
+            data: hist.counts,
+            backgroundColor: `hsla(${h}, 85%, 52%, 0.38)`,
+            borderColor: `hsla(${h}, 95%, 58%, 0.55)`,
+            borderWidth: 1,
+            order: 2,
+          },
+        ];
+        if (showNorm) {
+          datasets.push({
+            type: "line",
+            label: "분포선",
+            data: hist.normalCounts,
+            borderColor: `hsl(${h}, 82%, 80%)`,
+            backgroundColor: "transparent",
+            borderWidth: 2,
+            tension: 0.22,
+            pointRadius: 0,
+            order: 1,
+          });
+        }
+        return new Chart(el.getContext("2d"), {
+          type: "bar",
+          data: {
+            labels: hist.binLabels,
+            datasets,
+          },
+          options: ch5HistOptions(yAxisLabel),
+        });
+      }
+
+      ch5Mae5mChart = makeHistChart("ch5Mae5mChart", maeBlock, "거래 수", "거래 수");
+      ch5Sample5mChart = makeHistChart("ch5Sample5mChart", sampleBlock, "5분 샘플 수", "5분 샘플 수");
+
+      setText(
+        "ch5TradeTailReadout",
+        `청산선 −100% 이하: 실제 관측 ${fmtInt(observedLiq)}건 · 거래별 최악 손실에서 읽은 간접 추정 ${probPct(tradeTail)} · 최악 관측 ${fmtPct(worstMae)} · 중앙값 ${fmtPct(maeBlock?.stats?.median)}`
+      );
+      setText(
+        "ch5SampleTailReadout",
+        `청산선 −100% 이하: 실제 관측 ${fmtInt(
+          sampleBlock?.tailAtMinus100?.observedCountAtOrBelowThreshold ?? countBelow(sampleValues, -100)
+        )}개 · 꼬리 ${probPct(sampleTail)} · 최저 샘플 ${fmtPct(sampleMin)} · 중앙값 ${fmtPct(sampleMedian)}`
+      );
+    }
+
+    function asPercentProbability(x) {
+      const n = Number(x);
+      if (!Number.isFinite(n)) return null;
+      return n <= 1 ? n * 100 : n;
+    }
+
+    function computeIndirectPerTradeLiquidationPctFromCh5() {
+      const ch5Data = window.CH5_DISTRIBUTION_DATA;
+      if (!ch5Data) return null;
+      const indirectPerTradeLiquidationRaw =
+        ch5Data.summary?.estimatedTradeLiquidationProbabilityKde ??
+        ch5Data.mae5mApproxWorstRoiPct?.estimatedLiquidationProbabilityKde ??
+        ch5Data.mae5mApproxWorstRoiPct?.bankruptcyPct;
+      return asPercentProbability(indirectPerTradeLiquidationRaw);
+    }
+
+    function updateLiqProbSourceHintVisibility() {
+      const fallbackEl = document.getElementById("liqProbFallbackNote");
+      const wrap = document.getElementById("liqProbSourceNotes");
+      const scenario = document.getElementById("liqProbScenarioNote");
+      const resetBtn = document.getElementById("liqProbResetToData");
+      const derived = window.__ch2DataDerivedLiqProbPct;
+      if (!fallbackEl || !wrap || !scenario || !resetBtn) return;
+      const hasDerived = derived != null && Number.isFinite(derived);
+      if (!hasDerived) {
+        fallbackEl.hidden = false;
+        wrap.hidden = true;
+        scenario.hidden = true;
+        resetBtn.hidden = true;
+        return;
+      }
+      fallbackEl.hidden = true;
+      wrap.hidden = false;
+      resetBtn.hidden = false;
+      const cur = roundLiqPercent3(parseLiqPercent0to100(liqProbInput.value, liqProbSlider.value));
+      const same = Math.abs(cur - derived) < 1e-4;
+      scenario.hidden = same;
+    }
+
+    function applyTradeDerivedDefaultLiqProbToInputs() {
+      const indirectPerTradeLiquidationPct = computeIndirectPerTradeLiquidationPctFromCh5();
+      window.__ch2DataDerivedLiqProbPct = null;
+      if (indirectPerTradeLiquidationPct == null || !Number.isFinite(indirectPerTradeLiquidationPct)) {
+        updateLiqProbSourceHintVisibility();
+        return;
+      }
+      const sliderMax = 5;
+      const clamped = clamp(indirectPerTradeLiquidationPct, 0, sliderMax);
+      const r = roundLiqPercent3(clamped);
+      window.__ch2DataDerivedLiqProbPct = r;
+      liqProbSlider.value = formatLiqInputValue(r);
+      if (document.activeElement !== liqProbInput) {
+        liqProbInput.value = formatLiqInputValue(r);
+      }
+      liqProbLabel.textContent = formatLiqPercentLabel(r);
+      const dataHint = document.getElementById("liqProbDataHint");
+      if (dataHint) {
+        dataHint.textContent = `기본값: 실제 거래 분포에서 산출한 거래당 간접 청산 확률 (${formatLiqPercentLabel(r)})`;
+      }
+      updateLiqProbSourceHintVisibility();
+      redrawCh2();
     }
 
     function parsePayWon(raw) {
@@ -4872,6 +6160,7 @@
       ch2FirstLiqChart.data.datasets[2].data = liqSeries.profit;
       ch2FirstLiqChart.options.scales.x.max = state.months;
       ch2FirstLiqChart.update("none");
+      updateLiqProbSourceHintVisibility();
     }
 
     function debounce(fn, ms) {
@@ -4960,9 +6249,23 @@
         liqProbInput.value = liqProbSlider.value;
       }
       redrawCh2Soon();
+      updateLiqProbSourceHintVisibility();
     });
-    liqProbInput.addEventListener("input", redrawCh2Soon);
-    liqProbInput.addEventListener("change", redrawCh2);
+    liqProbInput.addEventListener("input", () => {
+      redrawCh2Soon();
+      updateLiqProbSourceHintVisibility();
+    });
+    liqProbInput.addEventListener("change", () => {
+      redrawCh2();
+      updateLiqProbSourceHintVisibility();
+    });
+
+    const liqProbResetToData = document.getElementById("liqProbResetToData");
+    if (liqProbResetToData) {
+      liqProbResetToData.addEventListener("click", () => {
+        applyTradeDerivedDefaultLiqProbToInputs();
+      });
+    }
 
     ch2MonthSlider.addEventListener("input", () => {
       ch2MonthInput.value = ch2MonthSlider.value;
@@ -5039,14 +6342,16 @@
       renderCh2FirstLiqDataTable(getCh2State());
     });
 
-    bindTableToggle(btnGenerateCh4Table, ch4TableSection, () => {
+    bindTableToggle(btnGenerateCh1Table, ch1TableSection, () => {
       if (!oracleState.months || !oracleState.months.length) return false;
-      renderCh4Table();
+      renderCh1Table();
     });
 
     initChart();
     initCh2Charts();
     initOracleMetrics();
+    initCh5Charts();
+    applyTradeDerivedDefaultLiqProbToInputs();
 
     (function wireOracleMonthButtons() {
       const root = document.getElementById("oracleMetricsFilled");
